@@ -50,9 +50,11 @@
             line-height: 1.6;
         }
 
-        /* === NAVIGATION BAR === */
+/* === NAVIGATION BAR === */
         nav {
-            background-color: var(--primary-color);
+            background-color: rgba(26, 37, 47, 0.85); /* Semi-transparent navy */
+            backdrop-filter: blur(12px); /* The frosted glass effect */
+            -webkit-backdrop-filter: blur(12px); /* Safari support */
             color: white;
             padding: 1rem 2rem;
             display: flex;
@@ -61,19 +63,7 @@
             position: sticky;
             top: 0;
             z-index: 1000;
-        }
-        .nav-links {
-            display: flex;
-            gap: 1.5rem;
-        }
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-        .nav-links a:hover {
-            color: var(--secondary-color);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Subtle bottom edge */
         }
 
         /* === DROPDOWN CV BUTTON === */
@@ -186,6 +176,18 @@
             background: var(--primary-color);
             color: white;
         }
+
+        /* === APPLE-STYLE ANIMATIONS === */
+        .reveal-section {
+            opacity: 0;
+            transform: translateY(40px); /* Pushes the section down initially */
+            transition: all 0.9s cubic-bezier(0.25, 1, 0.5, 1); /* Super smooth cinematic easing */
+        }
+        .reveal-section.is-visible {
+            opacity: 1;
+            transform: translateY(0); /* Brings it back to original position */
+        }
+        
     </style>
 </head>
 <body>
@@ -361,5 +363,31 @@
     <p>&copy; 2026 Siddharth Shelke. All rights reserved.</p>
 </footer>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // 1. Select all sections on the page
+        const sections = document.querySelectorAll("section");
+        
+        // 2. Apply the hidden starting state to each section automatically
+        sections.forEach(sec => sec.classList.add("reveal-section"));
+
+        // 3. Create the Intersection Observer to watch for scrolling
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // When the section enters the screen, add the visible class
+                    entry.target.classList.add("is-visible");
+                }
+            });
+        }, { 
+            threshold: 0.15 // Triggers the animation when 15% of the section is visible
+        });
+
+        // 4. Tell the observer to actively watch all sections
+        sections.forEach(sec => observer.observe(sec));
+    });
+</script>
+    
+    
 </body>
 </html>
