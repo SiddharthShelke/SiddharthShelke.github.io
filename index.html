@@ -114,7 +114,20 @@
         p { color: var(--text-muted); }
 
         /* === LOGOS & LINKS === */
-        .logo-img { height: 24px; width: auto; vertical-align: middle; margin-right: 12px; border-radius: 4px; }
+        .logo-img { 
+            height: 24px; 
+            width: auto; 
+            vertical-align: middle; 
+            margin-right: 12px; 
+            border-radius: 4px; 
+            background-color: rgba(255, 255, 255, 0.9); /* Adds a white background so dark logos show up */
+            padding: 3px; /* Adds space around the logo so it doesn't look cut off */
+            box-sizing: content-box;
+            transition: background-color 0.5s ease;
+        }
+        /* Removes the white background from logos when in Light Mode */
+        body.light-mode .logo-img { background-color: transparent; padding: 0; }
+        
         .title-link { text-decoration: none; color: var(--text-main); transition: color 0.3s; }
         .title-link:hover { color: var(--accent); }
         .action-link { display: inline-block; margin-top: 15px; font-size: 0.9rem; color: var(--accent); text-decoration: none; font-family: monospace; }
@@ -173,8 +186,8 @@
         <div class="dropdown">
             <button class="dropbtn" data-de="Lebenslauf">Download CV</button>
             <div class="dropdown-content">
-                <a href="SShelke_CV.pdf" target="_blank">English CV</a>
-                <a href="SShelke_Lebenslauf.pdf" target="_blank">Deutsch CV</a>
+                <a href="S.Shelke_CV.pdf" target="_blank">English CV</a>
+                <a href="S.Shelke_lebenslauf.pdf" target="_blank">Deutsch CV</a>
             </div>
         </div>
     </div>
@@ -336,6 +349,7 @@
                     <h4 style="color: var(--text-main); margin-bottom: 1.2rem; font-family: monospace;" data-de="VERBINDEN">CONNECT</h4>
                     <a href="mailto:siddharthshelke634@gmail.com" style="display:block; color: var(--text-muted); text-decoration:none; margin-bottom: 0.8rem; font-size: 0.9rem; transition: 0.3s;">Email</a>
                     <a href="https://linkedin.com/in/siddharthnshelke" target="_blank" style="display:block; color: var(--text-muted); text-decoration:none; margin-bottom: 0.8rem; font-size: 0.9rem; transition: 0.3s;">LinkedIn</a>
+                    <a href="https://www.instagram.com/siddharthh_me/" target="_blank" style="display:block; color: var(--text-muted); text-decoration:none; margin-bottom: 0.8rem; font-size: 0.9rem; transition: 0.3s;">Instagram</a>
                 </div>
             </div>
         </div>
