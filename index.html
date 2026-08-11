@@ -7,152 +7,85 @@
     <style>
         /* === PREMIUM DARK THEME === */
         :root {
-            --bg-color: #0a192f;        /* Deep Space Blue */
-            --card-bg: rgba(17, 34, 64, 0.7); /* Translucent Card Blue */
-            --text-main: #ccd6f6;       /* Soft White/Blue */
-            --text-muted: #8892b0;      /* Slate Gray */
-            --accent: #64ffda;          /* Electric Cyan */
+            --bg-color: #0a192f;        
+            --card-bg: rgba(17, 34, 64, 0.5); 
+            --bubble-bg: rgba(17, 34, 64, 0.35); /* Slightly more transparent for bubbles */
+            --text-main: #ccd6f6;       
+            --text-muted: #8892b0;      
+            --accent: #64ffda;          
             --nav-bg: rgba(10, 25, 47, 0.85);
         }
         
         /* === SCROLL SNAPPING & BASE === */
-        html {
-            scroll-snap-type: y proximity; /* Proximity allows smooth snapping without trapping the user */
-            scroll-behavior: smooth;
-        }
-        
+        html { scroll-snap-type: y proximity; scroll-behavior: smooth; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            line-height: 1.6;
-            overflow-x: hidden;
+            margin: 0; padding: 0;
+            background-color: var(--bg-color); color: var(--text-main);
+            line-height: 1.6; overflow-x: hidden;
         }
 
         /* === LIVE BACKGROUND CANVAS === */
         #network-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: -1; /* Keeps it behind all content */
-            pointer-events: none;
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1; pointer-events: none;
         }
 
         /* === FROSTED GLASS NAVIGATION === */
         nav {
             background-color: var(--nav-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: fixed;
-            top: 0;
-            width: 100%;
-            box-sizing: border-box;
-            z-index: 1000;
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center;
+            position: fixed; top: 0; width: 100%; box-sizing: border-box; z-index: 1000;
             border-bottom: 1px solid rgba(100, 255, 218, 0.1);
         }
         .nav-links { display: flex; gap: 1.5rem; }
-        .nav-links a {
-            color: var(--text-main);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.9rem;
-            transition: color 0.3s;
-        }
+        .nav-links a { color: var(--text-main); text-decoration: none; font-weight: 500; font-size: 0.9rem; transition: color 0.3s; }
         .nav-links a:hover { color: var(--accent); }
 
         /* === DROPDOWN CV BUTTON === */
         .dropdown { position: relative; display: inline-block; }
         .dropbtn {
-            background-color: transparent;
-            color: var(--accent);
-            padding: 8px 16px;
-            font-size: 14px;
-            border: 1px solid var(--accent);
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s;
+            background-color: transparent; color: var(--accent); padding: 8px 16px; font-size: 14px;
+            border: 1px solid var(--accent); border-radius: 4px; cursor: pointer; font-weight: bold; transition: all 0.3s;
         }
         .dropbtn:hover { background-color: rgba(100, 255, 218, 0.1); }
         .dropdown-content {
-            display: none;
-            position: absolute;
-            right: 0;
-            background-color: var(--card-bg);
-            backdrop-filter: blur(10px);
-            min-width: 160px;
-            box-shadow: 0px 8px 16px rgba(0,0,0,0.5);
-            border: 1px solid rgba(100, 255, 218, 0.1);
-            z-index: 1;
-            border-radius: 4px;
+            display: none; position: absolute; right: 0; background-color: var(--card-bg);
+            backdrop-filter: blur(10px); min-width: 160px; box-shadow: 0px 8px 16px rgba(0,0,0,0.5);
+            border: 1px solid rgba(100, 255, 218, 0.1); z-index: 1; border-radius: 4px;
         }
-        .dropdown-content a {
-            color: var(--text-main);
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-            font-size: 0.9rem;
-        }
+        .dropdown-content a { color: var(--text-main); padding: 12px 16px; text-decoration: none; display: block; font-size: 0.9rem; }
         .dropdown-content a:hover { color: var(--accent); background-color: rgba(255,255,255,0.05); }
         .dropdown:hover .dropdown-content { display: block; }
 
         /* === FULL-PAGE SECTIONS === */
-        .container {
-            max-width: 1000px;
-            margin: auto;
-            padding: 0 2rem;
-        }
+        .container { max-width: 1000px; margin: auto; padding: 0 2rem; }
         section {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            scroll-snap-align: start;
-            padding-top: 80px; /* Accounts for fixed nav */
-            padding-bottom: 2rem;
-            box-sizing: border-box;
+            min-height: 100vh; display: flex; flex-direction: column; justify-content: center;
+            scroll-snap-align: start; padding-top: 80px; padding-bottom: 2rem; box-sizing: border-box;
         }
         
-        h2 {
-            color: var(--text-main);
-            font-size: 2.5rem;
-            margin-bottom: 2rem;
-            display: flex;
-            align-items: center;
-        }
-        h2::after {
-            content: "";
-            display: block;
-            height: 1px;
-            width: 300px;
-            background-color: rgba(100, 255, 218, 0.2);
-            margin-left: 20px;
-        }
+        h2 { color: var(--text-main); font-size: 2.5rem; margin-bottom: 2rem; display: flex; align-items: center; }
+        h2::after { content: ""; display: block; height: 1px; width: 300px; background-color: rgba(100, 255, 218, 0.2); margin-left: 20px; }
         h3 { color: var(--text-main); margin-bottom: 0.5rem; font-size: 1.3rem; }
         
-        /* === GLASS CARDS === */
+        /* === GLASS BUBBLES (For Home, About, Contact) === */
+        .glass-bubble {
+            background: var(--bubble-bg);
+            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            padding: 3rem; border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 10px 30px -15px rgba(2,12,27,0.7);
+        }
+
+        /* === GLASS CARDS (For Projects/Experience) === */
         .item-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(8px);
-            padding: 2rem;
-            border-radius: 8px;
-            margin-bottom: 1.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: var(--card-bg); backdrop-filter: blur(8px); padding: 2rem; border-radius: 12px;
+            margin-bottom: 1.5rem; border: 1px solid rgba(255, 255, 255, 0.05);
             transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s ease;
         }
-        .item-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px -15px rgba(2,12,27,0.7);
-            border-color: rgba(100, 255, 218, 0.2);
-        }
+        .item-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px -15px rgba(2,12,27,0.7); border-color: rgba(100, 255, 218, 0.2); }
         .meta-info { font-size: 0.9rem; color: var(--accent); margin-bottom: 1rem; font-family: monospace; }
         ul { color: var(--text-muted); padding-left: 20px; }
         p { color: var(--text-muted); }
@@ -161,28 +94,17 @@
         .logo-img { height: 24px; width: auto; vertical-align: middle; margin-right: 12px; border-radius: 4px; }
         .title-link { text-decoration: none; color: var(--text-main); transition: color 0.3s; }
         .title-link:hover { color: var(--accent); }
-        .action-link {
-            display: inline-block;
-            margin-top: 15px;
-            font-size: 0.9rem;
-            color: var(--accent);
-            text-decoration: none;
-            font-family: monospace;
-        }
+        .action-link { display: inline-block; margin-top: 15px; font-size: 0.9rem; color: var(--accent); text-decoration: none; font-family: monospace; }
         .action-link:hover { text-decoration: underline; }
 
-        /* === HERO SECTION SPECIFICS === */
-        #home { align-items: flex-start; }
-        .hero-title { font-size: 4.5rem; font-weight: 800; margin: 0; color: var(--text-main); line-height: 1.1; }
-        .hero-subtitle { font-size: 3rem; font-weight: 700; margin: 10px 0; color: var(--text-muted); }
-        .hero-desc { max-width: 540px; font-size: 1.2rem; color: var(--text-muted); margin-top: 20px; }
-
-        /* === ABOUT SECTION === */
+        /* === SPECIFICS === */
+        .hero-title { font-size: 4rem; font-weight: 800; margin: 0; color: var(--text-main); line-height: 1.1; }
+        .hero-subtitle { font-size: 2.5rem; font-weight: 700; margin: 10px 0; color: var(--text-muted); }
+        
         .about-flex { display: flex; gap: 3rem; align-items: center; flex-wrap: wrap; }
         .about-text { flex: 1; min-width: 300px; }
-        .about-image { flex: 0 0 300px; text-align: center; position: relative; }
-        .about-image img { width: 100%; border-radius: 8px; filter: grayscale(100%) contrast(1.2); transition: all 0.5s ease; }
-        .about-image img:hover { filter: none; }
+        .about-image { flex: 0 0 250px; text-align: center; position: relative; }
+        .about-image img { width: 100%; border-radius: 16px; box-shadow: 0 10px 30px -15px rgba(2,12,27,0.7); border: 1px solid rgba(255, 255, 255, 0.1); }
         
         /* === APPLE-STYLE SCROLL ANIMATIONS === */
         .reveal-section { opacity: 0; transform: translateY(40px); transition: all 1s cubic-bezier(0.25, 1, 0.5, 1); }
@@ -200,6 +122,7 @@
         <a href="#experience">Experience</a>
         <a href="#projects">Projects</a>
         <a href="#education">Education</a>
+        <a href="#contact">Contact</a>
     </div>
     <div class="dropdown">
         <button class="dropbtn">Download CV</button>
@@ -213,30 +136,36 @@
 <div class="container">
 
     <section id="home">
-        <p style="color: var(--accent); font-family: monospace; font-size: 1.1rem; margin-bottom: 10px;">Hi, my name is</p>
-        <h1 class="hero-title">Siddharth Shelke.</h1>
-        <h2 class="hero-subtitle" style="border: none; margin-bottom: 0;">I engineer data solutions.</h2>
-        <h2 style="display:none;"></h2> <p class="hero-desc">I am a Data Analyst, Data Scientist, and Data Engineer specializing in robust ETL pipelines, AI models, and transforming complex 3D and spatial data into actionable intelligence.</p>
-        <a href="#projects" style="margin-top: 30px; padding: 15px 30px; border: 1px solid var(--accent); color: var(--accent); text-decoration: none; border-radius: 4px; font-family: monospace; transition: 0.3s;">Check out my work!</a>
+        <div class="glass-bubble">
+            <p style="color: var(--accent); font-family: monospace; font-size: 1.1rem; margin-bottom: 10px;">Hi, my name is</p>
+            <h1 class="hero-title">Siddharth Shelke.</h1>
+            <h2 class="hero-subtitle" style="border: none; margin-bottom: 0;">I engineer data solutions.</h2>
+            <p style="max-width: 540px; font-size: 1.2rem; color: var(--text-muted); margin-top: 20px; margin-bottom: 30px;">
+                I am a Data Analyst, Data Scientist, and Data Engineer specializing in robust ETL pipelines, AI models, and transforming complex 3D and spatial data into actionable intelligence.
+            </p>
+            <a href="#projects" style="padding: 12px 24px; border: 1px solid var(--accent); color: var(--accent); text-decoration: none; border-radius: 4px; font-family: monospace; transition: 0.3s; display: inline-block;">Check out my work!</a>
+        </div>
     </section>
 
     <section id="about">
         <h2>About Me</h2>
-        <div class="about-flex">
-            <div class="about-text">
-                <p>Based in Göttingen, Germany, I specialize in bridging the gap between raw data and high-level predictive modeling.</p>
-                <p>Here are a few technologies I've been working with recently:</p>
-                <ul style="display: grid; grid-template-columns: repeat(2, minmax(140px, 200px)); gap: 0 10px; list-style: none; padding: 0;">
-                    <li style="margin-bottom: 10px;">▹ Python / SQL</li>
-                    <li style="margin-bottom: 10px;">▹ Databricks</li>
-                    <li style="margin-bottom: 10px;">▹ Palantir Foundry</li>
-                    <li style="margin-bottom: 10px;">▹ Streamlit / Tableau</li>
-                    <li style="margin-bottom: 10px;">▹ Pandas / NumPy</li>
-                    <li style="margin-bottom: 10px;">▹ 3D Computer Vision</li>
-                </ul>
-            </div>
-            <div class="about-image">
-                <img src="profile.jpg" alt="Siddharth Shelke" onerror="this.style.display='none'">
+        <div class="glass-bubble">
+            <div class="about-flex">
+                <div class="about-text">
+                    <p style="margin-top:0;">Based in Göttingen, Germany, I specialize in bridging the gap between raw data and high-level predictive modeling.</p>
+                    <p>Here are a few technologies I've been working with recently:</p>
+                    <ul style="display: grid; grid-template-columns: repeat(2, minmax(140px, 200px)); gap: 0 10px; list-style: none; padding: 0;">
+                        <li style="margin-bottom: 10px;">▹ Python / SQL</li>
+                        <li style="margin-bottom: 10px;">▹ Databricks</li>
+                        <li style="margin-bottom: 10px;">▹ Palantir Foundry</li>
+                        <li style="margin-bottom: 10px;">▹ Streamlit / Tableau</li>
+                        <li style="margin-bottom: 10px;">▹ Pandas / NumPy</li>
+                        <li style="margin-bottom: 10px;">▹ 3D Computer Vision</li>
+                    </ul>
+                </div>
+                <div class="about-image">
+                    <img src="profile.png" alt="Siddharth Shelke">
+                </div>
             </div>
         </div>
     </section>
@@ -287,19 +216,26 @@
                 <p>AI-powered RAG chatbot leveraging LangChain, Gemini API, and text-embeddings to significantly reduce manual document search time.</p>
                 <a href="#" onclick="alert('Coming soon!'); return false;" class="action-link">↗ Open Project</a>
             </div>
+
+            <div class="item-card" style="margin-bottom: 0;">
+                <div class="meta-info">Data Analysis</div>
+                <h3>Big Mart Sales Prediction</h3>
+                <p>Processed 7,000+ records and tuned an XGBoost regressor to uncover product visibility and location-based demand drivers.</p>
+                <a href="#" onclick="alert('Coming soon!'); return false;" class="action-link">↗ Open Project</a>
+            </div>
             
             <div class="item-card" style="margin-bottom: 0;">
                 <div class="meta-info">Computer Vision</div>
                 <h3>Face Mask Detection CNN</h3>
-                <p>Real-time CNN detection pipeline achieving ~98% test accuracy. Published in IEEE.</p>
-                <a href="https://ieeexplore.ieee.org" target="_blank" class="action-link">↗ View Publication</a>
+                <p>Real-time CNN detection pipeline achieving ~98% test accuracy.</p>
+                <a href="#" onclick="alert('Coming soon!'); return false;" class="action-link">↗ Open Project</a>
             </div>
             
         </div>
     </section>
 
     <section id="education">
-        <h2>Education & Contact</h2>
+        <h2>Education & Publications</h2>
         
         <div class="item-card">
             <h3>
@@ -317,16 +253,49 @@
             <div class="meta-info">Pimpri Chinchwad College Of Engineering | Grade: 1.8</div>
         </div>
 
-        <div style="text-align: center; margin-top: 3rem;">
-            <p style="margin-bottom: 20px;">Currently based in Göttingen, Germany and actively seeking new opportunities.</p>
-            <a href="mailto:siddharthshelke634@gmail.com" style="padding: 12px 24px; border: 1px solid var(--accent); color: var(--accent); text-decoration: none; border-radius: 4px; font-family: monospace; margin-right: 15px;">Email Me</a>
-            <a href="https://linkedin.com/in/siddharthnshelke" target="_blank" style="padding: 12px 24px; border: 1px solid var(--text-muted); color: var(--text-muted); text-decoration: none; border-radius: 4px; font-family: monospace;">LinkedIn</a>
+        <div class="item-card">
+            <h3>IEEE Publication</h3>
+            <p style="margin-top: 5px; margin-bottom: 5px;">Face Mask Detection using Convolutional Neural Network</p>
+            <a href="https://ieeexplore.ieee.org" target="_blank" class="action-link">↗ View Publication</a>
         </div>
     </section>
+
+    <section id="contact" style="min-height: auto; padding-top: 4rem;">
+        <div class="glass-bubble" style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 2rem;">
+            
+            <div style="flex: 1; min-width: 250px;">
+                <h3 style="margin-bottom: 1rem; display: flex; align-items: center;">
+                    <img src="profile.jpg" alt="Avatar" onerror="this.style.display='none'" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 15px; object-fit: cover;">
+                    Siddharth Shelke
+                </h3>
+                <p style="font-size: 0.95rem; max-width: 350px;">
+                    Engineering data solutions, exploring operational intelligence, and transforming complex information into actionable insights.
+                </p>
+            </div>
+
+            <div style="display: flex; gap: 4rem; flex-wrap: wrap;">
+                <div>
+                    <h4 style="color: var(--text-main); margin-bottom: 1.2rem; font-family: monospace;">EXPLORE</h4>
+                    <a href="#about" style="display:block; color: var(--text-muted); text-decoration:none; margin-bottom: 0.8rem; font-size: 0.9rem; transition: 0.3s;">About</a>
+                    <a href="#experience" style="display:block; color: var(--text-muted); text-decoration:none; margin-bottom: 0.8rem; font-size: 0.9rem; transition: 0.3s;">Experience</a>
+                    <a href="#projects" style="display:block; color: var(--text-muted); text-decoration:none; margin-bottom: 0.8rem; font-size: 0.9rem; transition: 0.3s;">Projects</a>
+                </div>
+                <div>
+                    <h4 style="color: var(--text-main); margin-bottom: 1.2rem; font-family: monospace;">CONNECT</h4>
+                    <a href="mailto:siddharthshelke634@gmail.com" style="display:block; color: var(--text-muted); text-decoration:none; margin-bottom: 0.8rem; font-size: 0.9rem; transition: 0.3s;">Email</a>
+                    <a href="https://linkedin.com/in/siddharthnshelke" target="_blank" style="display:block; color: var(--text-muted); text-decoration:none; margin-bottom: 0.8rem; font-size: 0.9rem; transition: 0.3s;">LinkedIn</a>
+                </div>
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 2rem; font-size: 0.8rem; color: var(--text-muted); font-family: monospace;">
+            &copy; 2026 Siddharth Shelke. Designed & Engineered for Data.
+        </div>
+    </section>
+
 </div>
 
 <script>
-    // 1. SCROLL ANIMATION (Intersection Observer)
+    // 1. SCROLL ANIMATION
     document.addEventListener("DOMContentLoaded", function() {
         const sections = document.querySelectorAll("section");
         sections.forEach(sec => sec.classList.add("reveal-section"));
@@ -343,14 +312,12 @@
     // 2. LIVE DATA NETWORK BACKGROUND
     const canvas = document.getElementById('network-canvas');
     const ctx = canvas.getContext('2d');
-    
     let width, height, particles;
     
     function initCanvas() {
         width = canvas.width = window.innerWidth;
         height = canvas.height = window.innerHeight;
         particles = [];
-        // Adjust number of particles based on screen size so it doesn't lag
         const particleCount = Math.floor((width * height) / 15000);
         for(let i = 0; i < particleCount; i++) {
             particles.push(new Particle());
@@ -361,14 +328,12 @@
         constructor() {
             this.x = Math.random() * width;
             this.y = Math.random() * height;
-            this.vx = (Math.random() - 0.5) * 0.5; // Very slow speed
+            this.vx = (Math.random() - 0.5) * 0.5;
             this.vy = (Math.random() - 0.5) * 0.5;
             this.radius = Math.random() * 1.5 + 0.5;
         }
         update() {
-            this.x += this.vx;
-            this.y += this.vy;
-            // Bounce off edges
+            this.x += this.vx; this.y += this.vy;
             if (this.x < 0 || this.x > width) this.vx *= -1;
             if (this.y < 0 || this.y > height) this.vy *= -1;
         }
@@ -382,18 +347,14 @@
 
     function animate() {
         ctx.clearRect(0, 0, width, height);
-        
         for (let i = 0; i < particles.length; i++) {
             particles[i].update();
             particles[i].draw();
-            
-            // Draw lines between close particles (The "Network" effect)
             for (let j = i; j < particles.length; j++) {
                 const dx = particles[i].x - particles[j].x;
                 const dy = particles[i].y - particles[j].y;
                 const distance = Math.sqrt(dx * dx + dy * dy);
-                
-                if (distance < 100) { // Connect if close
+                if (distance < 100) { 
                     ctx.beginPath();
                     ctx.strokeStyle = `rgba(100, 255, 218, ${0.2 - distance/500})`;
                     ctx.lineWidth = 0.5;
@@ -405,7 +366,6 @@
         }
         requestAnimationFrame(animate);
     }
-
     window.addEventListener('resize', initCanvas);
     initCanvas();
     animate();
