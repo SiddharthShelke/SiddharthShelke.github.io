@@ -4,6 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Siddharth Shelke | Portfolio</title>
+    /* === LOGOS & LINKS === */
+        .logo-img {
+            height: 28px;
+            width: auto;
+            vertical-align: middle;
+            margin-right: 12px;
+            border-radius: 4px;
+        }
+        .title-link {
+            text-decoration: none;
+            color: var(--primary-color);
+            transition: color 0.3s;
+        }
+        .title-link:hover {
+            color: var(--secondary-color);
+        }
+        .action-link {
+            display: inline-block;
+            margin-top: 8px;
+            font-size: 0.95rem;
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .action-link:hover {
+            text-decoration: underline;
+        }
     <style>
         /* === THEME SETTINGS === */
         :root {
@@ -210,11 +237,14 @@
         </div>
     </section>
 
-    <section id="experience">
+<section id="experience">
         <h2>Professional Experience</h2>
         
         <div class="item-card">
-            <h3>Data Science Intern - Ottobock SE & Co. KGaA</h3>
+            <h3>
+                <img src="ottobock_logo.png" alt="Ottobock Logo" class="logo-img" onerror="this.style.display='none'">
+                <a href="https://www.ottobock.com" target="_blank" class="title-link">Data Science Intern - Ottobock SE & Co. KGaA ↗</a>
+            </h3>
             <div class="meta-info">02/2026 - 08/2026 | Duderstadt, Germany</div>
             <ul>
                 <li>Designed and automated a 3D data preprocessing pipeline using Python to clean, align, and standardize spatial data and clinical records.</li>
@@ -224,7 +254,10 @@
         </div>
 
         <div class="item-card">
-            <h3>Data Analyst Intern - Lear Corporation</h3>
+            <h3>
+                <img src="lear_logo.png" alt="Lear Logo" class="logo-img" onerror="this.style.display='none'">
+                <a href="https://www.lear.com" target="_blank" class="title-link">Data Analyst Intern - Lear Corporation ↗</a>
+            </h3>
             <div class="meta-info">02/2025 - 04/2025 | Pune, India</div>
             <ul>
                 <li>Implemented ETL pipelines in Palantir Foundry, integrating data from 7 plants and reducing reporting time by 85%.</li>
@@ -234,48 +267,58 @@
         </div>
     </section>
 
-    <section id="projects">
+<section id="projects">
         <h2>Key Projects</h2>
         
         <div class="item-card">
             <h3>AI Driven Predictive Maintenance System</h3>
             <p>Developed an end-to-end ML solution using a Random Forest Ensemble and physics-informed features to detect rare industrial machine failures, deployed via a Streamlit Dashboard.</p>
+            <a href="#" onclick="alert('In-depth project details coming soon!'); return false;" class="action-link">↗ Open Project</a>
         </div>
 
         <div class="item-card">
             <h3>Document based QA Chatbot</h3>
             <p>Built an AI-powered RAG chatbot leveraging LangChain, Gemini API, and text-embeddings to significantly reduce manual document search time.</p>
+            <a href="#" onclick="alert('In-depth project details coming soon!'); return false;" class="action-link">↗ Open Project</a>
         </div>
         
         <div class="item-card">
             <h3>Big Mart Sales Prediction</h3>
             <p>Processed 7,000+ records and tuned an XGBoost regressor to uncover product visibility and location-based demand drivers.</p>
+            <a href="#" onclick="alert('In-depth project details coming soon!'); return false;" class="action-link">↗ Open Project</a>
         </div>
 
         <div class="item-card">
             <h3>Face Mask Detection using CNN</h3>
             <p>Developed and deployed a real-time CNN detection pipeline (TensorFlow, Keras, OpenCV) achieving ~98% test accuracy.</p>
+            <a href="#" onclick="alert('In-depth project details coming soon!'); return false;" class="action-link">↗ Open Project</a>
         </div>
     </section>
-
-    <section id="education">
+    
+<section id="education">
         <h2>Education</h2>
         <div class="item-card">
-            <h3>MSc Data Science</h3>
+            <h3>
+                <img src="ue_logo.png" alt="UE Logo" class="logo-img" onerror="this.style.display='none'">
+                <a href="https://www.ue-germany.com" target="_blank" class="title-link">MSc Data Science ↗</a>
+            </h3>
             <div class="meta-info">University of Europe for Applied Sciences | Berlin, Germany | Grade: 1.7</div>
         </div>
         <div class="item-card">
-            <h3>B.Tech in Information Technology</h3>
+            <h3>
+                <img src="pcco_logo.png" alt="PCCOE Logo" class="logo-img" onerror="this.style.display='none'">
+                <a href="http://www.pccoepune.com" target="_blank" class="title-link">B.Tech in Information Technology ↗</a>
+            </h3>
             <div class="meta-info">Pimpri Chinchwad College Of Engineering | Pune, India | Final Grade: 1.8</div>
         </div>
     </section>
 
-    <section id="publications-certs">
+<section id="publications-certs">
         <h2>Publications & Certificates</h2>
         <div class="item-card">
             <h3>Publications</h3>
             <ul>
-                <li><strong>IEEE:</strong> Face Mask Detection using Convolutional Neural Network</li>
+                <li><strong>IEEE:</strong> <a href="https://ieeexplore.ieee.org" target="_blank" class="title-link">Face Mask Detection using Convolutional Neural Network ↗</a></li>
             </ul>
         </div>
         <div class="item-card">
@@ -288,7 +331,7 @@
         </div>
     </section>
 
-    <section id="volunteer">
+<section id="volunteer">
         <h2>Volunteer Experience</h2>
         <div class="item-card">
             <h3>Event Team Member - Information Technology Student Association</h3>
@@ -300,16 +343,17 @@
         </div>
     </section>
 
-    <section id="contact">
+<section id="contact">
         <h2>Contact</h2>
         <p>I am currently based in <strong>Göttingen, Germany</strong> and actively seeking new opportunities.</p>
         <ul>
-            <li><strong>Email:</strong> <a href="mailto:siddharthshelke634@gmail.com">siddharthshelke634@gmail.com</a></li>
-            <li><strong>LinkedIn:</strong> <a href="https://linkedin.com/in/siddharthnshelke" target="_blank">linkedin.com/in/siddharthnshelke</a></li>
+            <li><strong>Email:</strong> <a href="mailto:siddharthshelke634@gmail.com" class="title-link">Send Email ↗</a></li>
+            <li><strong>LinkedIn:</strong> <a href="https://linkedin.com/in/siddharthnshelke" target="_blank" class="title-link">LinkedIn Profile ↗</a></li>
             <li><strong>Phone:</strong> +49 15510824067</li>
         </ul>
     </section>
 
+    
 </div>
 
 <footer>
