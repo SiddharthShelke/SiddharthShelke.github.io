@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Siddharth Shelke | Data Scientist & Engineer</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --bg-color: #f8f9fa;
+            --text-color: #333;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+        header h2 {
+            font-weight: 300;
+            color: var(--secondary-color);
+            margin-top: 10px;
+        }
+        .contact-info {
+            margin-top: 20px;
+            font-size: 0.9rem;
+        }
+        .contact-info a {
+            color: #ecf0f1;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        section {
+            background: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        h3 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 0.5rem;
+        }
+        .job, .project {
+            margin-bottom: 1.5rem;
+        }
+        .job-title, .project-title {
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        .date-location {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            font-style: italic;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .skill-category {
+            background: var(--bg-color);
+            padding: 1rem;
+            border-radius: 5px;
+            border-left: 4px solid var(--secondary-color);
+        }
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background: var(--primary-color);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Siddharth Namdeo Shelke</h1>
+    <h2>Data Analyst | Data Scientist | Data Engineer</h2>
+    <div class="contact-info">
+        <span>Göttingen, Germany</span> | 
+        <a href="mailto:siddharthshelke634@gmail.com">siddharthshelke634@gmail.com</a> | 
+        <a href="https://linkedin.com/in/siddharthnshelke" target="_blank">LinkedIn</a>
+    </div>
+</header>
+
+<div class="container">
+    <section id="skills">
+        <h3>Technical Skills</h3>
+        <div class="skills-grid">
+            <div class="skill-category">
+                <strong>Programming & Data</strong><br>
+                Python, SQL, Pandas, NumPy
+            </div>
+            <div class="skill-category">
+                <strong>Data Engineering</strong><br>
+                Databricks, Palantir Foundry, ETL, 3D Computer Vision
+            </div>
+            <div class="skill-category">
+                <strong>Visualization & BI</strong><br>
+                Tableau, Power BI, Streamlit, Foundry
+            </div>
+        </div>
+    </section>
+
+    <section id="experience">
+        <h3>Professional Experience</h3>
+        
+        <div class="job">
+            <div class="job-title">Data Science Intern - Ottobock SE & Co. KGaA</div>
+            <div class="date-location">02/2026 - 08/2026 | Duderstadt, Germany</div>
+            <ul>
+                <li>Designed and automated a 3D data preprocessing pipeline using Python to clean, align, and standardize complex spatial data and clinical records.</li>
+                <li>Engineered data-driven ML models to capture 3D spatial mappings, automating clinical design processes.</li>
+                <li>Established quantitative evaluation frameworks using spatial metrics to validate model accuracy.</li>
+            </ul>
+        </div>
+
+        <div class="job">
+            <div class="job-title">Data Analyst Intern - Lear Corporation</div>
+            <div class="date-location">02/2025 - 04/2025 | Pune, India</div>
+            <ul>
+                <li>Implemented ETL pipelines in Palantir Foundry, integrating data from 7 plants and reducing reporting time by 85%.</li>
+                <li>Designed an interactive dashboard displaying 33 KOTS, 8 KPIs, and volume data with forecast vs actual comparisons.</li>
+                <li>Created an ontology to structure business entities and convert raw HFM data into actionable insights.</li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="projects">
+        <h3>Key Projects</h3>
+        
+        <div class="project">
+            <div class="project-title">AI Driven Predictive Maintenance System</div>
+            <ul>
+                <li>Engineered physics-informed features and a robust Random Forest Ensemble to detect rare machine failures, improving precision from 17% to 98%.</li>
+                <li>Deployed a dual-model logic pipeline via a Streamlit Dashboard with 98.95% diagnostic accuracy.</li>
+            </ul>
+        </div>
+
+        <div class="project">
+            <div class="project-title">Document Based QA Chatbot</div>
+            <ul>
+                <li>Developed an AI-powered chatbot using RAG, LangChain, Gemini API, and PyPDFLoader.</li>
+                <li>Built a Streamlit dashboard for real-time interaction, reducing manual search time by ~80%.</li>
+            </ul>
+        </div>
+        
+        <div class="project">
+            <div class="project-title">Face Mask Detection using CNN</div>
+            <ul>
+                <li>Developed a CNN model achieving 97.5% accuracy on real-world datasets, deployed via real-time pipeline (TensorFlow, OpenCV).</li>
+                <li>Published in IEEE.</li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="education">
+        <h3>Education</h3>
+        <div class="job">
+            <div class="job-title">MSc Data Science</div>
+            <div class="date-location">University of Europe for Applied Sciences | Berlin, Germany | Grade: 1.7</div>
+        </div>
+        <div class="job">
+            <div class="job-title">B.Tech in Information Technology</div>
+            <div class="date-location">Pimpri Chinchwad College Of Engineering | Pune, India | Grade: 1.8</div>
+        </div>
+    </section>
+</div>
+
+<footer>
+    <p>&copy; 2026 Siddharth Shelke. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
