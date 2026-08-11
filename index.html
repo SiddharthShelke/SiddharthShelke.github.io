@@ -3,14 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Siddharth Shelke | Data Scientist & Engineer</title>
+    <title>Siddharth Shelke | Portfolio</title>
     <style>
+        /* === THEME SETTINGS === */
         :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #3498db;
-            --bg-color: #f8f9fa;
+            --primary-color: #1a252f; /* Dark Navy */
+            --secondary-color: #3498db; /* Blue */
+            --bg-color: #f4f7f6; /* Light Gray */
             --text-color: #333;
         }
+        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
@@ -19,73 +21,137 @@
             color: var(--text-color);
             line-height: 1.6;
         }
-        header {
+
+        /* === NAVIGATION BAR === */
+        nav {
             background-color: var(--primary-color);
             color: white;
-            padding: 4rem 2rem;
-            text-align: center;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
-        header h1 {
-            margin: 0;
-            font-size: 2.5rem;
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
         }
-        header h2 {
-            font-weight: 300;
-            color: var(--secondary-color);
-            margin-top: 10px;
-        }
-        .contact-info {
-            margin-top: 20px;
-            font-size: 0.9rem;
-        }
-        .contact-info a {
-            color: #ecf0f1;
+        .nav-links a {
+            color: white;
             text-decoration: none;
-            margin: 0 10px;
+            font-weight: 500;
+            transition: color 0.3s;
         }
+        .nav-links a:hover {
+            color: var(--secondary-color);
+        }
+
+        /* === DROPDOWN CV BUTTON === */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .dropbtn {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: white;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* === LAYOUT STRUCTURE === */
         .container {
-            max-width: 1000px;
-            margin: 2rem auto;
-            padding: 0 2rem;
+            max-width: 1100px;
+            margin: auto;
+            padding: 2rem;
         }
         section {
             background: white;
-            padding: 2rem;
+            padding: 2.5rem;
             margin-bottom: 2rem;
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            scroll-margin-top: 80px; /* Prevents navbar from hiding section titles */
         }
-        h3 {
+        h2 {
             color: var(--primary-color);
             border-bottom: 2px solid var(--secondary-color);
             padding-bottom: 0.5rem;
+            margin-top: 0;
         }
-        .job, .project {
+        h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.2rem;
+        }
+        
+        /* === ITEM CARDS (Jobs, Projects) === */
+        .item-card {
             margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eaeaea;
         }
-        .job-title, .project-title {
-            font-weight: bold;
-            font-size: 1.2rem;
+        .item-card:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
         }
-        .date-location {
+        .meta-info {
             font-size: 0.9rem;
             color: #7f8c8d;
             font-style: italic;
+            margin-bottom: 0.5rem;
         }
-        ul {
-            padding-left: 20px;
+
+        /* === ABOUT ME FLEXBOX === */
+        .about-flex {
+            display: flex;
+            gap: 3rem;
+            align-items: center;
+            flex-wrap: wrap;
         }
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
+        .about-text {
+            flex: 1;
+            min-width: 300px;
         }
-        .skill-category {
-            background: var(--bg-color);
-            padding: 1rem;
-            border-radius: 5px;
-            border-left: 4px solid var(--secondary-color);
+        .about-image {
+            flex: 0 0 250px;
+            text-align: center;
         }
+        .about-image img {
+            width: 100%;
+            max-width: 250px;
+            border-radius: 10%; /* Makes image slightly rounded */
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
         footer {
             text-align: center;
             padding: 2rem;
@@ -96,101 +162,154 @@
 </head>
 <body>
 
-<header>
-    <h1>Siddharth Namdeo Shelke</h1>
-    <h2>Data Analyst | Data Scientist | Data Engineer</h2>
-<div class="contact-info">
-        <span>Göttingen, Germany</span> | 
-        <a href="mailto:siddharthshelke634@gmail.com">siddharthshelke634@gmail.com</a> | 
-        <a href="https://linkedin.com/in/siddharthnshelke" target="_blank">LinkedIn</a>
+<nav>
+    <div class="nav-links">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#experience">Experience</a>
+        <a href="#projects">Projects</a>
+        <a href="#education">Education</a>
+        <a href="#contact">Contact</a>
     </div>
-    <div style="margin-top: 1.5rem;">
-        <a href="Siddharth_Shelke_CV.pdf" target="_blank" style="background-color: var(--secondary-color); color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">📄 Download CV</a>
+    
+    <div class="dropdown">
+        <button class="dropbtn">📄 Download CV</button>
+        <div class="dropdown-content">
+            <a href="S.Shelke_CV.pdf" target="_blank">English CV</a>
+            <a href="S.Shelke_lebenslauf.pdf" target="_blank">Deutsch CV</a>
+        </div>
     </div>
-</header>
+</nav>
 
 <div class="container">
-    <section id="skills">
-        <h3>Technical Skills</h3>
-        <div class="skills-grid">
-            <div class="skill-category">
-                <strong>Programming & Data</strong><br>
-                Python, SQL, Pandas, NumPy
+
+    <section id="home" style="text-align: center; padding: 4rem 2rem; background-color: var(--primary-color); color: white;">
+        <h1 style="font-size: 3rem; margin-bottom: 10px;">Siddharth Namdeo Shelke</h1>
+        <h3 style="color: var(--secondary-color); font-weight: 300; font-size: 1.5rem; margin-top: 0;">Data Analyst | Data Scientist | Data Engineer</h3>
+        <p style="max-width: 600px; margin: 20px auto; font-size: 1.1rem; color: #ecf0f1;">
+            Engineering data-driven ML models, robust ETL pipelines, and scalable AI solutions.
+        </p>
+    </section>
+
+    <section id="about">
+        <h2>About Me</h2>
+        <div class="about-flex">
+            <div class="about-text">
+                <p>Hello! I am a passionate Data professional based in Göttingen, Germany, specializing in transforming complex data into actionable insights and robust predictive models.</p>
+                <p><strong>Core Technical Skills:</strong></p>
+                <ul>
+                    <li><strong>Languages & Logic:</strong> Python, SQL, Pandas, NumPy</li>
+                    <li><strong>Data Engineering:</strong> Databricks, Palantir Foundry, ETL Pipelines, 3D Computer Vision</li>
+                    <li><strong>Visualization:</strong> Tableau, Power BI, Streamlit, Foundry</li>
+                    <li><strong>Tools:</strong> VXelement, Meshlab, Excel</li>
+                </ul>
             </div>
-            <div class="skill-category">
-                <strong>Data Engineering</strong><br>
-                Databricks, Palantir Foundry, ETL, 3D Computer Vision
-            </div>
-            <div class="skill-category">
-                <strong>Visualization & BI</strong><br>
-                Tableau, Power BI, Streamlit, Foundry
+            <div class="about-image">
+                <img src="profile.jpg" alt="Siddharth Shelke">
             </div>
         </div>
     </section>
 
     <section id="experience">
-        <h3>Professional Experience</h3>
+        <h2>Professional Experience</h2>
         
-        <div class="job">
-            <div class="job-title">Data Science Intern - Ottobock SE & Co. KGaA</div>
-            <div class="date-location">02/2026 - 08/2026 | Duderstadt, Germany</div>
+        <div class="item-card">
+            <h3>Data Science Intern - Ottobock SE & Co. KGaA</h3>
+            <div class="meta-info">02/2026 - 08/2026 | Duderstadt, Germany</div>
             <ul>
-                <li>Designed and automated a 3D data preprocessing pipeline using Python to clean, align, and standardize complex spatial data and clinical records.</li>
+                <li>Designed and automated a 3D data preprocessing pipeline using Python to clean, align, and standardize spatial data and clinical records.</li>
                 <li>Engineered data-driven ML models to capture 3D spatial mappings, automating clinical design processes.</li>
-                <li>Established quantitative evaluation frameworks using spatial metrics to validate model accuracy.</li>
+                <li>Established quantitative evaluation frameworks utilizing advanced spatial metrics.</li>
             </ul>
         </div>
 
-        <div class="job">
-            <div class="job-title">Data Analyst Intern - Lear Corporation</div>
-            <div class="date-location">02/2025 - 04/2025 | Pune, India</div>
+        <div class="item-card">
+            <h3>Data Analyst Intern - Lear Corporation</h3>
+            <div class="meta-info">02/2025 - 04/2025 | Pune, India</div>
             <ul>
                 <li>Implemented ETL pipelines in Palantir Foundry, integrating data from 7 plants and reducing reporting time by 85%.</li>
-                <li>Designed an interactive dashboard displaying 33 KOTS, 8 KPIs, and volume data with forecast vs actual comparisons.</li>
-                <li>Created an ontology to structure business entities and convert raw HFM data into actionable insights.</li>
+                <li>Designed an interactive dashboard displaying 33 KOTS, 8 KPIs, and volume data.</li>
+                <li>Created an ontology to structure business entities and converted raw HFM data into insights.</li>
             </ul>
         </div>
     </section>
 
     <section id="projects">
-        <h3>Key Projects</h3>
+        <h2>Key Projects</h2>
         
-        <div class="project">
-            <div class="project-title">AI Driven Predictive Maintenance System</div>
-            <ul>
-                <li>Engineered physics-informed features and a robust Random Forest Ensemble to detect rare machine failures, improving precision from 17% to 98%.</li>
-                <li>Deployed a dual-model logic pipeline via a Streamlit Dashboard with 98.95% diagnostic accuracy.</li>
-            </ul>
+        <div class="item-card">
+            <h3>AI Driven Predictive Maintenance System</h3>
+            <p>Developed an end-to-end ML solution using a Random Forest Ensemble and physics-informed features to detect rare industrial machine failures, deployed via a Streamlit Dashboard.</p>
         </div>
 
-        <div class="project">
-            <div class="project-title">Document Based QA Chatbot</div>
-            <ul>
-                <li>Developed an AI-powered chatbot using RAG, LangChain, Gemini API, and PyPDFLoader.</li>
-                <li>Built a Streamlit dashboard for real-time interaction, reducing manual search time by ~80%.</li>
-            </ul>
+        <div class="item-card">
+            <h3>Document based QA Chatbot</h3>
+            <p>Built an AI-powered RAG chatbot leveraging LangChain, Gemini API, and text-embeddings to significantly reduce manual document search time.</p>
         </div>
         
-        <div class="project">
-            <div class="project-title">Face Mask Detection using CNN</div>
-            <ul>
-                <li>Developed a CNN model achieving 97.5% accuracy on real-world datasets, deployed via real-time pipeline (TensorFlow, OpenCV).</li>
-                <li>Published in IEEE.</li>
-            </ul>
+        <div class="item-card">
+            <h3>Big Mart Sales Prediction</h3>
+            <p>Processed 7,000+ records and tuned an XGBoost regressor to uncover product visibility and location-based demand drivers.</p>
+        </div>
+
+        <div class="item-card">
+            <h3>Face Mask Detection using CNN</h3>
+            <p>Developed and deployed a real-time CNN detection pipeline (TensorFlow, Keras, OpenCV) achieving ~98% test accuracy.</p>
         </div>
     </section>
 
     <section id="education">
-        <h3>Education</h3>
-        <div class="job">
-            <div class="job-title">MSc Data Science</div>
-            <div class="date-location">University of Europe for Applied Sciences | Berlin, Germany | Grade: 1.7</div>
+        <h2>Education</h2>
+        <div class="item-card">
+            <h3>MSc Data Science</h3>
+            <div class="meta-info">University of Europe for Applied Sciences | Berlin, Germany | Grade: 1.7</div>
         </div>
-        <div class="job">
-            <div class="job-title">B.Tech in Information Technology</div>
-            <div class="date-location">Pimpri Chinchwad College Of Engineering | Pune, India | Grade: 1.8</div>
+        <div class="item-card">
+            <h3>B.Tech in Information Technology</h3>
+            <div class="meta-info">Pimpri Chinchwad College Of Engineering | Pune, India | Final Grade: 1.8</div>
         </div>
     </section>
+
+    <section id="publications-certs">
+        <h2>Publications & Certificates</h2>
+        <div class="item-card">
+            <h3>Publications</h3>
+            <ul>
+                <li><strong>IEEE:</strong> Face Mask Detection using Convolutional Neural Network</li>
+            </ul>
+        </div>
+        <div class="item-card">
+            <h3>Certifications</h3>
+            <ul>
+                <li>Introduction to Statistics (Stanford University)</li>
+                <li>Foundations of Project Management (Coventry University)</li>
+                <li>IBM Data Science</li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="volunteer">
+        <h2>Volunteer Experience</h2>
+        <div class="item-card">
+            <h3>Event Team Member - Information Technology Student Association</h3>
+            <div class="meta-info">04/2022 - 05/2023</div>
+            <ul>
+                <li>Carried out technical and non-technical events with a team of 40 students.</li>
+                <li>Planned and managed the flagship event "Praxis" for the IT Department.</li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="contact">
+        <h2>Contact</h2>
+        <p>I am currently based in <strong>Göttingen, Germany</strong> and actively seeking new opportunities.</p>
+        <ul>
+            <li><strong>Email:</strong> <a href="mailto:siddharthshelke634@gmail.com">siddharthshelke634@gmail.com</a></li>
+            <li><strong>LinkedIn:</strong> <a href="https://linkedin.com/in/siddharthnshelke" target="_blank">linkedin.com/in/siddharthnshelke</a></li>
+            <li><strong>Phone:</strong> +49 15510824067</li>
+        </ul>
+    </section>
+
 </div>
 
 <footer>
