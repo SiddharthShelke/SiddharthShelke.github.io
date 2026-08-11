@@ -5,15 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Siddharth Shelke | Data Scientist & Engineer</title>
     <style>
-        /* === PREMIUM DARK THEME === */
+        /* === PREMIUM DARK THEME (DEFAULT) === */
         :root {
             --bg-color: #0a192f;        
             --card-bg: rgba(17, 34, 64, 0.5); 
-            --bubble-bg: rgba(17, 34, 64, 0.35); /* Slightly more transparent for bubbles */
+            --bubble-bg: rgba(17, 34, 64, 0.35); 
             --text-main: #ccd6f6;       
             --text-muted: #8892b0;      
             --accent: #64ffda;          
             --nav-bg: rgba(10, 25, 47, 0.85);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --shadow-color: rgba(2, 12, 27, 0.7);
+        }
+        
+        /* === PREMIUM LIGHT THEME === */
+        body.light-mode {
+            --bg-color: #f4f7f6;        
+            --card-bg: rgba(255, 255, 255, 0.6); 
+            --bubble-bg: rgba(255, 255, 255, 0.4); 
+            --text-main: #1a252f;       
+            --text-muted: #4a5568;      
+            --accent: #2b6cb0; /* Deep Blue Accent */         
+            --nav-bg: rgba(244, 247, 246, 0.85);
+            --border-color: rgba(0, 0, 0, 0.08);
+            --shadow-color: rgba(0, 0, 0, 0.05);
         }
         
         /* === SCROLL SNAPPING & BASE === */
@@ -22,7 +37,7 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             margin: 0; padding: 0;
             background-color: var(--bg-color); color: var(--text-main);
-            line-height: 1.6; overflow-x: hidden;
+            line-height: 1.6; overflow-x: hidden; transition: background-color 0.5s ease, color 0.5s ease;
         }
 
         /* === LIVE BACKGROUND CANVAS === */
@@ -37,11 +52,21 @@
             backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
             padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center;
             position: fixed; top: 0; width: 100%; box-sizing: border-box; z-index: 1000;
-            border-bottom: 1px solid rgba(100, 255, 218, 0.1);
+            border-bottom: 1px solid var(--border-color); transition: background-color 0.5s ease;
         }
-        .nav-links { display: flex; gap: 1.5rem; }
+        .nav-links { display: flex; gap: 1.5rem; align-items: center; }
         .nav-links a { color: var(--text-main); text-decoration: none; font-weight: 500; font-size: 0.9rem; transition: color 0.3s; }
         .nav-links a:hover { color: var(--accent); }
+
+        /* === TOGGLE CONTROLS === */
+        .controls { display: flex; gap: 1rem; align-items: center; }
+        .icon-btn {
+            background: transparent; border: 1px solid var(--border-color); color: var(--text-main);
+            border-radius: 50%; width: 35px; height: 35px; cursor: pointer; display: flex; align-items: center; 
+            justify-content: center; font-size: 0.9rem; transition: all 0.3s;
+        }
+        .icon-btn:hover { border-color: var(--accent); color: var(--accent); transform: scale(1.1); }
+        .icon-btn svg { width: 16px; height: 16px; }
 
         /* === DROPDOWN CV BUTTON === */
         .dropdown { position: relative; display: inline-block; }
@@ -50,13 +75,14 @@
             border: 1px solid var(--accent); border-radius: 4px; cursor: pointer; font-weight: bold; transition: all 0.3s;
         }
         .dropbtn:hover { background-color: rgba(100, 255, 218, 0.1); }
+        body.light-mode .dropbtn:hover { background-color: rgba(43, 108, 176, 0.1); }
         .dropdown-content {
             display: none; position: absolute; right: 0; background-color: var(--card-bg);
-            backdrop-filter: blur(10px); min-width: 160px; box-shadow: 0px 8px 16px rgba(0,0,0,0.5);
-            border: 1px solid rgba(100, 255, 218, 0.1); z-index: 1; border-radius: 4px;
+            backdrop-filter: blur(10px); min-width: 160px; box-shadow: 0px 8px 16px var(--shadow-color);
+            border: 1px solid var(--border-color); z-index: 1; border-radius: 4px;
         }
         .dropdown-content a { color: var(--text-main); padding: 12px 16px; text-decoration: none; display: block; font-size: 0.9rem; }
-        .dropdown-content a:hover { color: var(--accent); background-color: rgba(255,255,255,0.05); }
+        .dropdown-content a:hover { color: var(--accent); background-color: rgba(100, 255, 218, 0.05); }
         .dropdown:hover .dropdown-content { display: block; }
 
         /* === FULL-PAGE SECTIONS === */
@@ -67,25 +93,22 @@
         }
         
         h2 { color: var(--text-main); font-size: 2.5rem; margin-bottom: 2rem; display: flex; align-items: center; }
-        h2::after { content: ""; display: block; height: 1px; width: 300px; background-color: rgba(100, 255, 218, 0.2); margin-left: 20px; }
+        h2::after { content: ""; display: block; height: 1px; width: 300px; background-color: var(--border-color); margin-left: 20px; }
         h3 { color: var(--text-main); margin-bottom: 0.5rem; font-size: 1.3rem; }
         
-        /* === GLASS BUBBLES (For Home, Contact) === */
+        /* === GLASS BUBBLES & CARDS === */
         .glass-bubble {
-            background: var(--bubble-bg);
-            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-            padding: 3rem; border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 10px 30px -15px rgba(2,12,27,0.7);
+            background: var(--bubble-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            padding: 3rem; border-radius: 20px; border: 1px solid var(--border-color);
+            box-shadow: 0 10px 30px -15px var(--shadow-color); transition: all 0.5s ease;
         }
-
-        /* === GLASS CARDS (For Projects/Experience) === */
         .item-card {
             background: var(--card-bg); backdrop-filter: blur(8px); padding: 2rem; border-radius: 12px;
-            margin-bottom: 1.5rem; border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s ease;
+            margin-bottom: 1.5rem; border: 1px solid var(--border-color);
+            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s ease, background 0.5s ease;
         }
-        .item-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px -15px rgba(2,12,27,0.7); border-color: rgba(100, 255, 218, 0.2); }
+        .item-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px -15px var(--shadow-color); border-color: var(--accent); }
+        
         .meta-info { font-size: 0.9rem; color: var(--accent); margin-bottom: 1rem; font-family: monospace; }
         ul { color: var(--text-muted); padding-left: 20px; }
         p { color: var(--text-muted); }
@@ -97,55 +120,21 @@
         .action-link { display: inline-block; margin-top: 15px; font-size: 0.9rem; color: var(--accent); text-decoration: none; font-family: monospace; }
         .action-link:hover { text-decoration: underline; }
 
-        /* === SPECIFICS === */
+        /* === HERO & ABOUT LAYOUTS === */
         .hero-title { font-size: 4rem; font-weight: 800; margin: 0; color: var(--text-main); line-height: 1.1; }
         .hero-subtitle { font-size: 2.5rem; font-weight: 700; margin: 10px 0; color: var(--text-muted); }
         
-        /* === ABOUT SECTION (NEW 2-COLUMN LAYOUT) === */
-        .about-grid-layout {
-            display: grid;
-            grid-template-columns: 1fr 1.3fr; /* Image takes slightly less space than text */
-            gap: 4rem;
-            align-items: center;
-        }
-        @media (max-width: 800px) {
-            .about-grid-layout { grid-template-columns: 1fr; gap: 2rem; }
-        }
-        .about-image-new img {
-            width: 100%;
-            border-radius: 24px; /* Soft, rounded corners like the screenshot */
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            object-fit: cover;
-        }
-        .about-headline {
-            font-size: 2.4rem;
-            line-height: 1.2;
-            margin-top: 0;
-            margin-bottom: 20px;
-            color: var(--text-main);
-            font-weight: 700;
-        }
-        .expertise-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
+        .about-grid-layout { display: grid; grid-template-columns: 1fr 1.3fr; gap: 4rem; align-items: center; }
+        @media (max-width: 800px) { .about-grid-layout { grid-template-columns: 1fr; gap: 2rem; } }
+        .about-image-new img { width: 100%; border-radius: 24px; box-shadow: 0 20px 40px var(--shadow-color); border: 1px solid var(--border-color); object-fit: cover; }
+        .about-headline { font-size: 2.4rem; line-height: 1.2; margin-top: 0; margin-bottom: 20px; color: var(--text-main); font-weight: 700; }
+        
+        .expertise-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
         .expertise-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 1.2rem;
-            border-radius: 12px;
-            font-size: 0.95rem;
-            font-weight: 500;
-            color: var(--text-main);
-            transition: background 0.3s, border-color 0.3s;
+            background: var(--card-bg); border: 1px solid var(--border-color); padding: 1.2rem;
+            border-radius: 12px; font-size: 0.95rem; font-weight: 500; color: var(--text-main); transition: background 0.3s, border-color 0.3s;
         }
-        .expertise-card:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(100, 255, 218, 0.3);
-        }
+        .expertise-card:hover { border-color: var(--accent); }
         
         /* === APPLE-STYLE SCROLL ANIMATIONS === */
         .reveal-section { opacity: 0; transform: translateY(40px); transition: all 1s cubic-bezier(0.25, 1, 0.5, 1); }
@@ -158,18 +147,35 @@
 
 <nav>
     <div class="nav-links">
-        <a href="#home">Home</a>
-        <a href="#about">About</a>
-        <a href="#experience">Experience</a>
-        <a href="#projects">Projects</a>
-        <a href="#education">Education</a>
-        <a href="#contact">Contact</a>
+        <a href="#home" data-de="Startseite">Home</a>
+        <a href="#about" data-de="Über mich">About</a>
+        <a href="#experience" data-de="Erfahrung">Experience</a>
+        <a href="#projects" data-de="Projekte">Projects</a>
+        <a href="#education" data-de="Bildung">Education</a>
+        <a href="#contact" data-de="Kontakt">Contact</a>
     </div>
-    <div class="dropdown">
-        <button class="dropbtn">Download CV</button>
-        <div class="dropdown-content">
-            <a href="SShelke_CV.pdf" target="_blank">English CV</a>
-            <a href="SShelke_Lebenslauf.pdf" target="_blank">Deutsch CV</a>
+    
+    <div class="controls">
+        <button class="icon-btn" id="lang-toggle" onclick="toggleLang()" title="Toggle Language" style="font-weight: bold;">DE</button>
+        <button class="icon-btn" id="theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+        </button>
+        <div class="dropdown">
+            <button class="dropbtn" data-de="Lebenslauf">Download CV</button>
+            <div class="dropdown-content">
+                <a href="SShelke_CV.pdf" target="_blank">English CV</a>
+                <a href="SShelke_Lebenslauf.pdf" target="_blank">Deutsch CV</a>
+            </div>
         </div>
     </div>
 </nav>
@@ -178,133 +184,131 @@
 
     <section id="home">
         <div class="glass-bubble">
-            <p style="color: var(--accent); font-family: monospace; font-size: 1.1rem; margin-bottom: 10px;">Hi, my name is</p>
+            <p style="color: var(--accent); font-family: monospace; font-size: 1.1rem; margin-bottom: 10px;" data-de="Hallo, mein Name ist">Hi, my name is</p>
             <h1 class="hero-title">Siddharth Shelke.</h1>
-            <h2 class="hero-subtitle" style="border: none; margin-bottom: 0;">I engineer data solutions.</h2>
-            <p style="max-width: 540px; font-size: 1.2rem; color: var(--text-muted); margin-top: 20px; margin-bottom: 30px;">
+            <h2 class="hero-subtitle" style="border: none; margin-bottom: 0;" data-de="Ich entwickle Datenlösungen.">I engineer data solutions.</h2>
+            <p style="max-width: 540px; font-size: 1.2rem; color: var(--text-muted); margin-top: 20px; margin-bottom: 30px;" data-de="Ich bin Data Analyst, Data Scientist und Data Engineer, spezialisiert auf robuste ETL-Pipelines, KI-Modelle und die Umwandlung komplexer 3D- und Geodaten in verwertbare Erkenntnisse.">
                 I am a Data Analyst, Data Scientist, and Data Engineer specializing in robust ETL pipelines, AI models, and transforming complex 3D and spatial data into actionable intelligence.
             </p>
-            <a href="#projects" style="padding: 12px 24px; border: 1px solid var(--accent); color: var(--accent); text-decoration: none; border-radius: 4px; font-family: monospace; transition: 0.3s; display: inline-block;">Check out my work!</a>
+            <a href="#projects" style="padding: 12px 24px; border: 1px solid var(--accent); color: var(--accent); text-decoration: none; border-radius: 4px; font-family: monospace; transition: 0.3s; display: inline-block;" data-de="Meine Projekte ansehen!">Check out my work!</a>
         </div>
     </section>
 
     <section id="about" style="padding-top: 120px;">
         <div class="about-grid-layout">
-            
             <div class="about-image-new">
                 <img src="profile.PNG" alt="Siddharth Shelke" onerror="this.style.display='none'">
             </div>
 
             <div class="about-text-new">
-                <h2 class="about-headline" style="border: none;">
+                <h2 class="about-headline" style="border: none;" data-de="Entwicklung von Datensystemen mit Fokus auf robuste Pipelines, prädiktive Modellierung und intelligente Entscheidungsfindung.">
                     Engineering data systems with a focus on robust pipelines, predictive modeling, and intelligent decision-making.
                 </h2>
                 
-                <p style="font-size: 1.05rem; color: var(--text-muted); margin-bottom: 15px;">
+                <p style="font-size: 1.05rem; color: var(--text-muted); margin-bottom: 15px;" data-de="Ich lebe derzeit in Göttingen, Deutschland, und bin darauf spezialisiert, die Lücke zwischen Rohdaten und hochrangiger prädiktiver Modellierung in technischen und operativen Systemen zu schließen.">
                     I am currently based in Göttingen, Germany, specializing in bridging the gap between raw data and high-level predictive modeling across engineering and operational systems.
                 </p>
-                <p style="font-size: 1.05rem; color: var(--text-muted); margin-bottom: 20px;">
+                <p style="font-size: 1.05rem; color: var(--text-muted); margin-bottom: 20px;" data-de="Meine technischen Interessen liegen in der Verarbeitung komplexer Geodaten, der Optimierung von ETL-Pipelines und dem Aufbau skalierbarer KI-Architekturen.">
                     My technical interests lie in processing complex spatial data, optimizing ETL pipelines, and building scalable AI architectures.
                 </p>
                 
                 <div class="expertise-grid">
-                    <div class="expertise-card">Machine Learning & AI</div>
-                    <div class="expertise-card">Data Engineering (ETL)</div>
-                    <div class="expertise-card">3D Computer Vision</div>
-                    <div class="expertise-card">Data Analytics & BI</div>
+                    <div class="expertise-card" data-de="Maschinelles Lernen & KI">Machine Learning & AI</div>
+                    <div class="expertise-card" data-de="Data Engineering (ETL)">Data Engineering (ETL)</div>
+                    <div class="expertise-card" data-de="3D Computer Vision">3D Computer Vision</div>
+                    <div class="expertise-card" data-de="Datenanalyse & BI">Data Analytics & BI</div>
                 </div>
             </div>
-            
         </div>
     </section>
 
     <section id="experience">
-        <h2>Where I've Worked</h2>
+        <h2 data-de="Berufserfahrung">Where I've Worked</h2>
         
         <div class="item-card">
             <h3>
                 <img src="ottobock_logo.png" class="logo-img" onerror="this.style.display='none'">
-                <a href="https://www.ottobock.com" target="_blank" class="title-link">Data Science Intern @ Ottobock ↗</a>
+                <a href="https://www.ottobock.com" target="_blank" class="title-link" data-de="Data Science Praktikant @ Ottobock ↗">Data Science Intern @ Ottobock ↗</a>
             </h3>
-            <div class="meta-info">Feb 2026 - Aug 2026 | Duderstadt, Germany</div>
+            <div class="meta-info" data-de="Feb 2026 - Aug 2026 | Duderstadt, Deutschland">Feb 2026 - Aug 2026 | Duderstadt, Germany</div>
             <ul>
-                <li>Designed and automated a 3D data preprocessing pipeline using Python to clean, align, and standardize spatial data and clinical records.</li>
-                <li>Engineered data-driven ML models to capture 3D spatial mappings, automating clinical design processes.</li>
-                <li>Established quantitative evaluation frameworks utilizing advanced spatial metrics.</li>
+                <li data-de="Entwurf und Automatisierung einer 3D-Datenvorverarbeitungs-Pipeline mit Python zur Bereinigung, Ausrichtung und Standardisierung von Geodaten.">Designed and automated a 3D data preprocessing pipeline using Python to clean, align, and standardize spatial data and clinical records.</li>
+                <li data-de="Entwicklung datengesteuerter ML-Modelle zur Erfassung von 3D-Raumzuordnungen, um klinische Designprozesse zu automatisieren.">Engineered data-driven ML models to capture 3D spatial mappings, automating clinical design processes.</li>
+                <li data-de="Etablierung quantitativer Bewertungsrahmen unter Verwendung fortschrittlicher räumlicher Metriken.">Established quantitative evaluation frameworks utilizing advanced spatial metrics.</li>
             </ul>
         </div>
 
         <div class="item-card">
             <h3>
                 <img src="lear_logo.png" class="logo-img" onerror="this.style.display='none'">
-                <a href="https://www.lear.com" target="_blank" class="title-link">Data Analyst Intern @ Lear Corporation ↗</a>
+                <a href="https://www.lear.com" target="_blank" class="title-link" data-de="Data Analyst Praktikant @ Lear Corporation ↗">Data Analyst Intern @ Lear Corporation ↗</a>
             </h3>
-            <div class="meta-info">Feb 2025 - Apr 2025 | Pune, India</div>
+            <div class="meta-info" data-de="Feb 2025 - Apr 2025 | Pune, Indien">Feb 2025 - Apr 2025 | Pune, India</div>
             <ul>
-                <li>Implemented ETL pipelines in Palantir Foundry, integrating data from 7 plants and reducing reporting time by 85%.</li>
-                <li>Designed an interactive dashboard displaying 33 KOTS, 8 KPIs, and volume data.</li>
+                <li data-de="Implementierung von ETL-Pipelines in Palantir Foundry zur Integration von Daten aus 7 Werken und Reduzierung der Berichtszeit um 85%.">Implemented ETL pipelines in Palantir Foundry, integrating data from 7 plants and reducing reporting time by 85%.</li>
+                <li data-de="Gestaltung eines interaktiven Dashboards mit 33 KOTS, 8 KPIs und Volumendaten.">Designed an interactive dashboard displaying 33 KOTS, 8 KPIs, and volume data.</li>
             </ul>
         </div>
     </section>
 
     <section id="projects">
-        <h2>Things I've Built</h2>
+        <h2 data-de="Meine Projekte">Things I've Built</h2>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
             
             <div class="item-card" style="margin-bottom: 0;">
-                <div class="meta-info">Machine Learning</div>
-                <h3>Predictive Maintenance System</h3>
-                <p>End-to-end ML solution using a Random Forest Ensemble and physics-informed features to detect rare industrial machine failures.</p>
-                <a href="#" onclick="alert('Coming soon!'); return false;" class="action-link">↗ Open Project</a>
+                <div class="meta-info" data-de="Maschinelles Lernen">Machine Learning</div>
+                <h3 data-de="Prädiktives Wartungssystem">Predictive Maintenance System</h3>
+                <p data-de="End-to-End-ML-Lösung zur Erkennung seltener Ausfälle von Industriemaschinen mittels Random Forest Ensemble.">End-to-end ML solution using a Random Forest Ensemble and physics-informed features to detect rare industrial machine failures.</p>
+                <a href="#" onclick="alert('Coming soon!'); return false;" class="action-link" data-de="↗ Projekt öffnen">↗ Open Project</a>
             </div>
 
             <div class="item-card" style="margin-bottom: 0;">
-                <div class="meta-info">AI & LLMs</div>
-                <h3>Document QA Chatbot</h3>
-                <p>AI-powered RAG chatbot leveraging LangChain, Gemini API, and text-embeddings to significantly reduce manual document search time.</p>
-                <a href="#" onclick="alert('Coming soon!'); return false;" class="action-link">↗ Open Project</a>
+                <div class="meta-info" data-de="KI & LLMs">AI & LLMs</div>
+                <h3 data-de="Dokumenten-QA-Chatbot">Document QA Chatbot</h3>
+                <p data-de="KI-gestützter RAG-Chatbot mit LangChain und Gemini API zur deutlichen Reduzierung der Suchzeiten in Dokumenten.">AI-powered RAG chatbot leveraging LangChain, Gemini API, and text-embeddings to significantly reduce manual document search time.</p>
+                <a href="#" onclick="alert('Coming soon!'); return false;" class="action-link" data-de="↗ Projekt öffnen">↗ Open Project</a>
             </div>
 
             <div class="item-card" style="margin-bottom: 0;">
-                <div class="meta-info">Data Analysis</div>
-                <h3>Big Mart Sales Prediction</h3>
-                <p>Processed 7,000+ records and tuned an XGBoost regressor to uncover product visibility and location-based demand drivers.</p>
-                <a href="#" onclick="alert('Coming soon!'); return false;" class="action-link">↗ Open Project</a>
+                <div class="meta-info" data-de="Datenanalyse">Data Analysis</div>
+                <h3 data-de="Verkaufsprognose (Big Mart)">Big Mart Sales Prediction</h3>
+                <p data-de="Verarbeitung von 7.000+ Datensätzen und Abstimmung eines XGBoost-Regressors zur Aufdeckung standortbezogener Nachfragetreiber.">Processed 7,000+ records and tuned an XGBoost regressor to uncover product visibility and location-based demand drivers.</p>
+                <a href="#" onclick="alert('Coming soon!'); return false;" class="action-link" data-de="↗ Projekt öffnen">↗ Open Project</a>
             </div>
             
             <div class="item-card" style="margin-bottom: 0;">
-                <div class="meta-info">Computer Vision</div>
-                <h3>Face Mask Detection CNN</h3>
-                <p>Real-time CNN detection pipeline achieving ~98% test accuracy.</p>
-                <a href="#" onclick="alert('Coming soon!'); return false;" class="action-link">↗ Open Project</a>
+                <div class="meta-info" data-de="Computer Vision">Computer Vision</div>
+                <h3 data-de="Gesichtsmasken-Erkennung (CNN)">Face Mask Detection CNN</h3>
+                <p data-de="Echtzeit-CNN-Erkennungspipeline mit einer Testgenauigkeit von ~98%.">Real-time CNN detection pipeline achieving ~98% test accuracy.</p>
+                <a href="#" onclick="alert('Coming soon!'); return false;" class="action-link" data-de="↗ Projekt öffnen">↗ Open Project</a>
             </div>
             
         </div>
     </section>
 
     <section id="education">
-        <h2>Education & Publications</h2>
+        <h2 data-de="Bildung & Publikationen">Education & Publications</h2>
         
         <div class="item-card">
             <h3>
                 <img src="ue_logo.png" class="logo-img" onerror="this.style.display='none'">
                 <a href="https://www.ue-germany.com" target="_blank" class="title-link">MSc Data Science ↗</a>
             </h3>
-            <div class="meta-info">University of Europe for Applied Sciences | Grade: 1.7</div>
+            <div class="meta-info" data-de="University of Europe for Applied Sciences | Note: 1.7">University of Europe for Applied Sciences | Grade: 1.7</div>
         </div>
         
         <div class="item-card">
             <h3>
                 <img src="pcco_logo.png" class="logo-img" onerror="this.style.display='none'">
-                <a href="http://www.pccoepune.com" target="_blank" class="title-link">B.Tech in Information Technology ↗</a>
+                <a href="http://www.pccoepune.com" target="_blank" class="title-link">B.Tech Information Technology ↗</a>
             </h3>
-            <div class="meta-info">Pimpri Chinchwad College Of Engineering | Grade: 1.8</div>
+            <div class="meta-info" data-de="Pimpri Chinchwad College Of Engineering | Note: 1.8">Pimpri Chinchwad College Of Engineering | Grade: 1.8</div>
         </div>
 
         <div class="item-card">
-            <h3>IEEE Publication</h3>
-            <p style="margin-top: 5px; margin-bottom: 5px;">Face Mask Detection using Convolutional Neural Network</p>
-            <a href="https://ieeexplore.ieee.org" target="_blank" class="action-link">↗ View Publication</a>
+            <h3 data-de="IEEE-Publikation">IEEE Publication</h3>
+            <p style="margin-top: 5px; margin-bottom: 5px;" data-de="Gesichtsmasken-Erkennung mittels Convolutional Neural Network">Face Mask Detection using Convolutional Neural Network</p>
+            <a href="https://ieeexplore.ieee.org" target="_blank" class="action-link" data-de="↗ Publikation ansehen">↗ View Publication</a>
         </div>
     </section>
 
@@ -316,20 +320,20 @@
                     <img src="profile.PNG" alt="Avatar" onerror="this.style.display='none'" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 15px; object-fit: cover;">
                     Siddharth Shelke
                 </h3>
-                <p style="font-size: 0.95rem; max-width: 350px;">
+                <p style="font-size: 0.95rem; max-width: 350px;" data-de="Entwicklung von Datenlösungen, Erforschung von Operational Intelligence und Umwandlung komplexer Informationen in verwertbare Erkenntnisse.">
                     Engineering data solutions, exploring operational intelligence, and transforming complex information into actionable insights.
                 </p>
             </div>
 
             <div style="display: flex; gap: 4rem; flex-wrap: wrap;">
                 <div>
-                    <h4 style="color: var(--text-main); margin-bottom: 1.2rem; font-family: monospace;">EXPLORE</h4>
-                    <a href="#about" style="display:block; color: var(--text-muted); text-decoration:none; margin-bottom: 0.8rem; font-size: 0.9rem; transition: 0.3s;">About</a>
-                    <a href="#experience" style="display:block; color: var(--text-muted); text-decoration:none; margin-bottom: 0.8rem; font-size: 0.9rem; transition: 0.3s;">Experience</a>
-                    <a href="#projects" style="display:block; color: var(--text-muted); text-decoration:none; margin-bottom: 0.8rem; font-size: 0.9rem; transition: 0.3s;">Projects</a>
+                    <h4 style="color: var(--text-main); margin-bottom: 1.2rem; font-family: monospace;" data-de="ENTDECKEN">EXPLORE</h4>
+                    <a href="#about" style="display:block; color: var(--text-muted); text-decoration:none; margin-bottom: 0.8rem; font-size: 0.9rem; transition: 0.3s;" data-de="Über mich">About</a>
+                    <a href="#experience" style="display:block; color: var(--text-muted); text-decoration:none; margin-bottom: 0.8rem; font-size: 0.9rem; transition: 0.3s;" data-de="Erfahrung">Experience</a>
+                    <a href="#projects" style="display:block; color: var(--text-muted); text-decoration:none; margin-bottom: 0.8rem; font-size: 0.9rem; transition: 0.3s;" data-de="Projekte">Projects</a>
                 </div>
                 <div>
-                    <h4 style="color: var(--text-main); margin-bottom: 1.2rem; font-family: monospace;">CONNECT</h4>
+                    <h4 style="color: var(--text-main); margin-bottom: 1.2rem; font-family: monospace;" data-de="VERBINDEN">CONNECT</h4>
                     <a href="mailto:siddharthshelke634@gmail.com" style="display:block; color: var(--text-muted); text-decoration:none; margin-bottom: 0.8rem; font-size: 0.9rem; transition: 0.3s;">Email</a>
                     <a href="https://linkedin.com/in/siddharthnshelke" target="_blank" style="display:block; color: var(--text-muted); text-decoration:none; margin-bottom: 0.8rem; font-size: 0.9rem; transition: 0.3s;">LinkedIn</a>
                 </div>
@@ -343,7 +347,46 @@
 </div>
 
 <script>
-    // 1. SCROLL ANIMATION
+    // === 1. TRANSLATION TOGGLE LOGIC ===
+    let isGerman = false;
+    function toggleLang() {
+        isGerman = !isGerman;
+        
+        // Find every element with a 'data-de' attribute
+        document.querySelectorAll('[data-de]').forEach(el => {
+            // Save the original English text if we haven't already
+            if (!el.hasAttribute('data-en')) {
+                el.setAttribute('data-en', el.innerHTML);
+            }
+            // Swap the HTML content
+            el.innerHTML = isGerman ? el.getAttribute('data-de') : el.getAttribute('data-en');
+        });
+
+        // Update the button text
+        document.getElementById('lang-toggle').innerText = isGerman ? "EN" : "DE";
+    }
+
+    // === 2. THEME TOGGLE LOGIC ===
+    let particleRGB = '100, 255, 218'; // Default Cyan
+    
+    // Clean SVG Icons for Theme Toggle
+    const sunIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>`;
+    const moonIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>`;
+
+    function toggleTheme() {
+        document.body.classList.toggle('light-mode');
+        const themeBtn = document.getElementById('theme-toggle');
+        
+        if (document.body.classList.contains('light-mode')) {
+            themeBtn.innerHTML = moonIcon;
+            particleRGB = '43, 108, 176'; // Deep Blue for Light Mode
+        } else {
+            themeBtn.innerHTML = sunIcon;
+            particleRGB = '100, 255, 218'; // Cyan for Dark Mode
+        }
+    }
+
+    // === 3. SCROLL ANIMATION ===
     document.addEventListener("DOMContentLoaded", function() {
         const sections = document.querySelectorAll("section");
         sections.forEach(sec => sec.classList.add("reveal-section"));
@@ -357,7 +400,7 @@
         sections.forEach(sec => observer.observe(sec));
     });
 
-    // 2. LIVE DATA NETWORK BACKGROUND
+    // === 4. LIVE DATA NETWORK BACKGROUND ===
     const canvas = document.getElementById('network-canvas');
     const ctx = canvas.getContext('2d');
     let width, height, particles;
@@ -388,7 +431,7 @@
         draw() {
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-            ctx.fillStyle = 'rgba(100, 255, 218, 0.5)';
+            ctx.fillStyle = `rgba(${particleRGB}, 0.5)`;
             ctx.fill();
         }
     }
@@ -404,7 +447,8 @@
                 const distance = Math.sqrt(dx * dx + dy * dy);
                 if (distance < 100) { 
                     ctx.beginPath();
-                    ctx.strokeStyle = `rgba(100, 255, 218, ${0.2 - distance/500})`;
+                    // Connect close particles using dynamic theme color
+                    ctx.strokeStyle = `rgba(${particleRGB}, ${0.2 - distance/500})`;
                     ctx.lineWidth = 0.5;
                     ctx.moveTo(particles[i].x, particles[i].y);
                     ctx.lineTo(particles[j].x, particles[j].y);
