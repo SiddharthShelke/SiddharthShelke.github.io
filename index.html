@@ -70,7 +70,7 @@
         h2::after { content: ""; display: block; height: 1px; width: 300px; background-color: rgba(100, 255, 218, 0.2); margin-left: 20px; }
         h3 { color: var(--text-main); margin-bottom: 0.5rem; font-size: 1.3rem; }
         
-        /* === GLASS BUBBLES (For Home, About, Contact) === */
+        /* === GLASS BUBBLES (For Home, Contact) === */
         .glass-bubble {
             background: var(--bubble-bg);
             backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
@@ -101,10 +101,51 @@
         .hero-title { font-size: 4rem; font-weight: 800; margin: 0; color: var(--text-main); line-height: 1.1; }
         .hero-subtitle { font-size: 2.5rem; font-weight: 700; margin: 10px 0; color: var(--text-muted); }
         
-        .about-flex { display: flex; gap: 3rem; align-items: center; flex-wrap: wrap; }
-        .about-text { flex: 1; min-width: 300px; }
-        .about-image { flex: 0 0 250px; text-align: center; position: relative; }
-        .about-image img { width: 100%; border-radius: 16px; box-shadow: 0 10px 30px -15px rgba(2,12,27,0.7); border: 1px solid rgba(255, 255, 255, 0.1); }
+        /* === ABOUT SECTION (NEW 2-COLUMN LAYOUT) === */
+        .about-grid-layout {
+            display: grid;
+            grid-template-columns: 1fr 1.3fr; /* Image takes slightly less space than text */
+            gap: 4rem;
+            align-items: center;
+        }
+        @media (max-width: 800px) {
+            .about-grid-layout { grid-template-columns: 1fr; gap: 2rem; }
+        }
+        .about-image-new img {
+            width: 100%;
+            border-radius: 24px; /* Soft, rounded corners like the screenshot */
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            object-fit: cover;
+        }
+        .about-headline {
+            font-size: 2.4rem;
+            line-height: 1.2;
+            margin-top: 0;
+            margin-bottom: 20px;
+            color: var(--text-main);
+            font-weight: 700;
+        }
+        .expertise-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .expertise-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 1.2rem;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text-main);
+            transition: background 0.3s, border-color 0.3s;
+        }
+        .expertise-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(100, 255, 218, 0.3);
+        }
         
         /* === APPLE-STYLE SCROLL ANIMATIONS === */
         .reveal-section { opacity: 0; transform: translateY(40px); transition: all 1s cubic-bezier(0.25, 1, 0.5, 1); }
@@ -147,26 +188,33 @@
         </div>
     </section>
 
-    <section id="about">
-        <h2>About Me</h2>
-        <div class="glass-bubble">
-            <div class="about-flex">
-                <div class="about-text">
-                    <p style="margin-top:0;">Based in Göttingen, Germany, I specialize in bridging the gap between raw data and high-level predictive modeling.</p>
-                    <p>Here are a few technologies I've been working with recently:</p>
-                    <ul style="display: grid; grid-template-columns: repeat(2, minmax(140px, 200px)); gap: 0 10px; list-style: none; padding: 0;">
-                        <li style="margin-bottom: 10px;">▹ Python / SQL</li>
-                        <li style="margin-bottom: 10px;">▹ Databricks</li>
-                        <li style="margin-bottom: 10px;">▹ Palantir Foundry</li>
-                        <li style="margin-bottom: 10px;">▹ Streamlit / Tableau</li>
-                        <li style="margin-bottom: 10px;">▹ Pandas / NumPy</li>
-                        <li style="margin-bottom: 10px;">▹ 3D Computer Vision</li>
-                    </ul>
-                </div>
-                <div class="about-image">
-                    <img src="profile.PNG" alt="Siddharth Shelke">
+    <section id="about" style="padding-top: 120px;">
+        <div class="about-grid-layout">
+            
+            <div class="about-image-new">
+                <img src="profile.PNG" alt="Siddharth Shelke" onerror="this.style.display='none'">
+            </div>
+
+            <div class="about-text-new">
+                <h2 class="about-headline" style="border: none;">
+                    Engineering data systems with a focus on robust pipelines, predictive modeling, and intelligent decision-making.
+                </h2>
+                
+                <p style="font-size: 1.05rem; color: var(--text-muted); margin-bottom: 15px;">
+                    I am currently based in Göttingen, Germany, specializing in bridging the gap between raw data and high-level predictive modeling across engineering and operational systems.
+                </p>
+                <p style="font-size: 1.05rem; color: var(--text-muted); margin-bottom: 20px;">
+                    My technical interests lie in processing complex spatial data, optimizing ETL pipelines, and building scalable AI architectures.
+                </p>
+                
+                <div class="expertise-grid">
+                    <div class="expertise-card">Machine Learning & AI</div>
+                    <div class="expertise-card">Data Engineering (ETL)</div>
+                    <div class="expertise-card">3D Computer Vision</div>
+                    <div class="expertise-card">Data Analytics & BI</div>
                 </div>
             </div>
+            
         </div>
     </section>
 
@@ -265,7 +313,7 @@
             
             <div style="flex: 1; min-width: 250px;">
                 <h3 style="margin-bottom: 1rem; display: flex; align-items: center;">
-                    <img src="profile.jpg" alt="Avatar" onerror="this.style.display='none'" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 15px; object-fit: cover;">
+                    <img src="profile.PNG" alt="Avatar" onerror="this.style.display='none'" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 15px; object-fit: cover;">
                     Siddharth Shelke
                 </h3>
                 <p style="font-size: 0.95rem; max-width: 350px;">
