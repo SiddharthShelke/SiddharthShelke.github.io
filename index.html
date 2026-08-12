@@ -130,7 +130,6 @@
         .hero-title { font-size: 4rem; font-weight: 800; margin: 0; color: var(--text-main); line-height: 1.1; }
         .hero-subtitle { font-size: 2.5rem; font-weight: 700; margin: 10px 0; color: var(--text-muted); }
         
-        /* Updated Grid to make the Profile Picture larger */
         .about-grid-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
         @media (max-width: 800px) { .about-grid-layout { grid-template-columns: 1fr; gap: 2rem; } }
         .about-image-new img { width: 100%; border-radius: 24px; box-shadow: 0 20px 40px var(--shadow-color); border: 1px solid var(--border-color); object-fit: cover; }
@@ -143,7 +142,7 @@
         }
         .expertise-card:hover { border-color: var(--accent); }
 
-        /* === EXPANDABLE DETAILS PANEL & IMAGES === */
+        /* === EXPANDABLE DETAILS PANEL === */
         .more-info-btn {
             background: transparent; border: none; color: var(--accent);
             font-family: monospace; font-size: 0.95rem; cursor: pointer;
@@ -157,12 +156,11 @@
             transition: max-height 0.6s ease, margin-top 0.4s ease, opacity 0.5s ease;
         }
         .details-panel.expanded {
-            max-height: 8000px; /* Large enough for stacked images */
+            max-height: 8000px; 
             opacity: 1; margin-top: 1.5rem; padding-top: 1.5rem;
             border-top: 1px dashed var(--border-color);
         }
         
-        /* Updated to Stack Images vertically in full size */
         .stacked-images {
             display: flex; flex-direction: column; gap: 2.5rem; margin-top: 1.5rem; align-items: center;
         }
@@ -337,9 +335,9 @@
 
     <section id="projects">
         <h2 data-de="Meine Projekte">Things I've Built</h2>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+        <div style="display: flex; flex-direction: column; gap: 1.5rem;">
             
-<div class="item-card" style="margin-bottom: 0;">
+            <div class="item-card" style="margin-bottom: 0;">
                 <div class="meta-info" data-de="Maschinelles Lernen">Machine Learning</div>
                 <h3 data-de="Prädiktives Wartungssystem">Predictive Maintenance System</h3>
                 <p data-de="End-to-End-ML-Lösung zur Erkennung seltener Ausfälle von Industriemaschinen mittels Random Forest Ensemble.">End-to-end ML solution using a Random Forest Ensemble and physics-informed features to detect rare industrial machine failures.</p>
@@ -351,7 +349,8 @@
                     <h4 style="color: var(--text-main); margin-top: 0;" data-de="Projekt-Pitch">Project Pitch</h4>
                     <div style="margin-bottom: 2rem; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color); box-shadow: 0 10px 30px -15px var(--shadow-color);">
                         <video width="100%" controls style="display: block; background: #000;">
-                            <source src="ElevatorPitch_Capstone.mov" type="video/mp4">
+                            <source src="ElevatorPitch_Capstone.mp4" type="video/mp4">
+                            <source src="ElevatorPitch_Capstone.mov" type="video/quicktime">
                             Your browser does not support the video tag.
                         </video>
                     </div>
@@ -364,12 +363,7 @@
                     <h4 style="color: var(--text-main); margin-bottom: 1rem;" data-de="Projektdokumentation">Project Documentation</h4>
                     <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
                         <a href="FinalCapstone-PredictiveMaintainence.pdf" target="_blank" style="padding: 10px 20px; background: rgba(100, 255, 218, 0.05); border: 1px solid var(--accent); color: var(--accent); text-decoration: none; border-radius: 4px; font-family: monospace; font-weight: bold; transition: 0.3s;" data-de="📊 Präsentation ansehen">📊 View Presentation</a>
-                        
-                        <a href="Predictive_Maintenance_Report.pdf" target="_blank" style="padding: 10px 20px; background: rgba(100, 255, 218, 0.05); border: 1px solid var(--accent); color: var(--accent); text-decoration: none; border-radius: 4px; font-family: monospace; font-weight: bold; transition: 0.3s;" data-de="📄 Vollständigen Bericht lesen">📄 Read Full Report</a>
                     </div>
-                    
-                    <p style="font-size: 0.85rem; font-style: italic; color: var(--text-muted); margin-top: 1.5rem;" data-de="* Hinweis: Der Quellcode ist urheberrechtlich geschützt und nicht öffentlich zugänglich.">* Note: Source code is kept confidential and is not publicly available.</p>
-
                 </div>
             </div>
 
@@ -487,7 +481,6 @@
 
         document.getElementById('lang-toggle').innerText = isGerman ? "EN" : "DE";
         
-        // Update the expanded/collapsed button text dynamically when language changes
         const openPanels = document.querySelectorAll('.details-panel.expanded');
         const closedPanels = document.querySelectorAll('.details-panel:not(.expanded)');
         
