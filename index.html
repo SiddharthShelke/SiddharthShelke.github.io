@@ -113,6 +113,37 @@
         ul { color: var(--text-muted); padding-left: 20px; }
         p { color: var(--text-muted); }
 
+        /* === EXPANDABLE DETAILS PANEL === */
+        .more-info-btn {
+            background: transparent; border: none; color: var(--accent);
+            font-family: monospace; font-size: 0.95rem; cursor: pointer;
+            padding: 0; margin-top: 10px; display: inline-flex; align-items: center;
+            transition: color 0.3s; font-weight: bold;
+        }
+        .more-info-btn:hover { text-decoration: underline; }
+        
+        .details-panel {
+            max-height: 0; overflow: hidden; opacity: 0;
+            transition: max-height 0.6s ease, margin-top 0.4s ease, opacity 0.5s ease;
+        }
+        .details-panel.expanded {
+            max-height: 3500px; /* Allows panel to grow */
+            opacity: 1; margin-top: 1.5rem; padding-top: 1.5rem;
+            border-top: 1px dashed var(--border-color);
+        }
+        
+        .image-gallery {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem; margin-top: 1.5rem;
+        }
+        .image-gallery img {
+            width: 100%; height: auto; border-radius: 8px;
+            border: 1px solid var(--border-color); transition: transform 0.3s;
+            box-shadow: 0 4px 12px var(--shadow-color);
+        }
+        .image-gallery img:hover { transform: scale(1.05); }
+
+        
         /* === LOGOS & LINKS === */
         .logo-img { 
             height: 24px; 
@@ -251,7 +282,7 @@
             </ul>
         </div>
 
-        <div class="item-card">
+<div class="item-card">
             <h3>
                 <img src="lear_logo.png" class="logo-img" onerror="this.style.display='none'">
                 <a href="https://www.lear.com" target="_blank" class="title-link" data-de="Data Analyst Praktikant @ Lear Corporation ↗">Data Analyst Intern @ Lear Corporation ↗</a>
@@ -259,9 +290,41 @@
             <div class="meta-info" data-de="Feb 2025 - Apr 2025 | Pune, Indien">Feb 2025 - Apr 2025 | Pune, India</div>
             <ul>
                 <li data-de="Implementierung von ETL-Pipelines in Palantir Foundry zur Integration von Daten aus 7 Werken und Reduzierung der Berichtszeit um 85%.">Implemented ETL pipelines in Palantir Foundry, integrating data from 7 plants and reducing reporting time by 85%.</li>
-                <li data-de="Gestaltung eines interaktiven Dashboards mit 33 KOTS, 8 KPIs und Volumendaten.">Designed an interactive dashboard displaying 33 KOTS, 8 KPIs, and volume data.</li>
+                <li data-de="Gestaltung eines interaktiven Dashboards mit 33 KOTS, 8 KPIs und Volumendaten.">Designed an interactive dashboard displaying 33 KOTS, 8 KPIs, and volume data per plant, with forecast vs actual comparisons.</li>
             </ul>
+            
+            <button class="more-info-btn" onclick="toggleDetails('lear-details', this)" data-de="Mehr erfahren ↓">More Info ↓</button>
+            
+            <div id="lear-details" class="details-panel">
+                <h4 style="color: var(--text-main); margin-top: 0;" data-de="Projekt-Highlights">Project Highlights</h4>
+                
+                <p data-de="Während meines Praktikums bei der Lear Corporation leitete ich ein praxisnahes Datenautomatisierungsprojekt, das sich auf den Datenanalyseprozess der Key Operating Trends (KOT) unter Verwendung von Palantir Foundry konzentrierte. Ich automatisierte erfolgreich die manuelle Filterung und Visualisierung von KOT-Daten, indem ich robuste Datenpipelines mit dem Pipeline Builder erstellte.">
+                    During my internship at Lear Corporation, I led a real-world data automation project focused on the Key Operating Trends (KOT) data analysis process using Palantir Foundry. I successfully automated the manual filtering and visualization of KOT data by building robust data pipelines using Pipeline Builder.
+                </p>
+                
+                <p data-de="Darüber hinaus entwickelte ich eine umfassende Geschäftsontologie, die als Grundlage für ein neues interaktives Dashboard diente. Dieses Projekt ermöglichte es mir, weitreichende praktische Erfahrungen in den Bereichen Datenvisualisierung, Pipeline-Automatisierung und dem Einsatz von Enterprise-Tools zu sammeln.">
+                    Furthermore, I created a comprehensive business Ontology that served as the foundation for a newly developed interactive dashboard. This project allowed me to acquire extensive hands-on experience in advanced data visualization, pipeline automation, and the use of enterprise-level tools.
+                </p>
+                
+                <p style="margin-bottom: 2rem;" data-de="Zudem vertiefte ich mein Verständnis für komplexe Datenstrukturen auf Unternehmensebene, Continuous-Integration-Prozesse (CI) und die Bedeutung effizienter funktionsübergreifender Zusammenarbeit.">
+                    It also provided a deep understanding of complex enterprise data structures, continuous integration (CI) processes, and the importance of efficient cross-functional collaboration.
+                </p>
+                
+                <h4 style="color: var(--text-main); margin-bottom: 0.5rem; margin-top: 2rem;" data-de="Projekt-Schnappschüsse & Zertifikate">Project Snapshots & Certificates</h4>
+                <div class="image-gallery">
+                    <img src="lear_slide.jpg" alt="Lear Corporation Overview" onerror="this.style.display='none'">
+                    <img src="palantir_slide.jpg" alt="Palantir Foundry Overview" onerror="this.style.display='none'">
+                    <img src="s1.png" alt="Dashboard Snapshot 1" onerror="this.style.display='none'">
+                    <img src="s2.png" alt="Dashboard Snapshot 2" onerror="this.style.display='none'">
+                    <img src="s3.png" alt="Dashboard Snapshot 3" onerror="this.style.display='none'">
+                    <img src="s4.png" alt="Dashboard Snapshot 4" onerror="this.style.display='none'">
+                    <img src="s5.png" alt="Dashboard Snapshot 5" onerror="this.style.display='none'">
+                    <img src="s6.png" alt="Certificate 1" onerror="this.style.display='none'">
+                    <img src="s7.png" alt="Certificate 2" onerror="this.style.display='none'">
+                </div>
+            </div>
         </div>
+        
     </section>
 
     <section id="projects">
@@ -400,6 +463,22 @@
         }
     }
 
+// === EXPANDABLE DETAILS LOGIC ===
+    function toggleDetails(panelId, btnElement) {
+        const panel = document.getElementById(panelId);
+        const isExpanded = panel.classList.contains('expanded');
+        
+        if (isExpanded) {
+            panel.classList.remove('expanded');
+            // Revert button text based on current language
+            btnElement.innerText = isGerman ? "Mehr erfahren ↓" : "More Info ↓";
+        } else {
+            panel.classList.add('expanded');
+            // Change button text based on current language
+            btnElement.innerText = isGerman ? "Weniger anzeigen ↑" : "Show Less ↑";
+        }
+    }
+    
     // === 3. SCROLL ANIMATION ===
     document.addEventListener("DOMContentLoaded", function() {
         const sections = document.querySelectorAll("section");
