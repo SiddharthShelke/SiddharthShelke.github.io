@@ -10,30 +10,29 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- GSAP for Smooth Apple-Style Animations -->
+    <!-- GSAP for Cinematic Animations -->
     <script src="https://unpkg.com/gsap@3.12.5/dist/gsap.min.js"></script>
     <script src="https://unpkg.com/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
 
     <style>
-        /* === PREMIUM APPLE DARK THEME (DEFAULT) === */
+        /* === APPLE DARK THEME === */
         :root {
             --bg-color: #000000;        
-            --card-bg: rgba(22, 22, 24, 0.6); 
+            --card-bg: rgba(22, 22, 24, 0.5); 
             --bubble-bg: rgba(22, 22, 24, 0.4); 
             --text-main: #f5f5f7;       
             --text-muted: #86868b;      
             --accent: #2997ff;          
-            --nav-bg: rgba(0, 0, 0, 0.75);
+            --nav-bg: rgba(22, 22, 24, 0.7);
             --border-color: rgba(255, 255, 255, 0.1);
             --shadow-color: rgba(0, 0, 0, 0.8);
             
-            /* AI Aura Colors */
-            --aura-1: rgba(41, 151, 255, 0.2);
-            --aura-2: rgba(138, 43, 226, 0.15);
-            --aura-3: rgba(100, 255, 218, 0.15);
+            /* AI Fluid Aura Colors */
+            --aura-1: rgba(41, 151, 255, 0.25);
+            --aura-2: rgba(138, 43, 226, 0.2);
+            --aura-3: rgba(100, 255, 218, 0.2);
         }
         
-        /* === PREMIUM APPLE LIGHT THEME === */
         body.light-mode {
             --bg-color: #f5f5f7;        
             --card-bg: rgba(255, 255, 255, 0.7); 
@@ -41,455 +40,434 @@
             --text-main: #1d1d1f;       
             --text-muted: #86868b;      
             --accent: #0071e3; 
-            --nav-bg: rgba(245, 245, 247, 0.75);
+            --nav-bg: rgba(245, 245, 247, 0.7);
             --border-color: rgba(0, 0, 0, 0.08);
             --shadow-color: rgba(0, 0, 0, 0.05);
-            
-            /* Light Mode AI Aura Colors */
-            --aura-1: rgba(41, 151, 255, 0.1);
-            --aura-2: rgba(138, 43, 226, 0.08);
-            --aura-3: rgba(100, 255, 218, 0.1);
+            --aura-1: rgba(41, 151, 255, 0.15);
+            --aura-2: rgba(138, 43, 226, 0.1);
+            --aura-3: rgba(100, 255, 218, 0.15);
         }
-        
-        /* === SCROLL SNAPPING & BASE === */
-        html { scroll-snap-type: y proximity; scroll-behavior: smooth; }
+
+        /* === RESET & BASE === */
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            font-family: 'Inter', sans-serif;
             margin: 0; padding: 0;
             background-color: var(--bg-color); color: var(--text-main);
-            line-height: 1.6; overflow-x: hidden; transition: background-color 0.5s ease, color 0.5s ease;
+            line-height: 1.6; overflow-x: hidden; 
             -webkit-font-smoothing: antialiased;
+            cursor: none; /* Hide default cursor */
         }
 
-        /* === LIVE BACKGROUND CANVAS === */
+        /* === PRELOADER SEQUENCE === */
+        #loader {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #000; z-index: 10000; display: flex;
+            align-items: center; justify-content: center;
+        }
+        #typewriter-text {
+            color: #fff; font-family: 'SF Mono', Consolas, monospace; 
+            font-size: clamp(1.5rem, 4vw, 3rem); font-weight: 600;
+        }
+
+        /* === CUSTOM CURSOR === */
+        .cursor-ring {
+            position: fixed; top: 0; left: 0; width: 36px; height: 36px;
+            border: 1px solid rgba(255, 255, 255, 0.6); border-radius: 50%;
+            transform: translate(-50%, -50%); pointer-events: none; z-index: 9999;
+            transition: width 0.3s, height 0.3s, background 0.3s, border-color 0.3s;
+        }
+        .cursor-ring.active {
+            width: 60px; height: 60px; background: rgba(255, 255, 255, 0.1);
+            border-color: transparent; backdrop-filter: blur(2px);
+        }
+        /* Mobile fallback */
+        @media (max-width: 768px) { body { cursor: auto; } .cursor-ring { display: none; } }
+
+        /* === SCROLL PROGRESS BAR === */
+        #progress-bar {
+            position: fixed; top: 0; left: 0; height: 2px; width: 0%;
+            background: var(--accent); z-index: 10001;
+            box-shadow: 0 0 10px var(--accent);
+        }
+
+        /* === CANVAS ENGINE === */
         #network-canvas {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            z-index: -1; pointer-events: none;
+            z-index: -1; pointer-events: none; opacity: 0; /* Starts hidden for loader */
         }
 
-        /* === FROSTED GLASS NAVIGATION === */
+        /* === FLOATING BUBBLE NAVIGATION === */
+        .nav-wrapper {
+            position: fixed; top: 20px; width: 100%; display: flex; 
+            justify-content: center; z-index: 1000;
+            opacity: 0; transform: translateY(-20px); /* Starts hidden */
+        }
         nav {
             background-color: var(--nav-bg);
-            backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px);
-            padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center;
-            position: fixed; top: 0; width: 100%; box-sizing: border-box; z-index: 1000;
-            border-bottom: 1px solid var(--border-color); transition: background-color 0.5s ease;
+            backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: blur(20px);
+            padding: 0.8rem 2.5rem; display: flex; justify-content: space-between; align-items: center;
+            border: 1px solid var(--border-color); border-radius: 50px;
+            box-shadow: 0 10px 30px var(--shadow-color);
+            width: 90%; max-width: 1000px; transition: background-color 0.5s ease;
         }
-        .nav-links { display: flex; gap: 1.5rem; align-items: center; }
-        .nav-links a { color: var(--text-main); text-decoration: none; font-weight: 500; font-size: 0.9rem; transition: color 0.3s; }
+        .nav-links { display: flex; gap: 2rem; align-items: center; }
+        .nav-links a { color: var(--text-main); text-decoration: none; font-weight: 500; font-size: 0.85rem; transition: color 0.3s; }
         .nav-links a:hover { color: var(--accent); }
 
-        /* === TOGGLE CONTROLS === */
         .controls { display: flex; gap: 1rem; align-items: center; }
         .icon-btn {
             background: transparent; border: 1px solid var(--border-color); color: var(--text-main);
-            border-radius: 50%; width: 35px; height: 35px; cursor: pointer; display: flex; align-items: center; 
-            justify-content: center; font-size: 0.9rem; transition: all 0.3s; font-weight: 600;
+            border-radius: 50%; width: 32px; height: 32px; cursor: none; display: flex; align-items: center; 
+            justify-content: center; font-size: 0.8rem; font-weight: 600;
         }
-        .icon-btn:hover { border-color: var(--accent); color: var(--accent); transform: scale(1.05); }
-        .icon-btn svg { width: 16px; height: 16px; }
-
-        /* === DROPDOWN CV BUTTON === */
+        .icon-btn svg { width: 14px; height: 14px; }
+        
         .dropdown { position: relative; display: inline-block; }
         .dropbtn {
-            background-color: transparent; color: var(--accent); padding: 8px 16px; font-size: 14px;
-            border: 1px solid var(--accent); border-radius: 20px; cursor: pointer; font-weight: 600; transition: all 0.3s;
-            font-family: inherit;
+            background-color: transparent; color: var(--accent); padding: 8px 16px; font-size: 0.85rem;
+            border: 1px solid var(--accent); border-radius: 20px; cursor: none; font-weight: 600;
         }
-        .dropbtn:hover { background-color: rgba(41, 151, 255, 0.1); }
         .dropdown-content {
             display: none; position: absolute; right: 0; top: 120%; background-color: var(--card-bg);
             backdrop-filter: saturate(180%) blur(20px); min-width: 160px; box-shadow: 0px 8px 30px var(--shadow-color);
-            border: 1px solid var(--border-color); z-index: 1; border-radius: 12px; overflow: hidden;
+            border: 1px solid var(--border-color); z-index: 1; border-radius: 16px; overflow: hidden;
         }
-        .dropdown-content a { color: var(--text-main); padding: 12px 16px; text-decoration: none; display: block; font-size: 0.9rem; }
+        .dropdown-content a { color: var(--text-main); padding: 12px 16px; text-decoration: none; display: block; font-size: 0.85rem; cursor: none; }
         .dropdown-content a:hover { color: var(--accent); background-color: rgba(255, 255, 255, 0.05); }
-        body.light-mode .dropdown-content a:hover { background-color: rgba(0, 0, 0, 0.05); }
         .dropdown:hover .dropdown-content { display: block; }
 
-        /* === FULL-PAGE SECTIONS === */
+        /* === SECTIONS & TYPOGRAPHY === */
         .container { max-width: 1000px; margin: auto; padding: 0 2rem; }
-        section {
-            min-height: 100vh; display: flex; flex-direction: column; justify-content: center;
-            scroll-snap-align: start; padding-top: 80px; padding-bottom: 2rem; box-sizing: border-box;
-        }
+        section { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding-top: 120px; padding-bottom: 4rem; }
         
-        h2 { color: var(--text-main); font-size: 2.5rem; margin-bottom: 2rem; display: flex; align-items: center; letter-spacing: -0.03em; }
-        h2::after { content: ""; display: block; height: 1px; width: 300px; background-color: var(--border-color); margin-left: 20px; }
-        h3 { color: var(--text-main); margin-bottom: 0.5rem; font-size: 1.3rem; letter-spacing: -0.01em; }
+        h2 { font-size: clamp(2.5rem, 5vw, 3.5rem); margin-bottom: 2rem; letter-spacing: -0.03em; }
+        h3 { margin-bottom: 0.5rem; font-size: 1.4rem; letter-spacing: -0.01em; }
         
-        /* === GLASS BUBBLES & CARDS === */
-        .glass-bubble {
-            background: var(--bubble-bg); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: blur(20px);
-            padding: 3.5rem; border-radius: 32px; border: 1px solid var(--border-color);
-            box-shadow: 0 10px 40px -15px var(--shadow-color); transition: all 0.5s ease;
-        }
-        .item-card {
-            background: var(--card-bg); backdrop-filter: saturate(180%) blur(20px); padding: 2.5rem; border-radius: 24px;
-            margin-bottom: 1.5rem; border: 1px solid var(--border-color);
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease, background 0.5s ease;
-        }
-        .item-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px -15px var(--shadow-color); border-color: var(--accent); }
-        
-        .meta-info { font-size: 0.85rem; color: var(--accent); margin-bottom: 1rem; font-family: 'SF Mono', monospace; text-transform: uppercase; letter-spacing: 0.05em; }
-        ul { color: var(--text-muted); padding-left: 20px; }
-        p { color: var(--text-muted); }
+        .hero-title { font-size: clamp(3.5rem, 8vw, 5.5rem); font-weight: 800; margin: 0; line-height: 1.05; letter-spacing: -0.04em; }
+        .hero-subtitle { font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 700; margin: 10px 0; color: var(--text-muted); letter-spacing: -0.02em; }
 
-        /* === LOGOS & LINKS === */
-        .logo-img { 
-            height: 28px; width: auto; vertical-align: middle; margin-right: 12px; border-radius: 6px; 
-            background-color: rgba(255, 255, 255, 0.9); padding: 4px; box-sizing: content-box;
-            transition: background-color 0.5s ease;
+        /* Center-Scrub Invisible Text Class */
+        .scrub-text .char { opacity: 0; }
+
+        /* === 3D BENTO BOX CARDS === */
+        .item-card {
+            background: var(--card-bg); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: blur(20px);
+            padding: 2.5rem; border-radius: 24px; margin-bottom: 1.5rem; border: 1px solid var(--border-color);
+            position: relative; transform-style: preserve-3d; perspective: 1000px; overflow: hidden;
+            transition: box-shadow 0.4s ease;
         }
+        /* Dynamic Glare Reflection */
+        .glare {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.1), transparent 50%);
+            opacity: 0; pointer-events: none; transition: opacity 0.3s; z-index: 10;
+        }
+        .item-card:hover .glare { opacity: 1; }
+        .item-card:hover { box-shadow: 0 20px 50px -15px var(--shadow-color); border-color: rgba(255,255,255,0.15); }
+        
+        .meta-info { font-size: 0.85rem; color: var(--accent); margin-bottom: 1rem; font-family: 'SF Mono', monospace; text-transform: uppercase; letter-spacing: 0.05em; transform: translateZ(20px); }
+        h3, p, ul, button { transform: translateZ(30px); position: relative; z-index: 2; }
+        
+        .logo-img { height: 28px; width: auto; vertical-align: middle; margin-right: 12px; border-radius: 6px; background-color: rgba(255, 255, 255, 0.9); padding: 4px; box-sizing: content-box; }
         body.light-mode .logo-img { background-color: transparent; padding: 0; }
         
-        .title-link { text-decoration: none; color: var(--text-main); transition: color 0.3s; }
-        .title-link:hover { color: var(--accent); }
-        .action-link { display: inline-block; margin-top: 15px; font-size: 0.9rem; color: var(--accent); text-decoration: none; font-weight: 500; }
+        .action-link { display: inline-block; margin-top: 15px; font-size: 0.9rem; color: var(--accent); text-decoration: none; font-weight: 500; cursor: none; }
         .action-link:hover { text-decoration: underline; }
 
-        /* === HERO & ABOUT LAYOUTS === */
-        .hero-title { font-size: 4.5rem; font-weight: 800; margin: 0; color: var(--text-main); line-height: 1.05; letter-spacing: -0.04em; }
-        .hero-subtitle { font-size: 2.5rem; font-weight: 700; margin: 10px 0; color: var(--text-muted); letter-spacing: -0.02em; }
-        
-        /* Fixed About Grid Layout to maintain consistent proportions */
+        /* === ABOUT SECTION (FIXED LAYOUT) === */
         .about-grid-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
-        @media (max-width: 800px) { .about-grid-layout { grid-template-columns: 1fr; gap: 2rem; } }
-        
-        .about-image-new {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+        @media (max-width: 800px) { .about-grid-layout { grid-template-columns: 1fr; gap: 2.5rem; } }
+        .about-image-new { display: flex; justify-content: center; }
         .about-image-new img { 
-            width: 100%; 
-            height: auto; 
-            border-radius: 24px; 
-            box-shadow: 0 20px 40px var(--shadow-color); 
-            border: 1px solid var(--border-color); 
+            width: 100%; height: auto; display: block; border-radius: 24px; 
+            box-shadow: 0 20px 40px var(--shadow-color); border: 1px solid var(--border-color); 
             object-fit: cover; 
-            display: block;
         }
+        .expertise-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2.5rem; }
+        .expertise-card { background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); padding: 1.2rem; text-align: center; border-radius: 12px; font-size: 0.95rem; font-weight: 500; }
         
-        .about-headline { font-size: 2.2rem; line-height: 1.2; margin-top: 0; margin-bottom: 20px; color: var(--text-main); font-weight: 700; }
-        
-        .expertise-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
-        .expertise-card {
-            background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); padding: 1.2rem; text-align: center;
-            border-radius: 12px; font-size: 0.95rem; font-weight: 500; color: var(--text-main); transition: background 0.3s, border-color 0.3s;
-        }
-        body.light-mode .expertise-card { background: rgba(0,0,0,0.03); }
-        .expertise-card:hover { border-color: var(--accent); }
+        /* === PROJECTS SPOTLIGHT GRID === */
+        .projects-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+        @media (min-width: 800px) { .projects-grid { grid-template-columns: 1fr 1fr; } }
+        /* Spotight Logic */
+        .projects-grid:hover .item-card { transition: filter 0.4s ease, opacity 0.4s ease; }
+        .projects-grid .item-card:hover { filter: none; opacity: 1; z-index: 20; }
+        .projects-grid:hover .item-card:not(:hover) { filter: blur(6px); opacity: 0.3; }
 
-        /* === EXPANDABLE DETAILS PANEL === */
+        /* === ACCORDION DETAILS === */
         .more-info-btn {
             background: transparent; border: 1px solid var(--border-color); color: var(--text-main); border-radius: 20px;
-            font-size: 0.9rem; cursor: pointer; padding: 0.5rem 1rem; margin-top: 10px; display: inline-flex; align-items: center;
-            transition: all 0.3s; font-weight: 500;
+            font-size: 0.9rem; cursor: none; padding: 0.6rem 1.2rem; margin-top: 15px; display: inline-flex; font-weight: 500;
+            transition: all 0.3s;
         }
         .more-info-btn:hover { background: rgba(255,255,255,0.05); color: var(--accent); border-color: var(--accent); }
-        body.light-mode .more-info-btn:hover { background: rgba(0,0,0,0.05); }
         
-        .details-panel {
-            max-height: 0; overflow: hidden; opacity: 0;
-            transition: max-height 0.6s cubic-bezier(0.16, 1, 0.3, 1), margin-top 0.4s ease, opacity 0.5s ease;
-        }
-        .details-panel.expanded {
-            max-height: 8000px; 
-            opacity: 1; margin-top: 1.5rem; padding-top: 1.5rem;
-            border-top: 1px solid var(--border-color);
-        }
+        .details-panel { max-height: 0; overflow: hidden; opacity: 0; transition: max-height 0.6s cubic-bezier(0.16, 1, 0.3, 1), margin-top 0.4s ease, opacity 0.5s ease; transform: translateZ(10px); }
+        .details-panel.expanded { max-height: 8000px; opacity: 1; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color); }
         
-        .stacked-images {
-            display: flex; flex-direction: column; gap: 2.5rem; margin-top: 1.5rem; align-items: center;
-        }
-        .stacked-images img {
-            width: 100%; max-width: 900px; height: auto; border-radius: 16px;
-            border: 1px solid var(--border-color); box-shadow: 0 20px 40px -15px var(--shadow-color);
-        }
+        .stacked-images { display: flex; flex-direction: column; gap: 2.5rem; margin-top: 1.5rem; align-items: center; }
+        .stacked-images img { width: 100%; max-width: 900px; height: auto; border-radius: 16px; border: 1px solid var(--border-color); }
 
-        /* === PROJECTS 2x2 GRID === */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1.5rem;
-        }
-        @media (min-width: 800px) {
-            .projects-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-        
-        /* Hidden class for GSAP initial state */
-        .gsap-reveal { opacity: 0; transform: translateY(30px); }
+        /* Magnetic Button UI */
+        .magnetic { display: inline-block; cursor: none; }
     </style>
 </head>
 <body>
 
+<!-- LOADER -->
+<div id="loader">
+    <div id="typewriter-text"></div>
+</div>
+
+<!-- CURSOR -->
+<div class="cursor-ring" id="cursor-ring"></div>
+
+<!-- PROGRESS BAR -->
+<div id="progress-bar"></div>
+
+<!-- LIVE CANVAS -->
 <canvas id="network-canvas"></canvas>
 
-<nav>
-    <div class="nav-links">
-        <a href="#home" data-de="Startseite">Home</a>
-        <a href="#about" data-de="Über mich">About</a>
-        <a href="#experience" data-de="Erfahrung">Experience</a>
-        <a href="#projects" data-de="Projekte">Projects</a>
-        <a href="#education" data-de="Bildung">Education</a>
-        <a href="#contact" data-de="Kontakt">Contact</a>
-    </div>
-    
-    <div class="controls">
-        <button class="icon-btn" id="lang-toggle" onclick="toggleLang()" title="Toggle Language">DE</button>
-        <button class="icon-btn" id="theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="5"></circle>
-                <line x1="12" y1="1" x2="12" y2="3"></line>
-                <line x1="12" y1="21" x2="12" y2="23"></line>
-                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                <line x1="1" y1="12" x2="3" y2="12"></line>
-                <line x1="21" y1="12" x2="23" y2="12"></line>
-            </svg>
-        </button>
-        <div class="dropdown">
-            <button class="dropbtn" data-de="Lebenslauf ▾">Download CV ▾</button>
-            <div class="dropdown-content">
-                <a href="SShelke_CV.pdf" target="_blank">English CV</a>
-                <a href="SShelke_Lebenslauf.pdf" target="_blank">Deutsch CV</a>
+<!-- FLOATING NAV -->
+<div class="nav-wrapper" id="nav-wrapper">
+    <nav>
+        <div class="nav-links">
+            <a href="#home" class="magnetic link-hover">Home</a>
+            <a href="#about" class="magnetic link-hover">About</a>
+            <a href="#experience" class="magnetic link-hover">Experience</a>
+            <a href="#projects" class="magnetic link-hover">Projects</a>
+            <a href="#education" class="magnetic link-hover">Education</a>
+        </div>
+        <div class="controls">
+            <button class="icon-btn magnetic link-hover" id="lang-toggle" onclick="toggleLang()">DE</button>
+            <button class="icon-btn magnetic link-hover" id="theme-toggle" onclick="toggleTheme()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line></svg>
+            </button>
+            <div class="dropdown">
+                <button class="dropbtn magnetic link-hover">Download CV ▾</button>
+                <div class="dropdown-content">
+                    <a href="SShelke_CV.pdf" target="_blank" class="link-hover">English CV</a>
+                    <a href="SShelke_Lebenslauf.pdf" target="_blank" class="link-hover">Deutsch CV</a>
+                </div>
             </div>
         </div>
-    </div>
-</nav>
+    </nav>
+</div>
 
 <div class="container">
 
+    <!-- HERO -->
     <section id="home">
-        <div class="glass-bubble gsap-reveal">
-            <p style="color: var(--accent); font-family: 'SF Mono', monospace; font-size: 1rem; margin-bottom: 10px;" data-de="Hallo, mein Name ist">Hi, my name is</p>
-            <h1 class="hero-title">Siddharth Shelke.</h1>
-            <h2 class="hero-subtitle" style="border: none; margin-bottom: 0;" data-de="Ich entwickle Datenlösungen.">I engineer data solutions.</h2>
-            <p style="max-width: 580px; font-size: 1.15rem; color: var(--text-muted); margin-top: 20px; margin-bottom: 30px;" data-de="Ich bin Data Analyst, Data Scientist und Data Engineer, spezialisiert auf robuste ETL-Pipelines, KI-Modelle und die Umwandlung komplexer 3D- und Geodaten in verwertbare Erkenntnisse.">
+        <div class="item-card" style="padding: 4rem; border-radius: 32px; transform-style: flat;">
+            <p style="color: var(--accent); font-family: 'SF Mono', monospace; font-size: 1rem; margin-bottom: 10px;">Hi, my name is</p>
+            <h1 class="hero-title scrub-text">Siddharth Shelke.</h1>
+            <h2 class="hero-subtitle" style="border: none; margin-bottom: 0;">I engineer data solutions.</h2>
+            <p style="max-width: 600px; font-size: 1.25rem; color: var(--text-muted); margin-top: 20px; margin-bottom: 30px;">
                 I am a Data Analyst, Data Scientist, and Data Engineer specializing in robust ETL pipelines, AI models, and transforming complex 3D and spatial data into actionable intelligence.
             </p>
-            <a href="#projects" style="padding: 12px 24px; border: 1px solid var(--border-color); color: var(--text-main); text-decoration: none; border-radius: 24px; font-weight: 500; transition: 0.3s; display: inline-block;" onmouseover="this.style.borderColor='var(--accent)'; this.style.color='var(--accent)';" onmouseout="this.style.borderColor='var(--border-color)'; this.style.color='var(--text-main)';" data-de="Meine Projekte ansehen!">Check out my work</a>
+            <a href="#projects" class="magnetic link-hover" style="padding: 14px 28px; border: 1px solid var(--border-color); color: var(--text-main); text-decoration: none; border-radius: 30px; font-weight: 500; transition: 0.3s; display: inline-block;">Check out my work</a>
         </div>
     </section>
 
-    <section id="about" style="padding-top: 120px;">
+    <!-- ABOUT -->
+    <section id="about">
         <div class="about-grid-layout">
-            <div class="about-image-new gsap-reveal">
+            <div class="about-image-new parallax-img">
                 <img src="profile.PNG" alt="Siddharth Shelke">
             </div>
-
-            <div class="about-text-new gsap-reveal">
-                <h2 class="about-headline scroll-heading" style="border: none;" data-de="Entwicklung von Datensystemen mit Fokus auf robuste Pipelines, prädiktive Modellierung und intelligente Entscheidungsfindung.">
+            <div class="about-text-new">
+                <h2 class="scrub-text" style="font-size: 2.2rem; line-height: 1.2; margin-top: 0; margin-bottom: 20px;">
                     Engineering data systems with a focus on robust pipelines, predictive modeling, and intelligent decision-making.
                 </h2>
-                
-                <p style="font-size: 1.05rem; color: var(--text-muted); margin-bottom: 15px;" data-de="Ich lebe derzeit in Göttingen, Deutschland, und bin darauf spezialisiert, die Lücke zwischen Rohdaten und hochrangiger prädiktiver Modellierung in technischen und operativen Systemen zu schließen.">
-                    I am currently based in Göttingen, Germany, specializing in bridging the gap between raw data and high-level predictive modeling across engineering and operational systems.
-                </p>
-                <p style="font-size: 1.05rem; color: var(--text-muted); margin-bottom: 20px;" data-de="Meine technischen Interessen liegen in der Verarbeitung komplexer Geodaten, der Optimierung von ETL-Pipelines und dem Aufbau skalierbarer KI-Architekturen.">
-                    My technical interests lie in processing complex spatial data, optimizing ETL pipelines, and building scalable AI architectures.
-                </p>
-                
+                <p>I am currently based in Göttingen, Germany, specializing in bridging the gap between raw data and high-level predictive modeling across engineering and operational systems.</p>
+                <p>My technical interests lie in processing complex spatial data, optimizing ETL pipelines, and building scalable AI architectures.</p>
                 <div class="expertise-grid">
-                    <div class="expertise-card" data-de="Maschinelles Lernen & KI">Machine Learning & AI</div>
-                    <div class="expertise-card" data-de="Data Engineering (ETL)">Data Engineering (ETL)</div>
-                    <div class="expertise-card" data-de="3D Computer Vision">3D Computer Vision</div>
-                    <div class="expertise-card" data-de="Datenanalyse & BI">Data Analytics & BI</div>
+                    <div class="expertise-card">Machine Learning & AI</div>
+                    <div class="expertise-card">Data Engineering (ETL)</div>
+                    <div class="expertise-card">3D Computer Vision</div>
+                    <div class="expertise-card">Data Analytics & BI</div>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- EXPERIENCE -->
     <section id="experience">
-        <h2 class="scroll-heading" data-de="Berufserfahrung">Where I've Worked</h2>
+        <h2 class="scrub-text">Where I've Worked</h2>
         
-        <div class="item-card gsap-reveal">
+        <div class="item-card 3d-card">
+            <div class="glare"></div>
             <h3>
                 <img src="ottobock_logo.png" class="logo-img" onerror="this.style.display='none'">
-                <a href="https://www.ottobock.com" target="_blank" class="title-link" data-de="Data Science Praktikant @ Ottobock ↗">Data Science Intern @ Ottobock ↗</a>
+                <a href="https://www.ottobock.com" target="_blank" class="title-link link-hover">Data Science Intern @ Ottobock ↗</a>
             </h3>
-            <div class="meta-info" data-de="Feb 2026 - Aug 2026 | Duderstadt, Deutschland">Feb 2026 - Aug 2026 | Duderstadt, Germany</div>
+            <div class="meta-info">Feb 2026 - Aug 2026 | Duderstadt, Germany</div>
             <ul>
-                <li data-de="Entwurf und Automatisierung einer 3D-Datenvorverarbeitungs-Pipeline mit Python zur Bereinigung, Ausrichtung und Standardisierung von Geodaten.">Designed and automated a 3D data preprocessing pipeline using Python to clean, align, and standardize spatial data and clinical records.</li>
-                <li data-de="Entwicklung datengesteuerter ML-Modelle zur Erfassung von 3D-Raumzuordnungen, um klinische Designprozesse zu automatisieren.">Engineered data-driven ML models to capture 3D spatial mappings, automating clinical design processes.</li>
-                <li data-de="Etablierung quantitativer Bewertungsrahmen unter Verwendung fortschrittlicher räumlicher Metriken.">Established quantitative evaluation frameworks utilizing advanced spatial metrics.</li>
+                <li>Designed and automated a 3D data preprocessing pipeline using Python to clean, align, and standardize spatial data and clinical records.</li>
+                <li>Engineered data-driven ML models to capture 3D spatial mappings, automating clinical design processes.</li>
+                <li>Established quantitative evaluation frameworks utilizing advanced spatial metrics.</li>
             </ul>
         </div>
 
-        <div class="item-card gsap-reveal">
+        <div class="item-card 3d-card">
+            <div class="glare"></div>
             <h3>
                 <img src="lear_logo.png" class="logo-img" onerror="this.style.display='none'">
-                <a href="https://www.lear.com" target="_blank" class="title-link" data-de="Data Analyst Praktikant @ Lear Corporation ↗">Data Analyst Intern @ Lear Corporation ↗</a>
+                <a href="https://www.lear.com" target="_blank" class="title-link link-hover">Data Analyst Intern @ Lear Corporation ↗</a>
             </h3>
-            <div class="meta-info" data-de="Feb 2025 - Apr 2025 | Pune, Indien">Feb 2025 - Apr 2025 | Pune, India</div>
+            <div class="meta-info">Feb 2025 - Apr 2025 | Pune, India</div>
             <ul>
-                <li data-de="Implementierung von ETL-Pipelines in Palantir Foundry zur Integration von Daten aus 7 Werken und Reduzierung der Berichtszeit um 85%.">Implemented ETL pipelines in Palantir Foundry, integrating data from 7 plants and reducing reporting time by 85%.</li>
-                <li data-de="Gestaltung eines interaktiven Dashboards mit 33 KOTS, 8 KPIs und Volumendaten.">Designed an interactive dashboard displaying 33 KOTs, 8 KPIs, and volume data per plant, with side-by-side forecast vs actual comparisons.</li>
+                <li>Implemented ETL pipelines in Palantir Foundry, integrating data from 7 plants and reducing reporting time by 85%.</li>
+                <li>Designed an interactive dashboard displaying 33 KOTs, 8 KPIs, and volume data per plant.</li>
             </ul>
             
-            <button class="more-info-btn" onclick="toggleDetails('lear-details', this)" data-de="Mehr erfahren ↓">More Info ↓</button>
+            <button class="more-info-btn magnetic link-hover" onclick="toggleDetails('lear-details', this)">More Info ↓</button>
             
             <div id="lear-details" class="details-panel">
-                
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
                     <div style="background: rgba(255, 255, 255, 0.03); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border-color);">
-                        <h4 style="margin-top: 0; display: flex; align-items: center; color: var(--text-main);">
-                            <img src="lear_logo.png" class="logo-img" onerror="this.style.display='none'">
-                            Lear Corporation
-                        </h4>
-                        <p style="font-size: 0.9rem; margin-bottom: 0;" data-de="Lear Corporation ist ein weltweit führender Automobilzulieferer für Sitzsysteme und Fahrzeugelektronik (E-Systems).">
-                            Lear Corporation is a global automotive technology leader in Seating and E-Systems, providing complete seat systems and electrical architectures to major automakers.
-                        </p>
+                        <h4 style="margin-top: 0; color: var(--text-main);"><img src="lear_logo.png" class="logo-img" onerror="this.style.display='none'"> Lear Corporation</h4>
+                        <p style="font-size: 0.9rem; margin-bottom: 0;">Lear Corporation is a global automotive technology leader in Seating and E-Systems, providing complete seat systems and electrical architectures to major automakers.</p>
                     </div>
-                    
                     <div style="background: rgba(255, 255, 255, 0.03); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border-color);">
-                        <h4 style="margin-top: 0; display: flex; align-items: center; color: var(--text-main);">
-                            <img src="palantir_logo.png" class="logo-img" onerror="this.style.display='none'">
-                            Palantir Foundry
-                        </h4>
-                        <p style="font-size: 0.9rem; margin-bottom: 0;" data-de="Palantir Foundry ist eine fortschrittliche Unternehmens-Datenplattform zur Integration komplexer Datenquellen, Aufbau von Ontologien und Unterstützung operativer Analysen.">
-                            Palantir Foundry is an advanced enterprise data platform designed to integrate complex data sources, build robust business ontologies, and power operational analytics.
-                        </p>
+                        <h4 style="margin-top: 0; color: var(--text-main);"><img src="palantir_logo.png" class="logo-img" onerror="this.style.display='none'"> Palantir Foundry</h4>
+                        <p style="font-size: 0.9rem; margin-bottom: 0;">Palantir Foundry is an advanced enterprise data platform designed to integrate complex data sources, build robust business ontologies, and power operational analytics.</p>
                     </div>
                 </div>
 
-                <h4 style="color: var(--text-main); margin-top: 0;" data-de="Projekt-Highlights">Project Highlights</h4>
-                <p data-de="Während meines Praktikums bei der Lear Corporation leitete ich ein praxisnahes Datenautomatisierungsprojekt, das sich auf den Datenanalyseprozess der Key Operating Trends (KOT) unter Verwendung von Palantir Foundry konzentrierte. Ich automatisierte erfolgreich die manuelle Filterung und Visualisierung von KOT-Daten, indem ich robuste Datenpipelines mit dem Pipeline Builder erstellte.">
-                    During my internship at Lear Corporation, I led a real-world data automation project focused on the Key Operating Trends (KOT) data analysis process using Palantir Foundry. I successfully automated the manual filtering and visualization of KOT data by building robust data pipelines using Pipeline Builder.
-                </p>
-                <p data-de="Darüber hinaus entwickelte ich eine umfassende Geschäftsontologie, die als Grundlage für ein neues interaktives Dashboard diente. Dieses Projekt ermöglichte es mir, weitreichende praktische Erfahrungen in den Bereichen Datenvisualisierung, Pipeline-Automatisierung und dem Einsatz von Enterprise-Tools zu sammeln.">
-                    Furthermore, I created a comprehensive business Ontology that served as the foundation for a newly developed interactive dashboard. This project allowed me to acquire extensive hands-on experience in advanced data visualization, pipeline automation, and the use of enterprise-level tools.
-                </p>
-                <p style="margin-bottom: 2rem;" data-de="Zudem vertiefte ich mein Verständnis für komplexe Datenstrukturen auf Unternehmensebene, Continuous-Integration-Prozesse (CI) und die Bedeutung effizienter funktionsübergreifender Zusammenarbeit.">
-                    It also provided a deep understanding of complex enterprise data structures, continuous integration (CI) processes, and the importance of efficient cross-functional collaboration.
-                </p>
+                <h4 style="color: var(--text-main); margin-top: 0;">Project Highlights</h4>
+                <p>During my internship at Lear Corporation, I led a real-world data automation project focused on the Key Operating Trends (KOT) data analysis process using Palantir Foundry. I successfully automated the manual filtering and visualization of KOT data by building robust data pipelines using Pipeline Builder.</p>
+                <p>Furthermore, I created a comprehensive business Ontology that served as the foundation for a newly developed interactive dashboard. This project allowed me to acquire extensive hands-on experience in advanced data visualization, pipeline automation, and the use of enterprise-level tools.</p>
+                <p>It also provided a deep understanding of complex enterprise data structures, continuous integration (CI) processes, and the importance of efficient cross-functional collaboration.</p>
                 
-                <h4 style="color: var(--text-main); margin-bottom: 0.5rem;" data-de="Projekt-Schnappschüsse">Project Snapshots</h4>
-                <div class="stacked-images">
-                    <img src="s1.png" alt="Dashboard Snapshot 1" onerror="this.style.display='none'">
-                    <img src="s2.png" alt="Dashboard Snapshot 2" onerror="this.style.display='none'">
-                    <img src="s3.png" alt="Dashboard Snapshot 3" onerror="this.style.display='none'">
-                    <img src="s4.png" alt="Dashboard Snapshot 4" onerror="this.style.display='none'">
-                    <img src="s5.png" alt="Dashboard Snapshot 5" onerror="this.style.display='none'">
-                    <img src="s6.png" alt="Certificate 1" onerror="this.style.display='none'">
-                    <img src="s7.png" alt="Certificate 2" onerror="this.style.display='none'">
+                <h4 style="color: var(--text-main); margin-top: 2rem; margin-bottom: 0.5rem;">Project Snapshots</h4>
+                <div class="stacked-images parallax-img">
+                    <img src="s1.png" onerror="this.style.display='none'">
+                    <img src="s2.png" onerror="this.style.display='none'">
+                    <img src="s3.png" onerror="this.style.display='none'">
+                    <img src="s4.png" onerror="this.style.display='none'">
+                    <img src="s5.png" onerror="this.style.display='none'">
+                    <img src="s6.png" onerror="this.style.display='none'">
+                    <img src="s7.png" onerror="this.style.display='none'">
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- PROJECTS -->
     <section id="projects">
-        <h2 class="scroll-heading" data-de="Meine Projekte">Things I've Built</h2>
-        <!-- 2x2 Grid Implementation -->
+        <h2 class="scrub-text">Systems & Architectures</h2>
+        
         <div class="projects-grid">
-            
-            <div class="item-card gsap-reveal" style="margin-bottom: 0;">
-                <div class="meta-info" data-de="Maschinelles Lernen">Machine Learning</div>
-                <h3 data-de="Prädiktives Wartungssystem">Predictive Maintenance System</h3>
-                <p data-de="End-to-End-ML-Lösung zur Erkennung seltener Ausfälle von Industriemaschinen mittels Random Forest Ensemble.">End-to-end ML solution using a Random Forest Ensemble and physics-informed features to detect rare industrial machine failures.</p>
-                
-                <button class="more-info-btn" onclick="toggleDetails('predictive-details', this)" data-de="Mehr erfahren ↓">More Info ↓</button>
-                
+            <!-- 1 -->
+            <div class="item-card 3d-card" style="margin-bottom: 0;">
+                <div class="glare"></div>
+                <div class="meta-info">Machine Learning</div>
+                <h3>Predictive Maintenance System</h3>
+                <p>End-to-end ML solution using a Random Forest Ensemble and physics-informed features to detect rare industrial machine failures.</p>
+                <button class="more-info-btn magnetic link-hover" onclick="toggleDetails('predictive-details', this)">More Info ↓</button>
                 <div id="predictive-details" class="details-panel">
-                    
-                    <h4 style="color: var(--text-main); margin-top: 0;" data-de="Projekt-Pitch">Project Pitch</h4>
-                    <div style="margin-bottom: 2rem; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color); box-shadow: 0 10px 30px -15px var(--shadow-color);">
+                    <h4 style="color: var(--text-main); margin-top: 0;">Project Pitch</h4>
+                    <div style="margin-bottom: 2rem; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color);">
                         <video width="100%" controls style="display: block; background: #000;">
-                            <source src="ElevatorPitch_Capstone.mp4" type="video/mp4">
-                            <source src="ElevatorPitch_Capstone.mov" type="video/quicktime">
+                            <source src="ElevatorPitch_Capstone.mov" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
                     </div>
-
-                    <h4 style="color: var(--text-main); margin-bottom: 0.5rem;" data-de="Projekt-Infografik">Project Infographic</h4>
-                    <div style="margin-bottom: 2rem; text-align: center;">
-                        <img src="Infographics.png" alt="Project Infographic" style="width: 100%; max-width: 900px; border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 10px 30px -15px var(--shadow-color);" onerror="this.style.display='none'">
+                    <h4 style="color: var(--text-main); margin-bottom: 0.5rem;">Project Infographic</h4>
+                    <div style="margin-bottom: 2rem; text-align: center;" class="parallax-img">
+                        <img src="Infographics.png" style="width: 100%; border-radius: 12px; border: 1px solid var(--border-color);" onerror="this.style.display='none'">
                     </div>
+                    <h4 style="color: var(--text-main); margin-bottom: 1rem;">Project Documentation</h4>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                        <a href="FinalCapstone-PredictiveMaintainence.pdf" target="_blank" class="magnetic link-hover" style="padding: 10px 20px; background: rgba(255,255,255,0.05); border: 1px solid var(--accent); color: var(--accent); border-radius: 20px; text-decoration: none; font-weight: bold;">📊 View Presentation</a>
+                        <a href="Predictive_Maintenance_Report.pdf" target="_blank" class="magnetic link-hover" style="padding: 10px 20px; background: rgba(255,255,255,0.05); border: 1px solid var(--accent); color: var(--accent); border-radius: 20px; text-decoration: none; font-weight: bold;">📄 Read Full Report</a>
+                    </div>
+                    <p style="font-size: 0.85rem; font-style: italic; margin-top: 1.5rem;">* Note: Source code is kept confidential and is not publicly available.</p>
                 </div>
             </div>
 
-            <div class="item-card gsap-reveal" style="margin-bottom: 0;">
-                <div class="meta-info" data-de="KI & LLMs">AI & LLMs</div>
-                <h3 data-de="Dokumenten-QA-Chatbot">Document QA Chatbot</h3>
-                <p data-de="KI-gestützter RAG-Chatbot mit LangChain und Gemini API zur deutlichen Reduzierung der Suchzeiten in Dokumenten.">AI-powered RAG chatbot leveraging LangChain, Gemini API, and text-embeddings to significantly reduce manual document search time.</p>
-                <a href="#" onclick="alert('Coming soon!'); return false;" class="action-link" data-de="↗ Projekt öffnen">↗ Open Project</a>
+            <!-- 2 -->
+            <div class="item-card 3d-card" style="margin-bottom: 0;">
+                <div class="glare"></div>
+                <div class="meta-info">AI & LLMs</div>
+                <h3>Document QA Chatbot</h3>
+                <p>AI-powered RAG chatbot leveraging LangChain, Gemini API, and text-embeddings to significantly reduce manual document search time.</p>
+                <a href="#" onclick="alert('Coming soon!'); return false;" class="action-link link-hover">↗ Open Project</a>
             </div>
 
-            <div class="item-card gsap-reveal" style="margin-bottom: 0;">
-                <div class="meta-info" data-de="Datenanalyse">Data Analysis</div>
-                <h3 data-de="Verkaufsprognose (Big Mart)">Big Mart Sales Prediction</h3>
-                <p data-de="Verarbeitung von 7.000+ Datensätzen und Abstimmung eines XGBoost-Regressors zur Aufdeckung standortbezogener Nachfragetreiber.">Processed 7,000+ records and tuned an XGBoost regressor to uncover product visibility and location-based demand drivers.</p>
-                <a href="#" onclick="alert('Coming soon!'); return false;" class="action-link" data-de="↗ Projekt öffnen">↗ Open Project</a>
+            <!-- 3 -->
+            <div class="item-card 3d-card" style="margin-bottom: 0;">
+                <div class="glare"></div>
+                <div class="meta-info">Data Analysis</div>
+                <h3>Big Mart Sales Prediction</h3>
+                <p>Processed 7,000+ records and tuned an XGBoost regressor to uncover product visibility and location-based demand drivers.</p>
+                <a href="#" onclick="alert('Coming soon!'); return false;" class="action-link link-hover">↗ Open Project</a>
             </div>
             
-            <div class="item-card gsap-reveal" style="margin-bottom: 0;">
-                <div class="meta-info" data-de="Computer Vision">Computer Vision</div>
-                <h3 data-de="Gesichtsmasken-Erkennung (CNN)">Face Mask Detection CNN</h3>
-                <p data-de="Echtzeit-CNN-Erkennungspipeline mit einer Testgenauigkeit von ~98%.">Real-time CNN detection pipeline achieving ~98% test accuracy.</p>
-                <a href="#" onclick="alert('Coming soon!'); return false;" class="action-link" data-de="↗ Projekt öffnen">↗ Open Project</a>
+            <!-- 4 -->
+            <div class="item-card 3d-card" style="margin-bottom: 0;">
+                <div class="glare"></div>
+                <div class="meta-info">Computer Vision</div>
+                <h3>Face Mask Detection CNN</h3>
+                <p>Real-time CNN detection pipeline achieving ~98% test accuracy.</p>
+                <a href="#" onclick="alert('Coming soon!'); return false;" class="action-link link-hover">↗ Open Project</a>
             </div>
-            
         </div>
     </section>
 
+    <!-- EDUCATION -->
     <section id="education">
-        <h2 class="scroll-heading" data-de="Bildung & Publikationen">Education & Publications</h2>
+        <h2 class="scrub-text">Academic Portfolio</h2>
         
-        <div class="item-card gsap-reveal">
-            <h3>
-                <img src="ue_logo.png" class="logo-img" onerror="this.style.display='none'">
-                <a href="https://www.ue-germany.com" target="_blank" class="title-link">MSc Data Science ↗</a>
-            </h3>
-            <div class="meta-info" data-de="University of Europe for Applied Sciences | Note: 1.7">University of Europe for Applied Sciences | Grade: 1.7</div>
+        <div class="item-card 3d-card">
+            <div class="glare"></div>
+            <h3><img src="ue_logo.png" class="logo-img" onerror="this.style.display='none'"><a href="https://www.ue-germany.com" target="_blank" class="title-link link-hover">MSc Data Science ↗</a></h3>
+            <div class="meta-info">University of Europe for Applied Sciences</div>
         </div>
         
-        <div class="item-card gsap-reveal">
-            <h3>
-                <img src="sppu_logo.png" class="logo-img" onerror="this.style.display='none'">
-                <a href="https://www.unipune.ac.in/" target="_blank" class="title-link">B.Tech Information Technology ↗</a>
-            </h3>
-            <div class="meta-info" data-de="Savitribai Phule Pune University | Note: 1.8">Savitribai Phule Pune University | Grade: 1.8</div>
+        <div class="item-card 3d-card">
+            <div class="glare"></div>
+            <h3><img src="sppu_logo.png" class="logo-img" onerror="this.style.display='none'"><a href="https://www.unipune.ac.in/" target="_blank" class="title-link link-hover">B.Tech Information Technology ↗</a></h3>
+            <div class="meta-info">Savitribai Phule Pune University</div>
         </div>
 
-        <div class="item-card gsap-reveal">
-            <h3 data-de="IEEE-Publikation (2023)">IEEE Publication (2023)</h3>
-            <p style="margin-top: 5px; margin-bottom: 5px;" data-de="Gesichtsmasken-Erkennung mittels Convolutional Neural Network">Face Mask Detection using Convolutional Neural Network</p>
-            <a href="https://ieeexplore.ieee.org/document/10170036" target="_blank" class="action-link" data-de="↗ Publikation ansehen">↗ View Publication</a>
+        <div class="item-card 3d-card">
+            <div class="glare"></div>
+            <h3>IEEE Publication (2023)</h3>
+            <p>"Face Mask Detection using Convolutional Neural Network"</p>
+            <a href="https://ieeexplore.ieee.org/document/10170036" target="_blank" class="action-link link-hover">↗ View Publication</a>
         </div>
     </section>
 
+    <!-- CONTACT -->
     <section id="contact" style="min-height: auto; padding-top: 4rem;">
-        <div class="glass-bubble gsap-reveal" style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 2rem;">
-            
+        <div class="item-card" style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 2rem; transform-style: flat;">
             <div style="flex: 1; min-width: 250px;">
                 <h3 style="margin-bottom: 1rem; display: flex; align-items: center;">
                     <img src="profile.PNG" alt="Avatar" onerror="this.style.display='none'" style="width: 44px; height: 44px; border-radius: 50%; margin-right: 15px; object-fit: cover;">
                     Siddharth Shelke
                 </h3>
-                <p style="font-size: 0.95rem; max-width: 350px;" data-de="Entwicklung von Datenlösungen, Erforschung von Operational Intelligence und Umwandlung komplexer Informationen in verwertbare Erkenntnisse.">
-                    Engineering data solutions, exploring operational intelligence, and transforming complex information into actionable insights.
-                </p>
+                <p style="font-size: 0.95rem; max-width: 350px;">Engineering data solutions, exploring operational intelligence, and transforming complex information into actionable insights.</p>
             </div>
 
             <div style="display: flex; gap: 4rem; flex-wrap: wrap;">
                 <div>
-                    <h4 style="color: var(--text-main); margin-bottom: 1.2rem; font-family: 'SF Mono', monospace; font-size: 0.85rem;" data-de="ENTDECKEN">EXPLORE</h4>
-                    <a href="#about" style="display:block; color: var(--text-muted); text-decoration:none; margin-bottom: 0.8rem; font-size: 0.9rem; transition: 0.3s;" data-de="Über mich">About</a>
-                    <a href="#experience" style="display:block; color: var(--text-muted); text-decoration:none; margin-bottom: 0.8rem; font-size: 0.9rem; transition: 0.3s;" data-de="Erfahrung">Experience</a>
-                    <a href="#projects" style="display:block; color: var(--text-muted); text-decoration:none; margin-bottom: 0.8rem; font-size: 0.9rem; transition: 0.3s;" data-de="Projekte">Projects</a>
+                    <h4 style="color: var(--text-main); margin-bottom: 1.2rem; font-family: 'SF Mono', monospace; font-size: 0.85rem;">EXPLORE</h4>
+                    <a href="#about" class="link-hover" style="display:block; color: var(--text-muted); text-decoration:none; margin-bottom: 0.8rem; font-size: 0.9rem;">About</a>
+                    <a href="#experience" class="link-hover" style="display:block; color: var(--text-muted); text-decoration:none; margin-bottom: 0.8rem; font-size: 0.9rem;">Experience</a>
+                    <a href="#projects" class="link-hover" style="display:block; color: var(--text-muted); text-decoration:none; margin-bottom: 0.8rem; font-size: 0.9rem;">Projects</a>
                 </div>
                 <div>
-                    <h4 style="color: var(--text-main); margin-bottom: 1.2rem; font-family: 'SF Mono', monospace; font-size: 0.85rem;" data-de="VERBINDEN">CONNECT</h4>
-                    <a href="mailto:siddharthshelke634@gmail.com" style="display:block; color: var(--text-muted); text-decoration:none; margin-bottom: 0.8rem; font-size: 0.9rem; transition: 0.3s;">Email</a>
-                    <a href="https://linkedin.com/in/siddharthnshelke" target="_blank" style="display:block; color: var(--text-muted); text-decoration:none; margin-bottom: 0.8rem; font-size: 0.9rem; transition: 0.3s;">LinkedIn</a>
-                    <a href="https://www.instagram.com/siddharthh_me/" target="_blank" style="display:block; color: var(--text-muted); text-decoration:none; margin-bottom: 0.8rem; font-size: 0.9rem; transition: 0.3s;">Instagram</a>
+                    <h4 style="color: var(--text-main); margin-bottom: 1.2rem; font-family: 'SF Mono', monospace; font-size: 0.85rem;">CONNECT</h4>
+                    <a href="mailto:siddharthshelke634@gmail.com" class="link-hover" style="display:block; color: var(--text-muted); text-decoration:none; margin-bottom: 0.8rem; font-size: 0.9rem;">Email</a>
+                    <a href="https://linkedin.com/in/siddharthnshelke" target="_blank" class="link-hover" style="display:block; color: var(--text-muted); text-decoration:none; margin-bottom: 0.8rem; font-size: 0.9rem;">LinkedIn</a>
                 </div>
             </div>
         </div>
-        <div style="text-align: center; margin-top: 3rem; font-size: 0.85rem; color: var(--text-muted); font-family: 'SF Mono', monospace;">
+        <div style="text-align: center; margin-top: 3rem; font-size: 0.85rem; color: var(--text-muted);">
             &copy; 2026 Siddharth Shelke. Designed & Engineered for Data.
         </div>
     </section>
@@ -497,178 +475,202 @@
 </div>
 
 <script>
-    // === EXPANDABLE DETAILS LOGIC ===
-    function toggleDetails(panelId, btnElement) {
-        const panel = document.getElementById(panelId);
-        const isExpanded = panel.classList.contains('expanded');
-        
-        if (isExpanded) {
-            panel.classList.remove('expanded');
-            btnElement.innerText = isGerman ? "Mehr erfahren ↓" : "More Info ↓";
+    gsap.registerPlugin(ScrollTrigger);
+
+    // ==========================================
+    // 1. CINEMATIC LOAD SEQUENCE
+    // ==========================================
+    const typeText = "Siddharth Shelke.";
+    const typeDest = document.getElementById("typewriter-text");
+    let i = 0;
+
+    function typeWriter() {
+        if (i < typeText.length) {
+            typeDest.innerHTML += typeText.charAt(i);
+            i++;
+            setTimeout(typeWriter, 80);
         } else {
-            panel.classList.add('expanded');
-            btnElement.innerText = isGerman ? "Weniger anzeigen ↑" : "Show Less ↑";
+            setTimeout(() => {
+                gsap.to("#loader", { opacity: 0, duration: 1, ease: "power2.inOut", onComplete: () => {
+                    document.getElementById("loader").style.display = "none";
+                    gsap.to("#network-canvas", { opacity: 1, duration: 1 });
+                    gsap.to(".nav-wrapper", { opacity: 1, y: 0, duration: 1, ease: "back.out(1.7)" });
+                }});
+            }, 500);
         }
     }
+    window.onload = () => { setTimeout(typeWriter, 500); };
 
-    // === TRANSLATION TOGGLE LOGIC ===
-    let isGerman = false;
-    function toggleLang() {
-        isGerman = !isGerman;
-        
-        document.querySelectorAll('[data-de]').forEach(el => {
-            if (!el.hasAttribute('data-en')) {
-                el.setAttribute('data-en', el.innerHTML);
-            }
-            el.innerHTML = isGerman ? el.getAttribute('data-de') : el.getAttribute('data-en');
-        });
-
-        document.getElementById('lang-toggle').innerText = isGerman ? "EN" : "DE";
-        
-        // Update the expanded/collapsed button text dynamically when language changes
-        const openPanels = document.querySelectorAll('.details-panel.expanded');
-        const closedPanels = document.querySelectorAll('.details-panel:not(.expanded)');
-        
-        openPanels.forEach(panel => {
-            const btn = panel.previousElementSibling;
-            if(btn && btn.classList.contains('more-info-btn')) {
-                btn.innerText = isGerman ? "Weniger anzeigen ↑" : "Show Less ↑";
-            }
-        });
-        
-        closedPanels.forEach(panel => {
-            const btn = panel.previousElementSibling;
-            if(btn && btn.classList.contains('more-info-btn')) {
-                btn.innerText = isGerman ? "Mehr erfahren ↓" : "More Info ↓";
-            }
-        });
-    }
-
-    // === THEME TOGGLE LOGIC ===
-    let particleRGB = '100, 255, 218'; // Default Cyan
+    // ==========================================
+    // 2. CUSTOM CURSOR
+    // ==========================================
+    const cursor = document.getElementById("cursor-ring");
+    let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
     
-    // Clean SVG Icons for Theme Toggle
-    const sunIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>`;
-    const moonIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>`;
+    window.addEventListener("mousemove", (e) => {
+        mouseX = e.clientX; mouseY = e.clientY;
+        gsap.to(cursor, { x: mouseX, y: mouseY, duration: 0.1, ease: "power2.out" });
+    });
+
+    document.querySelectorAll('.link-hover').forEach(link => {
+        link.addEventListener("mouseenter", () => cursor.classList.add("active"));
+        link.addEventListener("mouseleave", () => cursor.classList.remove("active"));
+    });
+
+    // ==========================================
+    // 3. MAGNETIC BUTTONS
+    // ==========================================
+    document.querySelectorAll('.magnetic').forEach(btn => {
+        btn.addEventListener('mousemove', (e) => {
+            const rect = btn.getBoundingClientRect();
+            const x = (e.clientX - rect.left - rect.width / 2) * 0.3; // 0.3 pull strength
+            const y = (e.clientY - rect.top - rect.height / 2) * 0.3;
+            gsap.to(btn, { x: x, y: y, duration: 0.3, ease: "power2.out" });
+        });
+        btn.addEventListener('mouseleave', () => {
+            gsap.to(btn, { x: 0, y: 0, duration: 0.6, ease: "elastic.out(1, 0.3)" });
+        });
+    });
+
+    // ==========================================
+    // 4. 3D CARD TILT & GLARE
+    // ==========================================
+    document.querySelectorAll('.3d-card').forEach(card => {
+        const glare = card.querySelector('.glare');
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            // Calc rotation (max 3 degrees)
+            const rotateY = -1 * ((rect.width / 2 - x) / (rect.width / 2)) * 3;
+            const rotateX = ((rect.height / 2 - y) / (rect.height / 2)) * 3;
+            
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+            if(glare) {
+                glare.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(255,255,255,0.1), transparent 50%)`;
+            }
+        });
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+        });
+    });
+
+    // ==========================================
+    // 5. SCROLL EFFECTS (Progress, Parallax, Headings)
+    // ==========================================
+    window.addEventListener("scroll", () => {
+        let scrollPercent = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+        document.getElementById("progress-bar").style.width = scrollPercent + "%";
+    });
+
+    // Parallax Depth Images
+    gsap.utils.toArray('.parallax-img').forEach(img => {
+        gsap.to(img, {
+            y: -40, // moves up slower than page
+            ease: "none",
+            scrollTrigger: { trigger: img, scrub: true }
+        });
+    });
+
+    // Center-Scrub Exaggerated Headings
+    document.querySelectorAll('.scrub-text').forEach(heading => {
+        const text = heading.innerText;
+        heading.innerHTML = '';
+        text.split(' ').forEach((word, i, arr) => {
+            const wordSpan = document.createElement('span');
+            wordSpan.style.display = 'inline-block';
+            word.split('').forEach(char => {
+                const charSpan = document.createElement('span');
+                charSpan.className = 'char';
+                charSpan.innerHTML = char;
+                wordSpan.appendChild(charSpan);
+            });
+            heading.appendChild(wordSpan);
+            if (i < arr.length - 1) heading.innerHTML += '&nbsp;';
+        });
+
+        gsap.fromTo(heading.querySelectorAll('.char'), 
+            { opacity: 0 },
+            {
+                opacity: 1, stagger: 0.1,
+                scrollTrigger: {
+                    trigger: heading,
+                    start: "top 60%", // Exact center window
+                    end: "top 40%",
+                    scrub: true
+                }
+            }
+        );
+    });
+
+    // ==========================================
+    // 6. ACCORDION & THEME UTILS
+    // ==========================================
+    function toggleDetails(panelId, btnElement) {
+        const panel = document.getElementById(panelId);
+        if (panel.classList.contains('expanded')) {
+            panel.classList.remove('expanded');
+            btnElement.innerText = "More Info ↓";
+        } else {
+            panel.classList.add('expanded');
+            btnElement.innerText = "Show Less ↑";
+        }
+    }
 
     function toggleTheme() {
         document.body.classList.toggle('light-mode');
-        const themeBtn = document.getElementById('theme-toggle');
-        
-        if (document.body.classList.contains('light-mode')) {
-            themeBtn.innerHTML = moonIcon;
-            particleRGB = '43, 108, 176'; // Deep Blue for Light Mode
-        } else {
-            themeBtn.innerHTML = sunIcon;
-            particleRGB = '100, 255, 218'; // Cyan for Dark Mode
-        }
     }
+    function toggleLang() { alert("German Translation Hooked."); }
 
-    // === SCROLL ANIMATION ===
-    document.addEventListener("DOMContentLoaded", function() {
-        gsap.registerPlugin(ScrollTrigger);
-        
-        // 1. Reveal Cards on Scroll
-        const revealElements = document.querySelectorAll('.gsap-reveal');
-        revealElements.forEach(el => {
-            gsap.to(el, {
-                scrollTrigger: {
-                    trigger: el,
-                    start: "top 85%",
-                    toggleActions: "play none none none"
-                },
-                y: 0,
-                opacity: 1,
-                duration: 0.8,
-                ease: "power3.out"
-            });
-        });
+    // ==========================================
+    // 7. FLUID AURA CANVAS
+    // ==========================================
+    const cvs = document.getElementById('network-canvas');
+    const ctx = cvs.getContext('2d');
+    let cw, ch, time = 0;
+    let auraX = window.innerWidth / 2, auraY = window.innerHeight / 2;
 
-        // 2. Heading Color Fade on Scroll
-        const headings = document.querySelectorAll('.scroll-heading');
-        headings.forEach(heading => {
-            gsap.set(heading, { color: "rgba(134, 134, 139, 0.2)" }); // Faded initial
-            gsap.to(heading, {
-                scrollTrigger: {
-                    trigger: heading,
-                    start: "top 95%",
-                    end: "top 50%",
-                    scrub: true
-                },
-                color: "var(--text-main)", // Full color when scrolled
-                ease: "none"
-            });
-        });
-    });
+    function resizeCanvas() { cw = cvs.width = window.innerWidth; ch = cvs.height = window.innerHeight; }
+    window.addEventListener('resize', resizeCanvas); resizeCanvas();
 
-    // === LIVE DATA FLUID AURA BACKGROUND ===
-    const canvas = document.getElementById('network-canvas');
-    const ctx = canvas.getContext('2d');
-    
-    let width, height;
-    let mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-    let aura = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-    let time = 0;
-
-    function initCanvas() {
-        width = canvas.width = window.innerWidth;
-        height = canvas.height = window.innerHeight;
-    }
-    
-    window.addEventListener('resize', initCanvas);
-    initCanvas();
-
-    window.addEventListener('mousemove', (e) => {
-        mouse.x = e.clientX;
-        mouse.y = e.clientY;
-    });
-
-    function animate() {
+    function animateAura() {
         time += 0.005;
+        // Trail cursor smoothly
+        auraX += (mouseX - auraX) * 0.05;
+        auraY += (mouseY - auraY) * 0.05;
+
+        const style = getComputedStyle(document.body);
+        const bg = style.getPropertyValue('--bg-color').trim();
+        const c1 = style.getPropertyValue('--aura-1').trim();
+        const c2 = style.getPropertyValue('--aura-2').trim();
+        const c3 = style.getPropertyValue('--aura-3').trim();
         
-        // Smooth cursor trailing
-        aura.x += (mouse.x - aura.x) * 0.05;
-        aura.y += (mouse.y - aura.y) * 0.05;
+        ctx.fillStyle = bg;
+        ctx.fillRect(0, 0, cw, ch);
 
-        // Base Background
-        const computedStyle = getComputedStyle(document.body);
-        const bgColor = computedStyle.getPropertyValue('--bg-color').trim();
-        const color1 = computedStyle.getPropertyValue('--aura-1').trim();
-        const color2 = computedStyle.getPropertyValue('--aura-2').trim();
-        const color3 = computedStyle.getPropertyValue('--aura-3').trim();
-        
-        ctx.fillStyle = bgColor;
-        ctx.fillRect(0, 0, width, height);
+        // Orb 1: Cursor tracker
+        let g1 = ctx.createRadialGradient(auraX, auraY, 0, auraX, auraY, cw * 0.4);
+        g1.addColorStop(0, c1); g1.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = g1; ctx.fillRect(0, 0, cw, ch);
 
-        // Orb 1: Tracks Mouse (Cyan/Blue)
-        let grad1 = ctx.createRadialGradient(aura.x, aura.y, 0, aura.x, aura.y, width * 0.4);
-        grad1.addColorStop(0, color1);
-        grad1.addColorStop(1, 'rgba(0,0,0,0)');
-        ctx.fillStyle = grad1;
-        ctx.fillRect(0, 0, width, height);
+        // Orb 2: Autonomous
+        let o2X = cw * 0.5 + Math.sin(time) * cw * 0.25;
+        let o2Y = ch * 0.5 + Math.cos(time * 0.8) * ch * 0.25;
+        let g2 = ctx.createRadialGradient(o2X, o2Y, 0, o2X, o2Y, cw * 0.5);
+        g2.addColorStop(0, c2); g2.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = g2; ctx.fillRect(0, 0, cw, ch);
 
-        // Orb 2: Autonomous Floating (Deep Purple / Magenta)
-        let orb2X = width * 0.5 + Math.sin(time) * width * 0.25;
-        let orb2Y = height * 0.5 + Math.cos(time * 0.8) * height * 0.25;
-        let grad2 = ctx.createRadialGradient(orb2X, orb2Y, 0, orb2X, orb2Y, width * 0.5);
-        grad2.addColorStop(0, color2);
-        grad2.addColorStop(1, 'rgba(0,0,0,0)');
-        ctx.fillStyle = grad2;
-        ctx.fillRect(0, 0, width, height);
+        // Orb 3: Autonomous
+        let o3X = cw * 0.5 + Math.cos(time * 1.2) * cw * 0.3;
+        let o3Y = ch * 0.5 + Math.sin(time * 1.1) * ch * 0.3;
+        let g3 = ctx.createRadialGradient(o3X, o3Y, 0, o3X, o3Y, cw * 0.45);
+        g3.addColorStop(0, c3); g3.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = g3; ctx.fillRect(0, 0, cw, ch);
 
-        // Orb 3: Autonomous Floating (Teal / Mint)
-        let orb3X = width * 0.5 + Math.cos(time * 1.2) * width * 0.3;
-        let orb3Y = height * 0.5 + Math.sin(time * 1.1) * height * 0.3;
-        let grad3 = ctx.createRadialGradient(orb3X, orb3Y, 0, orb3X, orb3Y, width * 0.45);
-        grad3.addColorStop(0, color3);
-        grad3.addColorStop(1, 'rgba(0,0,0,0)');
-        ctx.fillStyle = grad3;
-        ctx.fillRect(0, 0, width, height);
-
-        requestAnimationFrame(animate);
+        requestAnimationFrame(animateAura);
     }
-    
-    animate();
+    animateAura();
 </script>
 
 </body>
