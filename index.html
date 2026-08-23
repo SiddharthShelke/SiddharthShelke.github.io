@@ -4,595 +4,360 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Siddharth Shelke | Data Scientist & Engineer</title>
+    
+    <!-- GSAP & ScrollTrigger -->
+    <script src="https://unpkg.com/gsap@3.12.2/dist/gsap.min.js"></script>
+    <script src="https://unpkg.com/gsap@3.12.2/dist/ScrollTrigger.min.js"></script>
+
     <style>
-        /* === PREMIUM DARK THEME (DEFAULT) === */
+        /* === ULTRA-PREMIUM APPLE AESTHETIC === */
         :root {
-            --bg-color: #0a192f;        
-            --card-bg: rgba(17, 34, 64, 0.5); 
-            --bubble-bg: rgba(17, 34, 64, 0.35); 
-            --text-main: #ccd6f6;       
-            --text-muted: #8892b0;      
-            --accent: #64ffda;          
-            --nav-bg: rgba(10, 25, 47, 0.85);
-            --border-color: rgba(255, 255, 255, 0.08);
-            --shadow-color: rgba(2, 12, 27, 0.7);
+            --bg-color: #000000;
+            --text-main: #ffffff;
+            --text-muted: #86868b;
+            --card-bg: rgba(25, 25, 27, 0.6);
+            --border-light: rgba(255, 255, 255, 0.1);
+            --accent: #2997ff;
+            --font-stack: -apple-system, BlinkMacSystemFont, "Inter", "San Francisco", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
-        
-        /* === PREMIUM LIGHT THEME === */
-        body.light-mode {
-            --bg-color: #f4f7f6;        
-            --card-bg: rgba(255, 255, 255, 0.6); 
-            --bubble-bg: rgba(255, 255, 255, 0.4); 
-            --text-main: #1a252f;       
-            --text-muted: #4a5568;      
-            --accent: #2b6cb0; 
-            --nav-bg: rgba(244, 247, 246, 0.85);
-            --border-color: rgba(0, 0, 0, 0.08);
-            --shadow-color: rgba(0, 0, 0, 0.05);
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
-        
-        /* === SCROLL SNAPPING & BASE === */
-        html { scroll-snap-type: y proximity; scroll-behavior: smooth; }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            margin: 0; padding: 0;
-            background-color: var(--bg-color); color: var(--text-main);
-            line-height: 1.6; overflow-x: hidden; transition: background-color 0.5s ease, color 0.5s ease;
+            font-family: var(--font-stack);
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.5;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
-        /* === LIVE BACKGROUND CANVAS === */
-        #network-canvas {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            z-index: -1; pointer-events: none;
+        /* === INTERACTIVE FLUID AURA CANVAS === */
+        #aura-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+            background: #000000;
         }
 
-        /* === FROSTED GLASS NAVIGATION === */
+        /* === MINIMAL STICKY NAVIGATION === */
         nav {
-            background-color: var(--nav-bg);
-            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-            padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center;
-            position: fixed; top: 0; width: 100%; box-sizing: border-box; z-index: 1000;
-            border-bottom: 1px solid var(--border-color); transition: background-color 0.5s ease;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 1px solid var(--border-light);
+            z-index: 1000;
         }
-        .nav-links { display: flex; gap: 1.5rem; align-items: center; }
-        .nav-links a { color: var(--text-main); text-decoration: none; font-weight: 500; font-size: 0.9rem; transition: color 0.3s; }
-        .nav-links a:hover { color: var(--accent); }
 
-        /* === TOGGLE CONTROLS === */
-        .controls { display: flex; gap: 1rem; align-items: center; }
-        .icon-btn {
-            background: transparent; border: 1px solid var(--border-color); color: var(--text-main);
-            border-radius: 50%; width: 35px; height: 35px; cursor: pointer; display: flex; align-items: center; 
-            justify-content: center; font-size: 0.9rem; transition: all 0.3s;
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
         }
-        .icon-btn:hover { border-color: var(--accent); color: var(--accent); transform: scale(1.1); }
-        .icon-btn svg { width: 16px; height: 16px; }
 
-        /* === DROPDOWN CV BUTTON === */
-        .dropdown { position: relative; display: inline-block; }
-        .dropbtn {
-            background-color: transparent; color: var(--accent); padding: 8px 16px; font-size: 14px;
-            border: 1px solid var(--accent); border-radius: 4px; cursor: pointer; font-weight: bold; transition: all 0.3s;
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            transition: color 0.3s ease;
         }
-        .dropbtn:hover { background-color: rgba(100, 255, 218, 0.1); }
-        body.light-mode .dropbtn:hover { background-color: rgba(43, 108, 176, 0.1); }
-        .dropdown-content {
-            display: none; position: absolute; right: 0; background-color: var(--card-bg);
-            backdrop-filter: blur(10px); min-width: 160px; box-shadow: 0px 8px 16px var(--shadow-color);
-            border: 1px solid var(--border-color); z-index: 1; border-radius: 4px;
-        }
-        .dropdown-content a { color: var(--text-main); padding: 12px 16px; text-decoration: none; display: block; font-size: 0.9rem; }
-        .dropdown-content a:hover { color: var(--accent); background-color: rgba(100, 255, 218, 0.05); }
-        .dropdown:hover .dropdown-content { display: block; }
 
-        /* === FULL-PAGE SECTIONS === */
-        .container { max-width: 1000px; margin: auto; padding: 0 2rem; }
+        .nav-links a:hover {
+            color: var(--text-main);
+        }
+
+        /* === TYPOGRAPHY & LAYOUT === */
+        .container {
+            max-width: 1040px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
         section {
-            min-height: 100vh; display: flex; flex-direction: column; justify-content: center;
-            scroll-snap-align: start; padding-top: 80px; padding-bottom: 2rem; box-sizing: border-box;
+            padding: 8rem 0;
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
-        
-        h2 { color: var(--text-main); font-size: 2.5rem; margin-bottom: 2rem; display: flex; align-items: center; }
-        h2::after { content: ""; display: block; height: 1px; width: 300px; background-color: var(--border-color); margin-left: 20px; }
-        h3 { color: var(--text-main); margin-bottom: 0.5rem; font-size: 1.3rem; }
-        
-        /* === GLASS BUBBLES & CARDS === */
-        .glass-bubble {
-            background: var(--bubble-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-            padding: 3rem; border-radius: 20px; border: 1px solid var(--border-color);
-            box-shadow: 0 10px 30px -15px var(--shadow-color); transition: all 0.5s ease;
-        }
-        .item-card {
-            background: var(--card-bg); backdrop-filter: blur(8px); padding: 2rem; border-radius: 12px;
-            margin-bottom: 1.5rem; border: 1px solid var(--border-color);
-            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s ease, background 0.5s ease;
-        }
-        .item-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px -15px var(--shadow-color); border-color: var(--accent); }
-        
-        .meta-info { font-size: 0.9rem; color: var(--accent); margin-bottom: 1rem; font-family: monospace; }
-        ul { color: var(--text-muted); padding-left: 20px; }
-        p { color: var(--text-muted); }
 
-        /* === LOGOS & LINKS === */
-        .logo-img { 
-            height: 24px; width: auto; vertical-align: middle; margin-right: 12px; border-radius: 4px; 
-            background-color: rgba(255, 255, 255, 0.9); padding: 3px; box-sizing: content-box;
-            transition: background-color 0.5s ease;
+        h1, h2, h3 {
+            font-weight: 600;
+            letter-spacing: -0.02em;
         }
-        body.light-mode .logo-img { background-color: transparent; padding: 0; }
-        
-        .title-link { text-decoration: none; color: var(--text-main); transition: color 0.3s; }
-        .title-link:hover { color: var(--accent); }
-        .action-link { display: inline-block; margin-top: 15px; font-size: 0.9rem; color: var(--accent); text-decoration: none; font-family: monospace; }
-        .action-link:hover { text-decoration: underline; }
 
-        /* === HERO & ABOUT LAYOUTS === */
-        .hero-title { font-size: 4rem; font-weight: 800; margin: 0; color: var(--text-main); line-height: 1.1; }
-        .hero-subtitle { font-size: 2.5rem; font-weight: 700; margin: 10px 0; color: var(--text-muted); }
-        
-        .about-grid-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
-        @media (max-width: 800px) { .about-grid-layout { grid-template-columns: 1fr; gap: 2rem; } }
-        .about-image-new img { width: 100%; border-radius: 24px; box-shadow: 0 20px 40px var(--shadow-color); border: 1px solid var(--border-color); object-fit: cover; }
-        .about-headline { font-size: 2.4rem; line-height: 1.2; margin-top: 0; margin-bottom: 20px; color: var(--text-main); font-weight: 700; }
-        
-        .expertise-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
-        .expertise-card {
-            background: var(--card-bg); border: 1px solid var(--border-color); padding: 1.2rem;
-            border-radius: 12px; font-size: 0.95rem; font-weight: 500; color: var(--text-main); transition: background 0.3s, border-color 0.3s;
+        .section-tag {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
         }
-        .expertise-card:hover { border-color: var(--accent); }
 
-        /* === EXPANDABLE DETAILS PANEL === */
-        .more-info-btn {
-            background: transparent; border: none; color: var(--accent);
-            font-family: monospace; font-size: 0.95rem; cursor: pointer;
-            padding: 0; margin-top: 10px; display: inline-flex; align-items: center;
-            transition: color 0.3s; font-weight: bold;
+        /* === HERO SECTION === */
+        #hero {
+            text-align: center;
+            align-items: center;
+            padding-top: 12rem;
         }
-        .more-info-btn:hover { text-decoration: underline; }
-        
-        .details-panel {
-            max-height: 0; overflow: hidden; opacity: 0;
-            transition: max-height 0.6s ease, margin-top 0.4s ease, opacity 0.5s ease;
+
+        .hero-title {
+            font-size: clamp(3rem, 6vw, 6rem);
+            line-height: 1.05;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(180deg, #ffffff 0%, #a1a1a6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-        .details-panel.expanded {
-            max-height: 8000px; 
-            opacity: 1; margin-top: 1.5rem; padding-top: 1.5rem;
-            border-top: 1px dashed var(--border-color);
+
+        .hero-subtitle {
+            font-size: clamp(1.2rem, 2vw, 1.8rem);
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 3rem auto;
+            font-weight: 400;
         }
-        
-        .stacked-images {
-            display: flex; flex-direction: column; gap: 2.5rem; margin-top: 1.5rem; align-items: center;
+
+        /* === TIMELINE & PRODUCT GRIDS === */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
         }
-        .stacked-images img {
-            width: 100%; max-width: 900px; height: auto; border-radius: 12px;
-            border: 1px solid var(--border-color); box-shadow: 0 10px 30px -15px var(--shadow-color);
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-light);
+            border-radius: 24px;
+            padding: 3rem 2.5rem;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.4s ease;
+            position: relative;
+            overflow: hidden;
         }
-        
-        /* === APPLE-STYLE SCROLL ANIMATIONS === */
-        .reveal-section { opacity: 0; transform: translateY(40px); transition: all 1s cubic-bezier(0.25, 1, 0.5, 1); }
-        .reveal-section.is-visible { opacity: 1; transform: translateY(0); }
+
+        .card:hover {
+            transform: scale(1.02);
+            background: rgba(40, 40, 42, 0.8);
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .card .meta {
+            font-family: SFMono-Regular, Consolas, monospace;
+            font-size: 0.8rem;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+        }
+
+        .card p, .card li {
+            color: var(--text-muted);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .card ul {
+            padding-left: 1.2rem;
+            margin-top: 1rem;
+        }
+
+        .card li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            nav { padding: 1rem; }
+            .nav-links { gap: 1.2rem; }
+            section { padding: 5rem 0; }
+            .card { padding: 2rem 1.5rem; }
+        }
     </style>
 </head>
 <body>
 
-<canvas id="network-canvas"></canvas>
+    <!-- Interactive Canvas Background -->
+    <canvas id="aura-canvas"></canvas>
 
-<nav>
-    <div class="nav-links">
-        <a href="#home" data-de="Startseite">Home</a>
-        <a href="#about" data-de="Über mich">About</a>
-        <a href="#experience" data-de="Erfahrung">Experience</a>
-        <a href="#projects" data-de="Projekte">Projects</a>
-        <a href="#education" data-de="Bildung">Education</a>
-        <a href="#contact" data-de="Kontakt">Contact</a>
+    <!-- Minimal Nav -->
+    <nav>
+        <div class="nav-links">
+            <a href="#hero">Home</a>
+            <a href="#experience">Experience</a>
+            <a href="#projects">Projects</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Hero Section -->
+        <section id="hero">
+            <h1 class="hero-title gs-reveal">Siddharth Shelke.<br>I engineer data solutions.</h1>
+            <p class="hero-subtitle gs-reveal">Bridging the gap between raw data and high-level predictive modeling across engineering and operational systems.</p>
+        </section>
+
+        <!-- Experience Section -->
+        <section id="experience">
+            <div class="gs-reveal">
+                <div class="section-tag">Experience</div>
+                <h2>Professional Timeline.</h2>
+            </div>
+            
+            <div class="grid-2">
+                <div class="card gs-reveal">
+                    <h3>Ottobock</h3>
+                    <div class="meta">Data Science Intern • Feb 2026 - Aug 2026</div>
+                    <ul>
+                        <li>Automated a 3D data preprocessing pipeline to clean, align, and standardize spatial data.</li>
+                        <li>Engineered data-driven ML models to capture 3D spatial mappings, automating clinical design.</li>
+                        <li>Established quantitative evaluation frameworks utilizing advanced spatial metrics.</li>
+                    </ul>
+                </div>
+
+                <div class="card gs-reveal">
+                    <h3>Lear Corporation</h3>
+                    <div class="meta">Data Analyst Intern • Feb 2025 - Apr 2025</div>
+                    <ul>
+                        <li>Implemented ETL pipelines in Palantir Foundry, integrating data from 7 plants and reducing reporting time by 85%.</li>
+                        <li>Designed an interactive dashboard displaying 33 KOTs, 8 KPIs, and volume data per plant.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects">
+            <div class="gs-reveal">
+                <div class="section-tag">Selected Work</div>
+                <h2>Systems & Architectures.</h2>
+            </div>
+            
+            <div class="grid-2">
+                <div class="card gs-reveal">
+                    <h3>Predictive Maintenance System</h3>
+                    <div class="meta">Machine Learning Pipeline</div>
+                    <p>End-to-end ML solution utilizing a Random Forest Ensemble and physics-informed features to successfully detect rare industrial machine failures.</p>
+                </div>
+
+                <div class="card gs-reveal">
+                    <h3>Document QA Chatbot</h3>
+                    <div class="meta">AI & LLMs Architecture</div>
+                    <p>AI-powered RAG chatbot leveraging LangChain, the Gemini API, and text-embeddings to significantly reduce manual document search times.</p>
+                </div>
+
+                <div class="card gs-reveal">
+                    <h3>Face Mask Detection</h3>
+                    <div class="meta">Computer Vision / CNN</div>
+                    <p>Real-time CNN detection pipeline achieving ~98% test accuracy, published in IEEE.</p>
+                </div>
+            </div>
+        </section>
     </div>
-    
-    <div class="controls">
-        <button class="icon-btn" id="lang-toggle" onclick="toggleLang()" title="Toggle Language" style="font-weight: bold;">DE</button>
-        <button class="icon-btn" id="theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="5"></circle>
-                <line x1="12" y1="1" x2="12" y2="3"></line>
-                <line x1="12" y1="21" x2="12" y2="23"></line>
-                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                <line x1="1" y1="12" x2="3" y2="12"></line>
-                <line x1="21" y1="12" x2="23" y2="12"></line>
-                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-            </svg>
-        </button>
-        <div class="dropdown">
-            <button class="dropbtn" data-de="Lebenslauf">Download CV</button>
-            <div class="dropdown-content">
-                <a href="SShelke_CV.pdf" target="_blank">English CV</a>
-                <a href="SShelke_Lebenslauf.pdf" target="_blank">Deutsch CV</a>
-            </div>
-        </div>
-    </div>
-</nav>
 
-<div class="container">
+    <!-- Scripts -->
+    <script>
+        // === GSAP SCROLL ANIMATIONS ===
+        gsap.registerPlugin(ScrollTrigger);
 
-    <section id="home">
-        <div class="glass-bubble">
-            <p style="color: var(--accent); font-family: monospace; font-size: 1.1rem; margin-bottom: 10px;" data-de="Hallo, mein Name ist">Hi, my name is</p>
-            <h1 class="hero-title">Siddharth Shelke.</h1>
-            <h2 class="hero-subtitle" style="border: none; margin-bottom: 0;" data-de="Ich entwickle Datenlösungen.">I engineer data solutions.</h2>
-            <p style="max-width: 540px; font-size: 1.2rem; color: var(--text-muted); margin-top: 20px; margin-bottom: 30px;" data-de="Ich bin Data Analyst, Data Scientist und Data Engineer, spezialisiert auf robuste ETL-Pipelines, KI-Modelle und die Umwandlung komplexer 3D- und Geodaten in verwertbare Erkenntnisse.">
-                I am a Data Analyst, Data Scientist, and Data Engineer specializing in robust ETL pipelines, AI models, and transforming complex 3D and spatial data into actionable intelligence.
-            </p>
-            <a href="#projects" style="padding: 12px 24px; border: 1px solid var(--accent); color: var(--accent); text-decoration: none; border-radius: 4px; font-family: monospace; transition: 0.3s; display: inline-block;" data-de="Meine Projekte ansehen!">Check out my work!</a>
-        </div>
-    </section>
-
-    <section id="about" style="padding-top: 120px;">
-        <div class="about-grid-layout">
-            <div class="about-image-new">
-                <img src="profile.PNG" alt="Siddharth Shelke" onerror="this.style.display='none'">
-            </div>
-
-            <div class="about-text-new">
-                <h2 class="about-headline" style="border: none;" data-de="Entwicklung von Datensystemen mit Fokus auf robuste Pipelines, prädiktive Modellierung und intelligente Entscheidungsfindung.">
-                    Engineering data systems with a focus on robust pipelines, predictive modeling, and intelligent decision-making.
-                </h2>
-                
-                <p style="font-size: 1.05rem; color: var(--text-muted); margin-bottom: 15px;" data-de="Ich lebe derzeit in Göttingen, Deutschland, und bin darauf spezialisiert, die Lücke zwischen Rohdaten und hochrangiger prädiktiver Modellierung in technischen und operativen Systemen zu schließen.">
-                    I am currently based in Göttingen, Germany, specializing in bridging the gap between raw data and high-level predictive modeling across engineering and operational systems.
-                </p>
-                <p style="font-size: 1.05rem; color: var(--text-muted); margin-bottom: 20px;" data-de="Meine technischen Interessen liegen in der Verarbeitung komplexer Geodaten, der Optimierung von ETL-Pipelines und dem Aufbau skalierbarer KI-Architekturen.">
-                    My technical interests lie in processing complex spatial data, optimizing ETL pipelines, and building scalable AI architectures.
-                </p>
-                
-                <div class="expertise-grid">
-                    <div class="expertise-card" data-de="Maschinelles Lernen & KI">Machine Learning & AI</div>
-                    <div class="expertise-card" data-de="Data Engineering (ETL)">Data Engineering (ETL)</div>
-                    <div class="expertise-card" data-de="3D Computer Vision">3D Computer Vision</div>
-                    <div class="expertise-card" data-de="Datenanalyse & BI">Data Analytics & BI</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="experience">
-        <h2 data-de="Berufserfahrung">Where I've Worked</h2>
-        
-        <div class="item-card">
-            <h3>
-                <img src="ottobock_logo.png" class="logo-img" onerror="this.style.display='none'">
-                <a href="https://www.ottobock.com" target="_blank" class="title-link" data-de="Data Science Praktikant @ Ottobock ↗">Data Science Intern @ Ottobock ↗</a>
-            </h3>
-            <div class="meta-info" data-de="Feb 2026 - Aug 2026 | Duderstadt, Deutschland">Feb 2026 - Aug 2026 | Duderstadt, Germany</div>
-            <ul>
-                <li data-de="Entwurf und Automatisierung einer 3D-Datenvorverarbeitungs-Pipeline mit Python zur Bereinigung, Ausrichtung und Standardisierung von Geodaten.">Designed and automated a 3D data preprocessing pipeline using Python to clean, align, and standardize spatial data and clinical records.</li>
-                <li data-de="Entwicklung datengesteuerter ML-Modelle zur Erfassung von 3D-Raumzuordnungen, um klinische Designprozesse zu automatisieren.">Engineered data-driven ML models to capture 3D spatial mappings, automating clinical design processes.</li>
-                <li data-de="Etablierung quantitativer Bewertungsrahmen unter Verwendung fortschrittlicher räumlicher Metriken.">Established quantitative evaluation frameworks utilizing advanced spatial metrics.</li>
-            </ul>
-        </div>
-
-        <div class="item-card">
-            <h3>
-                <img src="lear_logo.png" class="logo-img" onerror="this.style.display='none'">
-                <a href="https://www.lear.com" target="_blank" class="title-link" data-de="Data Analyst Praktikant @ Lear Corporation ↗">Data Analyst Intern @ Lear Corporation ↗</a>
-            </h3>
-            <div class="meta-info" data-de="Feb 2025 - Apr 2025 | Pune, Indien">Feb 2025 - Apr 2025 | Pune, India</div>
-            <ul>
-                <li data-de="Implementierung von ETL-Pipelines in Palantir Foundry zur Integration von Daten aus 7 Werken und Reduzierung der Berichtszeit um 85%.">Implemented ETL pipelines in Palantir Foundry, integrating data from 7 plants and reducing reporting time by 85%.</li>
-                <li data-de="Gestaltung eines interaktiven Dashboards mit 33 KOTS, 8 KPIs und Volumendaten.">Designed an interactive dashboard displaying 33 KOTs, 8 KPIs, and volume data per plant, with side-by-side forecast vs actual comparisons.</li>
-            </ul>
-            
-            <button class="more-info-btn" onclick="toggleDetails('lear-details', this)" data-de="Mehr erfahren ↓">More Info ↓</button>
-            
-            <div id="lear-details" class="details-panel">
-                
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
-                    <div style="background: rgba(100, 255, 218, 0.05); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border-color);">
-                        <h4 style="margin-top: 0; display: flex; align-items: center; color: var(--text-main);">
-                            <img src="lear_logo.png" class="logo-img" onerror="this.style.display='none'">
-                            Lear Corporation
-                        </h4>
-                        <p style="font-size: 0.9rem; margin-bottom: 0;" data-de="Lear Corporation ist ein weltweit führender Automobilzulieferer für Sitzsysteme und Fahrzeugelektronik (E-Systems).">
-                            Lear Corporation is a global automotive technology leader in Seating and E-Systems, providing complete seat systems and electrical architectures to major automakers.
-                        </p>
-                    </div>
-                    
-                    <div style="background: rgba(100, 255, 218, 0.05); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border-color);">
-                        <h4 style="margin-top: 0; display: flex; align-items: center; color: var(--text-main);">
-                            <img src="palantir_logo.png" class="logo-img" onerror="this.style.display='none'">
-                            Palantir Foundry
-                        </h4>
-                        <p style="font-size: 0.9rem; margin-bottom: 0;" data-de="Palantir Foundry ist eine fortschrittliche Unternehmens-Datenplattform zur Integration komplexer Datenquellen, Aufbau von Ontologien und Unterstützung operativer Analysen.">
-                            Palantir Foundry is an advanced enterprise data platform designed to integrate complex data sources, build robust business ontologies, and power operational analytics.
-                        </p>
-                    </div>
-                </div>
-
-                <h4 style="color: var(--text-main); margin-top: 0;" data-de="Projekt-Highlights">Project Highlights</h4>
-                <p data-de="Während meines Praktikums bei der Lear Corporation leitete ich ein praxisnahes Datenautomatisierungsprojekt, das sich auf den Datenanalyseprozess der Key Operating Trends (KOT) unter Verwendung von Palantir Foundry konzentrierte. Ich automatisierte erfolgreich die manuelle Filterung und Visualisierung von KOT-Daten, indem ich robuste Datenpipelines mit dem Pipeline Builder erstellte.">
-                    During my internship at Lear Corporation, I led a real-world data automation project focused on the Key Operating Trends (KOT) data analysis process using Palantir Foundry. I successfully automated the manual filtering and visualization of KOT data by building robust data pipelines using Pipeline Builder.
-                </p>
-                <p data-de="Darüber hinaus entwickelte ich eine umfassende Geschäftsontologie, die als Grundlage für ein neues interaktives Dashboard diente. Dieses Projekt ermöglichte es mir, weitreichende praktische Erfahrungen in den Bereichen Datenvisualisierung, Pipeline-Automatisierung und dem Einsatz von Enterprise-Tools zu sammeln.">
-                    Furthermore, I created a comprehensive business Ontology that served as the foundation for a newly developed interactive dashboard. This project allowed me to acquire extensive hands-on experience in advanced data visualization, pipeline automation, and the use of enterprise-level tools.
-                </p>
-                <p style="margin-bottom: 2rem;" data-de="Zudem vertiefte ich mein Verständnis für komplexe Datenstrukturen auf Unternehmensebene, Continuous-Integration-Prozesse (CI) und die Bedeutung effizienter funktionsübergreifender Zusammenarbeit.">
-                    It also provided a deep understanding of complex enterprise data structures, continuous integration (CI) processes, and the importance of efficient cross-functional collaboration.
-                </p>
-                
-                <h4 style="color: var(--text-main); margin-bottom: 0.5rem;" data-de="Projekt-Schnappschüsse">Project Snapshots</h4>
-                <div class="stacked-images">
-                    <img src="s1.png" alt="Dashboard Snapshot 1" onerror="this.style.display='none'">
-                    <img src="s2.png" alt="Dashboard Snapshot 2" onerror="this.style.display='none'">
-                    <img src="s3.png" alt="Dashboard Snapshot 3" onerror="this.style.display='none'">
-                    <img src="s4.png" alt="Dashboard Snapshot 4" onerror="this.style.display='none'">
-                    <img src="s5.png" alt="Dashboard Snapshot 5" onerror="this.style.display='none'">
-                    <img src="s6.png" alt="Certificate 1" onerror="this.style.display='none'">
-                    <img src="s7.png" alt="Certificate 2" onerror="this.style.display='none'">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="projects">
-        <h2 data-de="Meine Projekte">Things I've Built</h2>
-        <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-            
-            <div class="item-card" style="margin-bottom: 0;">
-                <div class="meta-info" data-de="Maschinelles Lernen">Machine Learning</div>
-                <h3 data-de="Prädiktives Wartungssystem">Predictive Maintenance System</h3>
-                <p data-de="End-to-End-ML-Lösung zur Erkennung seltener Ausfälle von Industriemaschinen mittels Random Forest Ensemble.">End-to-end ML solution using a Random Forest Ensemble and physics-informed features to detect rare industrial machine failures.</p>
-                
-                <button class="more-info-btn" onclick="toggleDetails('predictive-details', this)" data-de="Mehr erfahren ↓">More Info ↓</button>
-                
-                <div id="predictive-details" class="details-panel">
-                    
-                    <h4 style="color: var(--text-main); margin-top: 0;" data-de="Projekt-Pitch">Project Pitch</h4>
-                    <div style="margin-bottom: 2rem; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color); box-shadow: 0 10px 30px -15px var(--shadow-color);">
-                        <video width="100%" controls style="display: block; background: #000;">
-                            <source src="ElevatorPitch_Capstone.mp4" type="video/mp4">
-                            <source src="ElevatorPitch_Capstone.mov" type="video/quicktime">
-                            Your browser does not support the video tag.
-                        </video>
-                    </div>
-
-                    <h4 style="color: var(--text-main); margin-bottom: 0.5rem;" data-de="Projekt-Infografik">Project Infographic</h4>
-                    <div style="margin-bottom: 2rem; text-align: center;">
-                        <img src="Infographics.png" alt="Project Infographic" style="width: 100%; max-width: 900px; border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 10px 30px -15px var(--shadow-color);" onerror="this.style.display='none'">
-                    </div>
-
-                    <h4 style="color: var(--text-main); margin-bottom: 1rem;" data-de="Projektdokumentation">Project Documentation</h4>
-                    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-                        <a href="FinalCapstone-PredictiveMaintainence.pdf" target="_blank" style="padding: 10px 20px; background: rgba(100, 255, 218, 0.05); border: 1px solid var(--accent); color: var(--accent); text-decoration: none; border-radius: 4px; font-family: monospace; font-weight: bold; transition: 0.3s;" data-de="📊 Präsentation ansehen">📊 View Presentation</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="item-card" style="margin-bottom: 0;">
-                <div class="meta-info" data-de="KI & LLMs">AI & LLMs</div>
-                <h3 data-de="Dokumenten-QA-Chatbot">Document QA Chatbot</h3>
-                <p data-de="KI-gestützter RAG-Chatbot mit LangChain und Gemini API zur deutlichen Reduzierung der Suchzeiten in Dokumenten.">AI-powered RAG chatbot leveraging LangChain, Gemini API, and text-embeddings to significantly reduce manual document search time.</p>
-                <a href="#" onclick="alert('Coming soon!'); return false;" class="action-link" data-de="↗ Projekt öffnen">↗ Open Project</a>
-            </div>
-
-            <div class="item-card" style="margin-bottom: 0;">
-                <div class="meta-info" data-de="Datenanalyse">Data Analysis</div>
-                <h3 data-de="Verkaufsprognose (Big Mart)">Big Mart Sales Prediction</h3>
-                <p data-de="Verarbeitung von 7.000+ Datensätzen und Abstimmung eines XGBoost-Regressors zur Aufdeckung standortbezogener Nachfragetreiber.">Processed 7,000+ records and tuned an XGBoost regressor to uncover product visibility and location-based demand drivers.</p>
-                <a href="#" onclick="alert('Coming soon!'); return false;" class="action-link" data-de="↗ Projekt öffnen">↗ Open Project</a>
-            </div>
-            
-            <div class="item-card" style="margin-bottom: 0;">
-                <div class="meta-info" data-de="Computer Vision">Computer Vision</div>
-                <h3 data-de="Gesichtsmasken-Erkennung (CNN)">Face Mask Detection CNN</h3>
-                <p data-de="Echtzeit-CNN-Erkennungspipeline mit einer Testgenauigkeit von ~98%.">Real-time CNN detection pipeline achieving ~98% test accuracy.</p>
-                <a href="#" onclick="alert('Coming soon!'); return false;" class="action-link" data-de="↗ Projekt öffnen">↗ Open Project</a>
-            </div>
-            
-        </div>
-    </section>
-
-    <section id="education">
-        <h2 data-de="Bildung & Publikationen">Education & Publications</h2>
-        
-        <div class="item-card">
-            <h3>
-                <img src="ue_logo.png" class="logo-img" onerror="this.style.display='none'">
-                <a href="https://www.ue-germany.com" target="_blank" class="title-link">MSc Data Science ↗</a>
-            </h3>
-            <div class="meta-info" data-de="University of Europe for Applied Sciences | Note: 1.7">University of Europe for Applied Sciences | Grade: 1.7</div>
-        </div>
-        
-        <div class="item-card">
-            <h3>
-                <img src="pcco_logo.png" class="logo-img" onerror="this.style.display='none'">
-                <a href="http://www.pccoepune.com" target="_blank" class="title-link">B.Tech Information Technology ↗</a>
-            </h3>
-            <div class="meta-info" data-de="Pimpri Chinchwad College Of Engineering | Note: 1.8">Pimpri Chinchwad College Of Engineering | Grade: 1.8</div>
-        </div>
-
-        <div class="item-card">
-            <h3 data-de="IEEE-Publikation">IEEE Publication</h3>
-            <p style="margin-top: 5px; margin-bottom: 5px;" data-de="Gesichtsmasken-Erkennung mittels Convolutional Neural Network">Face Mask Detection using Convolutional Neural Network</p>
-            <a href="https://ieeexplore.ieee.org" target="_blank" class="action-link" data-de="↗ Publikation ansehen">↗ View Publication</a>
-        </div>
-    </section>
-
-    <section id="contact" style="min-height: auto; padding-top: 4rem;">
-        <div class="glass-bubble" style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 2rem;">
-            
-            <div style="flex: 1; min-width: 250px;">
-                <h3 style="margin-bottom: 1rem; display: flex; align-items: center;">
-                    <img src="profile.PNG" alt="Avatar" onerror="this.style.display='none'" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 15px; object-fit: cover;">
-                    Siddharth Shelke
-                </h3>
-                <p style="font-size: 0.95rem; max-width: 350px;" data-de="Entwicklung von Datenlösungen, Erforschung von Operational Intelligence und Umwandlung komplexer Informationen in verwertbare Erkenntnisse.">
-                    Engineering data solutions, exploring operational intelligence, and transforming complex information into actionable insights.
-                </p>
-            </div>
-
-            <div style="display: flex; gap: 4rem; flex-wrap: wrap;">
-                <div>
-                    <h4 style="color: var(--text-main); margin-bottom: 1.2rem; font-family: monospace;" data-de="ENTDECKEN">EXPLORE</h4>
-                    <a href="#about" style="display:block; color: var(--text-muted); text-decoration:none; margin-bottom: 0.8rem; font-size: 0.9rem; transition: 0.3s;" data-de="Über mich">About</a>
-                    <a href="#experience" style="display:block; color: var(--text-muted); text-decoration:none; margin-bottom: 0.8rem; font-size: 0.9rem; transition: 0.3s;" data-de="Erfahrung">Experience</a>
-                    <a href="#projects" style="display:block; color: var(--text-muted); text-decoration:none; margin-bottom: 0.8rem; font-size: 0.9rem; transition: 0.3s;" data-de="Projekte">Projects</a>
-                </div>
-                <div>
-                    <h4 style="color: var(--text-main); margin-bottom: 1.2rem; font-family: monospace;" data-de="VERBINDEN">CONNECT</h4>
-                    <a href="mailto:siddharthshelke634@gmail.com" style="display:block; color: var(--text-muted); text-decoration:none; margin-bottom: 0.8rem; font-size: 0.9rem; transition: 0.3s;">Email</a>
-                    <a href="https://linkedin.com/in/siddharthnshelke" target="_blank" style="display:block; color: var(--text-muted); text-decoration:none; margin-bottom: 0.8rem; font-size: 0.9rem; transition: 0.3s;">LinkedIn</a>
-                    <a href="https://www.instagram.com/siddharthh_me/" target="_blank" style="display:block; color: var(--text-muted); text-decoration:none; margin-bottom: 0.8rem; font-size: 0.9rem; transition: 0.3s;">Instagram</a>
-                </div>
-            </div>
-        </div>
-        <div style="text-align: center; margin-top: 2rem; font-size: 0.8rem; color: var(--text-muted); font-family: monospace;">
-            &copy; 2026 Siddharth Shelke. Designed & Engineered for Data.
-        </div>
-    </section>
-
-</div>
-
-<script>
-    // === EXPANDABLE DETAILS LOGIC ===
-    function toggleDetails(panelId, btnElement) {
-        const panel = document.getElementById(panelId);
-        const isExpanded = panel.classList.contains('expanded');
-        
-        if (isExpanded) {
-            panel.classList.remove('expanded');
-            btnElement.innerText = isGerman ? "Mehr erfahren ↓" : "More Info ↓";
-        } else {
-            panel.classList.add('expanded');
-            btnElement.innerText = isGerman ? "Weniger anzeigen ↑" : "Show Less ↑";
-        }
-    }
-
-    // === TRANSLATION TOGGLE LOGIC ===
-    let isGerman = false;
-    function toggleLang() {
-        isGerman = !isGerman;
-        
-        document.querySelectorAll('[data-de]').forEach(el => {
-            if (!el.hasAttribute('data-en')) {
-                el.setAttribute('data-en', el.innerHTML);
-            }
-            el.innerHTML = isGerman ? el.getAttribute('data-de') : el.getAttribute('data-en');
-        });
-
-        document.getElementById('lang-toggle').innerText = isGerman ? "EN" : "DE";
-        
-        const openPanels = document.querySelectorAll('.details-panel.expanded');
-        const closedPanels = document.querySelectorAll('.details-panel:not(.expanded)');
-        
-        openPanels.forEach(panel => {
-            const btn = panel.previousElementSibling;
-            if(btn && btn.classList.contains('more-info-btn')) {
-                btn.innerText = isGerman ? "Weniger anzeigen ↑" : "Show Less ↑";
-            }
-        });
-        
-        closedPanels.forEach(panel => {
-            const btn = panel.previousElementSibling;
-            if(btn && btn.classList.contains('more-info-btn')) {
-                btn.innerText = isGerman ? "Mehr erfahren ↓" : "More Info ↓";
-            }
-        });
-    }
-
-    // === THEME TOGGLE LOGIC ===
-    let particleRGB = '100, 255, 218'; 
-    
-    const sunIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>`;
-    const moonIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>`;
-
-    function toggleTheme() {
-        document.body.classList.toggle('light-mode');
-        const themeBtn = document.getElementById('theme-toggle');
-        
-        if (document.body.classList.contains('light-mode')) {
-            themeBtn.innerHTML = moonIcon;
-            particleRGB = '43, 108, 176'; 
-        } else {
-            themeBtn.innerHTML = sunIcon;
-            particleRGB = '100, 255, 218'; 
-        }
-    }
-
-    // === SCROLL ANIMATION ===
-    document.addEventListener("DOMContentLoaded", function() {
-        const sections = document.querySelectorAll("section");
-        sections.forEach(sec => sec.classList.add("reveal-section"));
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add("is-visible");
+        // Smooth fade and slide up for all elements with class 'gs-reveal'
+        gsap.utils.toArray('.gs-reveal').forEach(function(elem) {
+            gsap.fromTo(elem, 
+                { y: 50, autoAlpha: 0 }, 
+                {
+                    y: 0, 
+                    autoAlpha: 1, 
+                    duration: 1.2, 
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: elem,
+                        start: "top 85%", // Triggers when element hits 85% from top of viewport
+                        toggleActions: "play none none reverse"
+                    }
                 }
-            });
-        }, { threshold: 0.15 });
-        sections.forEach(sec => observer.observe(sec));
-    });
+            );
+        });
 
-    // === LIVE DATA NETWORK BACKGROUND ===
-    const canvas = document.getElementById('network-canvas');
-    const ctx = canvas.getContext('2d');
-    let width, height, particles;
-    
-    function initCanvas() {
-        width = canvas.width = window.innerWidth;
-        height = canvas.height = window.innerHeight;
-        particles = [];
-        const particleCount = Math.floor((width * height) / 15000);
-        for(let i = 0; i < particleCount; i++) {
-            particles.push(new Particle());
-        }
-    }
+        // === HIGH-PERFORMANCE FLUID AURA CANVAS ===
+        const canvas = document.getElementById('aura-canvas');
+        const ctx = canvas.getContext('2d', { alpha: false }); // Optimize for no transparency on base layer
+        
+        let width, height;
+        let mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+        let aura = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
 
-    class Particle {
-        constructor() {
-            this.x = Math.random() * width;
-            this.y = Math.random() * height;
-            this.vx = (Math.random() - 0.5) * 0.5;
-            this.vy = (Math.random() - 0.5) * 0.5;
-            this.radius = Math.random() * 1.5 + 0.5;
+        // Resize handler
+        function resize() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
         }
-        update() {
-            this.x += this.vx; this.y += this.vy;
-            if (this.x < 0 || this.x > width) this.vx *= -1;
-            if (this.y < 0 || this.y > height) this.vy *= -1;
-        }
-        draw() {
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(${particleRGB}, 0.5)`;
-            ctx.fill();
-        }
-    }
+        window.addEventListener('resize', resize);
+        resize();
 
-    function animate() {
-        ctx.clearRect(0, 0, width, height);
-        for (let i = 0; i < particles.length; i++) {
-            particles[i].update();
-            particles[i].draw();
-            for (let j = i; j < particles.length; j++) {
-                const dx = particles[i].x - particles[j].x;
-                const dy = particles[i].y - particles[j].y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-                if (distance < 100) { 
-                    ctx.beginPath();
-                    ctx.strokeStyle = `rgba(${particleRGB}, ${0.2 - distance/500})`;
-                    ctx.lineWidth = 0.5;
-                    ctx.moveTo(particles[i].x, particles[i].y);
-                    ctx.lineTo(particles[j].x, particles[j].y);
-                    ctx.stroke();
-                }
-            }
-        }
-        requestAnimationFrame(animate);
-    }
-    window.addEventListener('resize', initCanvas);
-    initCanvas();
-    animate();
-</script>
+        // Mouse move tracker
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        });
 
+        // Touch support for mobile devices
+        window.addEventListener('touchmove', (e) => {
+            mouse.x = e.touches[0].clientX;
+            mouse.y = e.touches[0].clientY;
+        }, { passive: true });
+
+        // Animation Loop
+        function animateAura() {
+            // Linear Interpolation (lerp) for buttery smooth cursor trailing
+            aura.x += (mouse.x - aura.x) * 0.04;
+            aura.y += (mouse.y - aura.y) * 0.04;
+
+            // Clear frame with pure black
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 0, width, height);
+
+            // Create a subtle, glowing radial gradient
+            const radius = Math.max(width, height) * 0.45; 
+            const gradient = ctx.createRadialGradient(
+                aura.x, aura.y, 0,
+                aura.x, aura.y, radius
+            );
+            
+            // Ultra-premium subtle colors: Deep Navy to Black
+            gradient.addColorStop(0, 'rgba(10, 35, 75, 0.8)');
+            gradient.addColorStop(0.5, 'rgba(5, 15, 35, 0.4)');
+            gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+            // Draw the aura
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, width, height);
+
+            requestAnimationFrame(animateAura);
+        }
+        
+        // Start Loop
+        animateAura();
+    </script>
 </body>
 </html>
