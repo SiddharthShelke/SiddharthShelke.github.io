@@ -19,7 +19,6 @@
            1. PREMIUM APPLE THEME VARIABLES
            ========================================== */
         :root {
-            /* True Pitch-Black Apple Aesthetic */
             --bg-color: #000000;
             --text-main: #ffffff;
             --text-muted: #86868b;
@@ -30,12 +29,10 @@
             --nav-bg: rgba(0, 0, 0, 0.7);
             --shadow-color: rgba(0, 0, 0, 0.8);
             
-            /* Aura Colors */
             --aura-blue: rgba(0, 113, 227, 0.25);
             --aura-violet: rgba(94, 92, 230, 0.2);
         }
 
-        /* Light Mode Preservation */
         body.light-mode {
             --bg-color: #f5f5f7;
             --text-main: #1d1d1f;
@@ -54,34 +51,22 @@
         /* ==========================================
            2. RESET & BASE
            ========================================== */
-        html {
-            scroll-behavior: smooth;
-        }
-
+        html { scroll-behavior: smooth; }
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            line-height: 1.6;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+            margin: 0; padding: 0;
+            background-color: var(--bg-color); color: var(--text-main);
+            line-height: 1.6; overflow-x: hidden;
+            -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
             transition: background-color 0.5s ease, color 0.5s ease;
         }
 
         /* ==========================================
-           3. CANVAS ENGINE (FLUID AURA)
+           3. CANVAS ENGINE
            ========================================== */
         #fluid-aura {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: -1;
-            pointer-events: none;
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1; pointer-events: none;
         }
 
         /* ==========================================
@@ -89,377 +74,160 @@
            ========================================== */
         nav {
             background-color: var(--nav-bg);
-            backdrop-filter: saturate(180%) blur(20px);
-            -webkit-backdrop-filter: saturate(180%) blur(20px);
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: fixed;
-            top: 0;
-            width: 100%;
-            box-sizing: border-box;
-            z-index: 1000;
+            backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px);
+            padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center;
+            position: fixed; top: 0; width: 100%; box-sizing: border-box; z-index: 1000;
             border-bottom: 1px solid var(--border-color);
             transition: background-color 0.5s ease, border-color 0.5s ease;
         }
-        
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-        }
-        
+        .nav-links { display: flex; gap: 2rem; align-items: center; }
         .nav-links a {
-            color: var(--text-main);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.85rem;
-            letter-spacing: -0.01em;
-            transition: color 0.3s;
+            color: var(--text-main); text-decoration: none; font-weight: 500; font-size: 0.85rem; transition: color 0.3s;
         }
-        
-        .nav-links a:hover {
-            color: var(--accent);
-        }
+        .nav-links a:hover { color: var(--accent); }
 
-        /* Controls & Utilities */
-        .controls {
-            display: flex;
-            gap: 1.5rem;
-            align-items: center;
-        }
-        
+        .controls { display: flex; gap: 1.5rem; align-items: center; }
         .icon-btn {
-            background: transparent;
-            border: 1px solid var(--border-color);
-            color: var(--text-main);
-            border-radius: 50%;
-            width: 36px;
-            height: 36px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.85rem;
-            transition: all 0.3s ease;
-            font-weight: 600;
+            background: transparent; border: 1px solid var(--border-color); color: var(--text-main);
+            border-radius: 50%; width: 36px; height: 36px; cursor: pointer; display: flex; align-items: center; 
+            justify-content: center; font-size: 0.85rem; transition: all 0.3s ease; font-weight: 600;
         }
-        
-        .icon-btn:hover {
-            border-color: var(--accent);
-            color: var(--accent);
-        }
-        
-        .icon-btn svg {
-            width: 16px;
-            height: 16px;
-        }
+        .icon-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .icon-btn svg { width: 16px; height: 16px; }
 
-        /* Dropdown */
         .dropdown { position: relative; display: inline-block; }
         .dropbtn {
-            background-color: transparent;
-            color: var(--accent);
-            padding: 8px 18px;
-            font-size: 0.85rem;
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.3s;
-            font-family: inherit;
+            background-color: transparent; color: var(--accent); padding: 8px 18px; font-size: 0.85rem;
+            border: 1px solid var(--border-color); border-radius: 20px; cursor: pointer; font-weight: 500; transition: all 0.3s;
         }
-        .dropbtn:hover {
-            border-color: var(--accent);
-            background-color: rgba(41, 151, 255, 0.1);
-        }
+        .dropbtn:hover { border-color: var(--accent); background-color: rgba(41, 151, 255, 0.1); }
         .dropdown-content {
-            display: none;
-            position: absolute;
-            right: 0;
-            top: 120%;
-            background-color: var(--card-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            min-width: 160px;
-            box-shadow: 0px 10px 30px var(--shadow-color);
-            border: 1px solid var(--border-color);
-            z-index: 1;
-            border-radius: 12px;
-            overflow: hidden;
+            display: none; position: absolute; right: 0; top: 120%;
+            background-color: var(--card-bg); backdrop-filter: blur(20px); min-width: 160px;
+            box-shadow: 0px 10px 30px var(--shadow-color); border: 1px solid var(--border-color);
+            z-index: 1; border-radius: 12px; overflow: hidden;
         }
         .dropdown-content a {
-            color: var(--text-main);
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-            font-size: 0.85rem;
-            transition: background 0.3s, color 0.3s;
+            color: var(--text-main); padding: 12px 16px; text-decoration: none; display: block; font-size: 0.85rem; transition: background 0.3s, color 0.3s;
         }
-        .dropdown-content a:hover {
-            color: var(--accent);
-            background-color: rgba(255, 255, 255, 0.05);
-        }
+        .dropdown-content a:hover { color: var(--accent); background-color: rgba(255, 255, 255, 0.05); }
         body.light-mode .dropdown-content a:hover { background-color: rgba(0, 0, 0, 0.05); }
         .dropdown:hover .dropdown-content { display: block; }
 
         /* ==========================================
            5. LAYOUT & TYPOGRAPHY
            ========================================== */
-        .container {
-            max-width: 1100px;
-            margin: auto;
-            padding: 0 2rem;
-        }
+        .container { max-width: 1100px; margin: auto; padding: 0 2rem; }
+        section { padding-top: 120px; padding-bottom: 6rem; min-height: 80vh; display: flex; flex-direction: column; justify-content: center; }
+        
+        h2 { color: var(--text-main); font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; letter-spacing: -0.03em; margin-bottom: 3rem; display: flex; align-items: center; }
+        h3 { color: var(--text-main); margin-bottom: 0.5rem; font-size: 1.5rem; font-weight: 600; letter-spacing: -0.01em; }
+        p, li { color: var(--text-muted); font-size: 1.05rem; line-height: 1.6; }
 
-        section {
-            padding-top: 120px;
-            padding-bottom: 6rem;
-            min-height: 80vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        
-        h2 {
-            color: var(--text-main);
-            font-size: clamp(2rem, 5vw, 3rem);
-            font-weight: 700;
-            letter-spacing: -0.03em;
-            margin-bottom: 3rem;
-            display: flex;
-            align-items: center;
-        }
-        
-        h3 {
-            color: var(--text-main);
-            margin-bottom: 0.5rem;
-            font-size: 1.5rem;
-            font-weight: 600;
-            letter-spacing: -0.01em;
-        }
-        
-        p, li {
-            color: var(--text-muted);
-            font-size: 1.05rem;
-            line-height: 1.6;
-        }
-
-        /* GSAP Split Text Reveal Class */
-        .gsap-reveal-text .char {
-            opacity: 0.1;
-        }
+        .gsap-reveal-text .char { opacity: 0.1; }
 
         /* ==========================================
            6. BENTO BOX GRIDS (APPLE STYLE)
            ========================================== */
         .glass-bubble {
-            background: var(--bubble-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            padding: 4rem;
-            border-radius: 32px;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 10px 40px var(--shadow-color);
-            transition: all 0.5s ease;
+            background: var(--bubble-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            padding: 4rem; border-radius: 32px; border: 1px solid var(--border-color);
+            box-shadow: 0 10px 40px var(--shadow-color); transition: all 0.5s ease;
         }
         
-        .bento-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-            gap: 2rem;
-        }
-
+        .bento-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2rem; }
         .item-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            padding: 2.5rem;
-            border-radius: 24px;
-            border: 1px solid var(--border-color);
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
-            display: flex;
-            flex-direction: column;
+            background: var(--card-bg); backdrop-filter: blur(20px); padding: 2.5rem; border-radius: 24px;
+            border: 1px solid var(--border-color); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+            display: flex; flex-direction: column;
         }
-        
-        .item-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 40px var(--shadow-color);
-        }
+        .item-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px var(--shadow-color); }
         
         .meta-info {
-            font-size: 0.85rem;
-            color: var(--accent);
-            margin-bottom: 1.5rem;
-            font-family: 'SF Mono', Consolas, monospace;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+            font-size: 0.85rem; color: var(--accent); margin-bottom: 1.5rem;
+            font-family: 'SF Mono', Consolas, monospace; text-transform: uppercase; letter-spacing: 0.05em;
         }
         
         ul { padding-left: 20px; margin-top: 1rem; }
         li { margin-bottom: 0.5rem; }
 
-        /* Logos & Links */
         .logo-img { 
-            height: 28px;
-            width: auto;
-            vertical-align: middle;
-            margin-right: 12px;
-            border-radius: 6px; 
-            background-color: rgba(255, 255, 255, 0.9);
-            padding: 4px;
-            box-sizing: content-box;
+            height: 28px; width: auto; vertical-align: middle; margin-right: 12px; border-radius: 6px; 
+            background-color: rgba(255, 255, 255, 0.9); padding: 4px; box-sizing: content-box;
         }
         body.light-mode .logo-img { background-color: transparent; padding: 0; }
         
+        /* Enlarged Logo specifically for Education */
+        .edu-logo {
+            height: 48px; width: auto; vertical-align: middle; margin-right: 15px; border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.95); padding: 5px; box-sizing: content-box;
+        }
+        body.light-mode .edu-logo { background-color: transparent; padding: 0; }
+        
         .title-link { text-decoration: none; color: var(--text-main); transition: color 0.3s; }
         .title-link:hover { color: var(--accent); }
-        
-        .action-link {
-            display: inline-block;
-            margin-top: 1.5rem;
-            font-size: 0.9rem;
-            color: var(--accent);
-            text-decoration: none;
-            font-weight: 500;
-        }
+        .action-link { display: inline-block; margin-top: 1.5rem; font-size: 0.9rem; color: var(--accent); text-decoration: none; font-weight: 500; }
         .action-link:hover { text-decoration: underline; }
 
         /* ==========================================
-           7. CUSTOM SECTIONS
+           7. CUSTOM SECTIONS (HERO & ABOUT)
            ========================================== */
-        /* Hero */
-        .hero-title {
-            font-size: clamp(3rem, 8vw, 5.5rem);
-            font-weight: 800;
-            margin: 0;
-            color: var(--text-main);
-            line-height: 1.05;
-            letter-spacing: -0.04em;
-        }
-        
-        .hero-subtitle {
-            font-size: clamp(1.5rem, 4vw, 3rem);
-            font-weight: 600;
-            margin: 1rem 0;
-            color: var(--text-muted);
-            letter-spacing: -0.02em;
-        }
+        .hero-title { font-size: clamp(3rem, 8vw, 5.5rem); font-weight: 800; margin: 0; color: var(--text-main); line-height: 1.05; letter-spacing: -0.04em; }
+        .hero-subtitle { font-size: clamp(1.5rem, 4vw, 3rem); font-weight: 600; margin: 1rem 0; color: var(--text-muted); letter-spacing: -0.02em; }
 
-        /* About */
-        .about-grid-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
-        @media (max-width: 800px) { .about-grid-layout { grid-template-columns: 1fr; gap: 2rem; } }
+        .about-grid-layout { 
+            display: grid; 
+            grid-template-columns: 1fr 1.3fr; 
+            gap: 4rem; 
+            align-items: center; 
+        }
+        @media (max-width: 800px) { .about-grid-layout { grid-template-columns: 1fr; gap: 2.5rem; } }
         
         .about-image-new img {
             width: 100%;
+            height: auto;
+            max-height: 500px;
             border-radius: 24px;
             box-shadow: 0 20px 40px var(--shadow-color);
             border: 1px solid var(--border-color);
             object-fit: cover;
         }
         
-        .expertise-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-        
+        .expertise-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2.5rem; }
         .expertise-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--border-color);
-            padding: 1rem 1.5rem;
-            border-radius: 12px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: var(--text-main);
-            text-align: center;
+            background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-color); padding: 1.2rem 1.5rem;
+            border-radius: 12px; font-size: 0.9rem; font-weight: 500; color: var(--text-main); text-align: center;
         }
         body.light-mode .expertise-card { background: rgba(0, 0, 0, 0.03); }
 
         /* ==========================================
-           8. ANIMATED ACCORDIONS / DEEP-DIVES
+           8. ACCORDIONS & DRAWERS
            ========================================== */
         .more-info-btn {
-            background: transparent;
-            border: none;
-            color: var(--text-main);
-            font-size: 0.9rem;
-            cursor: pointer;
-            padding: 0.5rem 1rem;
-            margin-top: auto;
-            align-self: flex-start;
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            display: inline-flex;
-            align-items: center;
-            transition: all 0.3s;
-            font-weight: 500;
+            background: transparent; border: 1px solid var(--border-color); color: var(--text-main); font-size: 0.9rem;
+            cursor: pointer; padding: 0.5rem 1rem; margin-top: auto; align-self: flex-start; border-radius: 20px;
+            display: inline-flex; align-items: center; transition: all 0.3s; font-weight: 500;
         }
-        
-        .more-info-btn:hover {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: var(--accent);
-            color: var(--accent);
-        }
+        .more-info-btn:hover { background: rgba(255, 255, 255, 0.05); border-color: var(--accent); color: var(--accent); }
         body.light-mode .more-info-btn:hover { background: rgba(0, 0, 0, 0.05); }
         
         .details-panel {
-            display: grid;
-            grid-template-rows: 0fr;
-            transition: grid-template-rows 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
-            opacity: 0;
-            overflow: hidden;
+            display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+            opacity: 0; overflow: hidden;
         }
+        .details-panel.expanded { grid-template-rows: 1fr; opacity: 1; margin-top: 1.5rem; }
+        .details-inner { overflow: hidden; padding-top: 1.5rem; border-top: 1px solid var(--border-color); }
         
-        .details-panel.expanded {
-            grid-template-rows: 1fr;
-            opacity: 1;
-            margin-top: 1.5rem;
-        }
-        
-        .details-inner {
-            overflow: hidden;
-            padding-top: 1.5rem;
-            border-top: 1px solid var(--border-color);
-        }
-        
-        .gallery-scroll {
-            display: flex;
-            gap: 1.5rem;
-            overflow-x: auto;
-            padding-bottom: 1rem;
-            margin-top: 1.5rem;
-            scrollbar-width: thin;
-            scrollbar-color: var(--border-color) transparent;
-        }
-        
-        .gallery-scroll img {
-            height: 250px;
-            width: auto;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 10px 20px var(--shadow-color);
-            object-fit: cover;
-        }
+        .gallery-scroll { display: flex; gap: 1.5rem; overflow-x: auto; padding-bottom: 1rem; margin-top: 1.5rem; scrollbar-width: thin; }
+        .gallery-scroll img { height: 250px; width: auto; border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 10px 20px var(--shadow-color); object-fit: cover; }
 
-        /* ==========================================
-           9. FOOTER
-           ========================================== */
-        footer {
-            border-top: 1px solid var(--border-color);
-            padding: 4rem 0;
-            background: var(--bg-color);
-        }
+        footer { border-top: 1px solid var(--border-color); padding: 4rem 0; background: var(--bg-color); }
     </style>
 </head>
 <body>
 
-<!-- 1. LIVE FLUID AURA BACKGROUND -->
 <canvas id="fluid-aura"></canvas>
 
-<!-- 2. APPLE NAV -->
 <nav>
     <div class="nav-links">
         <a href="#home" data-de="Startseite">Home</a>
@@ -481,8 +249,6 @@
                 <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
                 <line x1="1" y1="12" x2="3" y2="12"></line>
                 <line x1="21" y1="12" x2="23" y2="12"></line>
-                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
             </svg>
         </button>
         <div class="dropdown">
@@ -510,7 +276,7 @@
         </div>
     </section>
 
-    <!-- ABOUT -->
+    <!-- ABOUT SECTION (Fixed 2-Column Grid) -->
     <section id="about">
         <div class="about-grid-layout">
             <div class="about-image-new">
@@ -518,7 +284,7 @@
             </div>
 
             <div class="about-text-new">
-                <h2 class="gsap-reveal-text" style="font-size: 2.2rem; line-height: 1.2; margin-top: 0; margin-bottom: 20px;" data-de="Entwicklung von Datensystemen mit Fokus auf robuste Pipelines, prädiktive Modellierung und intelligente Entscheidungsfindung.">
+                <h2 class="gsap-reveal-text" style="font-size: 2.2rem; line-height: 1.2; margin-top: 0; margin-bottom: 20px; border: none;" data-de="Entwicklung von Datensystemen mit Fokus auf robuste Pipelines, prädiktive Modellierung und intelligente Entscheidungsfindung.">
                     Engineering data systems with a focus on robust pipelines, predictive modeling, and intelligent decision-making.
                 </h2>
                 
@@ -544,7 +310,6 @@
         <h2 class="gsap-reveal-text" data-de="Berufserfahrung">Professional Experience.</h2>
         
         <div class="bento-grid" style="grid-template-columns: 1fr;">
-            <!-- Ottobock -->
             <div class="item-card">
                 <h3>
                     <img src="ottobock_logo.png" class="logo-img" onerror="this.style.display='none'">
@@ -558,7 +323,6 @@
                 </ul>
             </div>
 
-            <!-- Lear Corp -->
             <div class="item-card">
                 <h3>
                     <img src="lear_logo.png" class="logo-img" onerror="this.style.display='none'">
@@ -584,7 +348,6 @@
                                     Lear Corporation is a global automotive technology leader in Seating and E-Systems, providing complete seat systems and electrical architectures to major automakers.
                                 </p>
                             </div>
-                            
                             <div style="background: rgba(255, 255, 255, 0.03); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border-color);">
                                 <h4 style="margin-top: 0; display: flex; align-items: center; color: var(--text-main);">
                                     <img src="palantir_logo.png" class="logo-img" onerror="this.style.display='none'">
@@ -600,7 +363,7 @@
                         <p data-de="Während meines Praktikums bei der Lear Corporation leitete ich ein praxisnahes Datenautomatisierungsprojekt, das sich auf den Datenanalyseprozess der Key Operating Trends (KOT) unter Verwendung von Palantir Foundry konzentrierte. Ich automatisierte erfolgreich die manuelle Filterung und Visualisierung von KOT-Daten, indem ich robuste Datenpipelines mit dem Pipeline Builder erstellte.">
                             During my internship at Lear Corporation, I led a real-world data automation project focused on the Key Operating Trends (KOT) data analysis process using Palantir Foundry. I successfully automated the manual filtering and visualization of KOT data by building robust data pipelines using Pipeline Builder.
                         </p>
-                        <p data-de="Darüber hinaus entwickelte ich eine umfassende Geschäftsontologie, die als Grundlage für ein neues interaktives Dashboard diente. Dieses Projekt ermöglichte es mir, weitreichende praktische Erfahrungen in den Bereichen Datenvisualisierung, Pipeline-Automatisierung und dem Einsatz von Enterprise-Tools zu sammeln.">
+                        <p data-de="Darüber hinaus entwickelte ich eine umfassende Geschäftsontologie, die als Grundlage für ein neues interaktives Dashboard diente.">
                             Furthermore, I created a comprehensive business Ontology that served as the foundation for a newly developed interactive dashboard. This project allowed me to acquire extensive hands-on experience in advanced data visualization, pipeline automation, and the use of enterprise-level tools.
                         </p>
                         <p style="margin-bottom: 2rem;" data-de="Zudem vertiefte ich mein Verständnis für komplexe Datenstrukturen auf Unternehmensebene, Continuous-Integration-Prozesse (CI) und die Bedeutung effizienter funktionsübergreifender Zusammenarbeit.">
@@ -628,7 +391,6 @@
         <h2 class="gsap-reveal-text" data-de="Meine Projekte">Systems & Architectures.</h2>
         <div class="bento-grid">
             
-            <!-- ML Project -->
             <div class="item-card" style="grid-column: 1 / -1;">
                 <div class="meta-info" data-de="Maschinelles Lernen">Machine Learning</div>
                 <h3 data-de="Prädiktives Wartungssystem">Predictive Maintenance System</h3>
@@ -660,7 +422,6 @@
                 </div>
             </div>
 
-            <!-- AI Project -->
             <div class="item-card">
                 <div class="meta-info" data-de="KI & LLMs">AI & LLMs</div>
                 <h3 data-de="Dokumenten-QA-Chatbot">Document QA Chatbot</h3>
@@ -668,7 +429,6 @@
                 <a href="#" onclick="alert('Coming soon!'); return false;" class="action-link" data-de="↗ Projekt öffnen">↗ Open Project</a>
             </div>
 
-            <!-- Data Analysis Project -->
             <div class="item-card">
                 <div class="meta-info" data-de="Datenanalyse">Data Analysis</div>
                 <h3 data-de="Verkaufsprognose (Big Mart)">Big Mart Sales Prediction</h3>
@@ -676,7 +436,6 @@
                 <a href="#" onclick="alert('Coming soon!'); return false;" class="action-link" data-de="↗ Projekt öffnen">↗ Open Project</a>
             </div>
             
-            <!-- CV Project -->
             <div class="item-card">
                 <div class="meta-info" data-de="Computer Vision">Computer Vision</div>
                 <h3 data-de="Gesichtsmasken-Erkennung (CNN)">Face Mask Detection CNN</h3>
@@ -687,31 +446,39 @@
         </div>
     </section>
 
-    <!-- EDUCATION -->
+    <!-- EDUCATION & PUBLICATIONS -->
     <section id="education">
         <h2 class="gsap-reveal-text" data-de="Bildung & Publikationen">Academic Portfolio.</h2>
         
-        <div class="bento-grid">
-            <div class="item-card">
-                <h3>
-                    <img src="ue_logo.png" class="logo-img" onerror="this.style.display='none'">
-                    <a href="https://www.ue-germany.com" target="_blank" class="title-link">MSc Data Science ↗</a>
-                </h3>
-                <div class="meta-info" data-de="University of Europe for Applied Sciences | Note: 1.7">University of Europe for Applied Sciences | Grade: 1.7</div>
+        <div class="bento-grid" style="grid-template-columns: 1fr;">
+            <div class="item-card" style="display: flex; flex-direction: row; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; padding: 1.5rem 2rem;">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <img src="ue_logo.png" class="edu-logo" onerror="this.style.display='none'">
+                    <div>
+                        <h3 style="margin: 0;">MSc Data Science</h3>
+                        <p style="margin: 0; font-size: 0.95rem;">
+                            <a href="https://www.ue-germany.com" target="_blank" class="title-link">University of Europe for Applied Sciences ↗</a>
+                        </p>
+                    </div>
+                </div>
             </div>
             
-            <div class="item-card">
-                <h3>
-                    <img src="pcco_logo.png" class="logo-img" onerror="this.style.display='none'">
-                    <a href="http://www.pccoepune.com" target="_blank" class="title-link">B.Tech Information Technology ↗</a>
-                </h3>
-                <div class="meta-info" data-de="Pimpri Chinchwad College Of Engineering | Note: 1.8">Pimpri Chinchwad College Of Engineering | Grade: 1.8</div>
+            <div class="item-card" style="display: flex; flex-direction: row; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; padding: 1.5rem 2rem;">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <img src="sppu_logo.png" class="edu-logo" onerror="this.style.display='none'">
+                    <div>
+                        <h3 style="margin: 0;">B.Tech Information Technology</h3>
+                        <p style="margin: 0; font-size: 0.95rem;">
+                            <a href="https://www.unipune.ac.in/" target="_blank" class="title-link">Savitribai Phule Pune University ↗</a>
+                        </p>
+                    </div>
+                </div>
             </div>
 
-            <div class="item-card" style="grid-column: 1 / -1;">
-                <h3 data-de="IEEE-Publikation">IEEE Publication</h3>
+            <div class="item-card" style="padding: 1.5rem 2rem;">
+                <h3 data-de="IEEE-Publikation (2023)">IEEE Publication (2023)</h3>
                 <p style="margin-top: 0.5rem; margin-bottom: 0.5rem;" data-de="Gesichtsmasken-Erkennung mittels Convolutional Neural Network">Face Mask Detection using Convolutional Neural Network</p>
-                <a href="https://ieeexplore.ieee.org" target="_blank" class="action-link" data-de="↗ Publikation ansehen">↗ View Publication</a>
+                <a href="https://ieeexplore.ieee.org/document/10170036" target="_blank" class="action-link" style="margin-top: 0.5rem;" data-de="↗ Publikation ansehen">↗ View Publication</a>
             </div>
         </div>
     </section>
@@ -722,7 +489,6 @@
 <footer id="contact">
     <div class="container">
         <div class="glass-bubble" style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 3rem; padding: 3rem;">
-            
             <div style="flex: 1; min-width: 250px;">
                 <h3 style="margin-bottom: 1rem; display: flex; align-items: center;">
                     <img src="profile.PNG" alt="Avatar" onerror="this.style.display='none'" style="width: 48px; height: 48px; border-radius: 50%; margin-right: 15px; object-fit: cover;">
@@ -795,7 +561,7 @@
     }
 
     // === THEME TOGGLE LOGIC (APPLE LIGHT/DARK) ===
-    const sunIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>`;
+    const sunIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line></svg>`;
     const moonIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>`;
 
     function toggleTheme() {
@@ -813,7 +579,6 @@
     document.addEventListener("DOMContentLoaded", function() {
         gsap.registerPlugin(ScrollTrigger);
 
-        // Text Splitting Utility for GSAP
         document.querySelectorAll('.gsap-reveal-text').forEach(heading => {
             const text = heading.innerText;
             heading.innerHTML = '';
@@ -840,7 +605,6 @@
             });
         });
 
-        // Trigger GSAP Scrub Animations
         document.querySelectorAll('.gsap-reveal-text').forEach(trigger => {
             const chars = trigger.querySelectorAll('.char');
             gsap.fromTo(chars, 
@@ -877,18 +641,15 @@
     window.addEventListener('resize', initCanvas);
     initCanvas();
 
-    // Mouse tracking with inertia
     window.addEventListener('mousemove', (e) => {
         targetX = e.clientX;
         targetY = e.clientY;
     });
 
     function renderAura() {
-        // Fluid inertia lerp calculation
         currentX += (targetX - currentX) * 0.04;
         currentY += (targetY - currentY) * 0.04;
 
-        // Fetch CSS Variables for Aura depending on theme mode
         const computedStyle = getComputedStyle(document.body);
         const bgColor = computedStyle.getPropertyValue('--bg-color').trim();
         const auraBlue = computedStyle.getPropertyValue('--aura-blue').trim();
@@ -897,13 +658,11 @@
         ctx.fillStyle = bgColor;
         ctx.fillRect(0, 0, width, height);
 
-        // Neon Blue Glow
         const radiusBlue = Math.max(width, height) * 0.45;
         const gradBlue = ctx.createRadialGradient(currentX, currentY, 0, currentX, currentY, radiusBlue);
         gradBlue.addColorStop(0, auraBlue);
         gradBlue.addColorStop(1, 'rgba(0, 0, 0, 0)');
         
-        // Soft Deep Violet Offset Glow
         const radiusViolet = Math.max(width, height) * 0.55;
         const gradViolet = ctx.createRadialGradient(width - currentX, height - currentY, 0, width - currentX, height - currentY, radiusViolet);
         gradViolet.addColorStop(0, auraViolet);
