@@ -51,7 +51,10 @@
         /* ==========================================
            2. RESET & BASE
            ========================================== */
-        html { scroll-behavior: smooth; }
+        html { 
+            scroll-behavior: smooth; 
+            scroll-padding-top: 120px; /* FIX 1: Prevents nav bar from covering section headings */
+        }
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             margin: 0; padding: 0;
@@ -118,7 +121,7 @@
            5. LAYOUT & TYPOGRAPHY
            ========================================== */
         .container { max-width: 1100px; margin: auto; padding: 0 2rem; }
-        section { padding-top: 120px; padding-bottom: 6rem; min-height: 80vh; display: flex; flex-direction: column; justify-content: center; }
+        section { padding-top: 60px; padding-bottom: 6rem; min-height: 80vh; display: flex; flex-direction: column; justify-content: center; }
         
         h2 { color: var(--text-main); font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; letter-spacing: -0.03em; margin-bottom: 3rem; display: flex; align-items: center; }
         h3 { color: var(--text-main); margin-bottom: 0.5rem; font-size: 1.5rem; font-weight: 600; letter-spacing: -0.01em; }
@@ -157,7 +160,6 @@
         }
         body.light-mode .logo-img { background-color: transparent; padding: 0; }
         
-        /* Enlarged Logo specifically for Education */
         .edu-logo {
             height: 48px; width: auto; vertical-align: middle; margin-right: 15px; border-radius: 8px;
             background-color: rgba(255, 255, 255, 0.95); padding: 5px; box-sizing: content-box;
@@ -175,14 +177,23 @@
         .hero-title { font-size: clamp(3rem, 8vw, 5.5rem); font-weight: 800; margin: 0; color: var(--text-main); line-height: 1.05; letter-spacing: -0.04em; }
         .hero-subtitle { font-size: clamp(1.5rem, 4vw, 3rem); font-weight: 600; margin: 1rem 0; color: var(--text-muted); letter-spacing: -0.02em; }
 
+        /* FIX 2: Strict Grid Implementation for About Section */
         .about-grid-layout { 
             display: grid; 
             grid-template-columns: 1fr 1.3fr; 
             gap: 4rem; 
-            align-items: center; 
+            align-items: center;
+            width: 100%;
         }
         @media (max-width: 800px) { .about-grid-layout { grid-template-columns: 1fr; gap: 2.5rem; } }
         
+        .about-image-new {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            background: rgba(255,255,255,0.02); /* Placeholder frame */
+            border-radius: 24px;
+        }
         .about-image-new img {
             width: 100%;
             height: auto;
@@ -219,12 +230,49 @@
         .details-inner { overflow: hidden; padding-top: 1.5rem; border-top: 1px solid var(--border-color); }
         
         .gallery-scroll { display: flex; gap: 1.5rem; overflow-x: auto; padding-bottom: 1rem; margin-top: 1.5rem; scrollbar-width: thin; }
-        .gallery-scroll img { height: 250px; width: auto; border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 10px 20px var(--shadow-color); object-fit: cover; }
+        .gallery-scroll img { 
+            height: 250px; width: auto; border-radius: 12px; border: 1px solid var(--border-color); 
+            box-shadow: 0 10px 20px var(--shadow-color); object-fit: cover; 
+            cursor: pointer; transition: transform 0.3s ease;
+        }
+        .gallery-scroll img:hover {
+            transform: scale(1.02);
+            border-color: var(--accent);
+        }
+
+        /* ==========================================
+           9. CUSTOM LIGHTBOX (FIX 3)
+           ========================================== */
+        .lightbox {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 9999; opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
+        }
+        .lightbox.active { opacity: 1; pointer-events: auto; cursor: pointer; }
+        .lightbox img {
+            max-width: 90%; max-height: 90%; border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.1);
+            transform: scale(0.95); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .lightbox.active img { transform: scale(1); }
+        .lightbox-close {
+            position: absolute; top: 2rem; right: 2rem; color: white; font-size: 2rem; 
+            background: rgba(255,255,255,0.1); border-radius: 50%; width: 44px; height: 44px; 
+            display: flex; align-items: center; justify-content: center; transition: background 0.3s;
+        }
+        .lightbox-close:hover { background: rgba(255,255,255,0.2); }
 
         footer { border-top: 1px solid var(--border-color); padding: 4rem 0; background: var(--bg-color); }
     </style>
 </head>
 <body>
+
+<!-- Lightbox Overlay -->
+<div id="lightbox" class="lightbox" onclick="closeLightbox()">
+    <div class="lightbox-close">&times;</div>
+    <img id="lightbox-img" src="" alt="Enlarged View">
+</div>
 
 <canvas id="fluid-aura"></canvas>
 
@@ -276,11 +324,11 @@
         </div>
     </section>
 
-    <!-- ABOUT SECTION (Fixed 2-Column Grid) -->
+    <!-- ABOUT -->
     <section id="about">
         <div class="about-grid-layout">
             <div class="about-image-new">
-                <img src="profile.PNG" alt="Siddharth Shelke" onerror="this.style.display='none'">
+                <img src="profile.PNG" alt="Siddharth Shelke">
             </div>
 
             <div class="about-text-new">
@@ -310,6 +358,7 @@
         <h2 class="gsap-reveal-text" data-de="Berufserfahrung">Professional Experience.</h2>
         
         <div class="bento-grid" style="grid-template-columns: 1fr;">
+            <!-- Ottobock -->
             <div class="item-card">
                 <h3>
                     <img src="ottobock_logo.png" class="logo-img" onerror="this.style.display='none'">
@@ -323,6 +372,7 @@
                 </ul>
             </div>
 
+            <!-- Lear Corp -->
             <div class="item-card">
                 <h3>
                     <img src="lear_logo.png" class="logo-img" onerror="this.style.display='none'">
@@ -371,14 +421,15 @@
                         </p>
                         
                         <h4 style="color: var(--text-main); margin-bottom: 0.5rem;" data-de="Projekt-Schnappschüsse">Project Snapshots</h4>
+                        <!-- FIX 3: Images in gallery now trigger the cinematic Lightbox overlay -->
                         <div class="gallery-scroll">
-                            <img src="s1.png" alt="Dashboard Snapshot 1" onerror="this.style.display='none'">
-                            <img src="s2.png" alt="Dashboard Snapshot 2" onerror="this.style.display='none'">
-                            <img src="s3.png" alt="Dashboard Snapshot 3" onerror="this.style.display='none'">
-                            <img src="s4.png" alt="Dashboard Snapshot 4" onerror="this.style.display='none'">
-                            <img src="s5.png" alt="Dashboard Snapshot 5" onerror="this.style.display='none'">
-                            <img src="s6.png" alt="Certificate 1" onerror="this.style.display='none'">
-                            <img src="s7.png" alt="Certificate 2" onerror="this.style.display='none'">
+                            <img src="s1.png" alt="Dashboard Snapshot 1" onclick="openLightbox(this.src)" onerror="this.style.display='none'">
+                            <img src="s2.png" alt="Dashboard Snapshot 2" onclick="openLightbox(this.src)" onerror="this.style.display='none'">
+                            <img src="s3.png" alt="Dashboard Snapshot 3" onclick="openLightbox(this.src)" onerror="this.style.display='none'">
+                            <img src="s4.png" alt="Dashboard Snapshot 4" onclick="openLightbox(this.src)" onerror="this.style.display='none'">
+                            <img src="s5.png" alt="Dashboard Snapshot 5" onclick="openLightbox(this.src)" onerror="this.style.display='none'">
+                            <img src="s6.png" alt="Certificate 1" onclick="openLightbox(this.src)" onerror="this.style.display='none'">
+                            <img src="s7.png" alt="Certificate 2" onclick="openLightbox(this.src)" onerror="this.style.display='none'">
                         </div>
                     </div>
                 </div>
@@ -389,9 +440,10 @@
     <!-- PROJECTS -->
     <section id="projects">
         <h2 class="gsap-reveal-text" data-de="Meine Projekte">Systems & Architectures.</h2>
-        <div class="bento-grid">
+        <!-- Using a 1-column layout like Experience ensures animations don't break surrounding elements -->
+        <div class="bento-grid" style="grid-template-columns: 1fr;">
             
-            <div class="item-card" style="grid-column: 1 / -1;">
+            <div class="item-card">
                 <div class="meta-info" data-de="Maschinelles Lernen">Machine Learning</div>
                 <h3 data-de="Prädiktives Wartungssystem">Predictive Maintenance System</h3>
                 <p style="margin-bottom: 2rem;" data-de="End-to-End-ML-Lösung zur Erkennung seltener Ausfälle von Industriemaschinen mittels Random Forest Ensemble.">End-to-end ML solution using a Random Forest Ensemble and physics-informed features to detect rare industrial machine failures.</p>
@@ -422,25 +474,27 @@
                 </div>
             </div>
 
-            <div class="item-card">
-                <div class="meta-info" data-de="KI & LLMs">AI & LLMs</div>
-                <h3 data-de="Dokumenten-QA-Chatbot">Document QA Chatbot</h3>
-                <p data-de="KI-gestützter RAG-Chatbot mit LangChain und Gemini API zur deutlichen Reduzierung der Suchzeiten in Dokumenten.">AI-powered RAG chatbot leveraging LangChain, Gemini API, and text-embeddings to significantly reduce manual document search time.</p>
-                <a href="#" onclick="alert('Coming soon!'); return false;" class="action-link" data-de="↗ Projekt öffnen">↗ Open Project</a>
-            </div>
+            <div class="bento-grid" style="margin-top: 2rem;">
+                <div class="item-card">
+                    <div class="meta-info" data-de="KI & LLMs">AI & LLMs</div>
+                    <h3 data-de="Dokumenten-QA-Chatbot">Document QA Chatbot</h3>
+                    <p data-de="KI-gestützter RAG-Chatbot mit LangChain und Gemini API zur deutlichen Reduzierung der Suchzeiten in Dokumenten.">AI-powered RAG chatbot leveraging LangChain, Gemini API, and text-embeddings to significantly reduce manual document search time.</p>
+                    <a href="#" onclick="alert('Coming soon!'); return false;" class="action-link" data-de="↗ Projekt öffnen">↗ Open Project</a>
+                </div>
 
-            <div class="item-card">
-                <div class="meta-info" data-de="Datenanalyse">Data Analysis</div>
-                <h3 data-de="Verkaufsprognose (Big Mart)">Big Mart Sales Prediction</h3>
-                <p data-de="Verarbeitung von 7.000+ Datensätzen und Abstimmung eines XGBoost-Regressors zur Aufdeckung standortbezogener Nachfragetreiber.">Processed 7,000+ records and tuned an XGBoost regressor to uncover product visibility and location-based demand drivers.</p>
-                <a href="#" onclick="alert('Coming soon!'); return false;" class="action-link" data-de="↗ Projekt öffnen">↗ Open Project</a>
-            </div>
-            
-            <div class="item-card">
-                <div class="meta-info" data-de="Computer Vision">Computer Vision</div>
-                <h3 data-de="Gesichtsmasken-Erkennung (CNN)">Face Mask Detection CNN</h3>
-                <p data-de="Echtzeit-CNN-Erkennungspipeline mit einer Testgenauigkeit von ~98%.">Real-time CNN detection pipeline achieving ~98% test accuracy.</p>
-                <a href="#" onclick="alert('Coming soon!'); return false;" class="action-link" data-de="↗ Projekt öffnen">↗ Open Project</a>
+                <div class="item-card">
+                    <div class="meta-info" data-de="Datenanalyse">Data Analysis</div>
+                    <h3 data-de="Verkaufsprognose (Big Mart)">Big Mart Sales Prediction</h3>
+                    <p data-de="Verarbeitung von 7.000+ Datensätzen und Abstimmung eines XGBoost-Regressors zur Aufdeckung standortbezogener Nachfragetreiber.">Processed 7,000+ records and tuned an XGBoost regressor to uncover product visibility and location-based demand drivers.</p>
+                    <a href="#" onclick="alert('Coming soon!'); return false;" class="action-link" data-de="↗ Projekt öffnen">↗ Open Project</a>
+                </div>
+                
+                <div class="item-card">
+                    <div class="meta-info" data-de="Computer Vision">Computer Vision</div>
+                    <h3 data-de="Gesichtsmasken-Erkennung (CNN)">Face Mask Detection CNN</h3>
+                    <p data-de="Echtzeit-CNN-Erkennungspipeline mit einer Testgenauigkeit von ~98%.">Real-time CNN detection pipeline achieving ~98% test accuracy.</p>
+                    <a href="#" onclick="alert('Coming soon!'); return false;" class="action-link" data-de="↗ Projekt öffnen">↗ Open Project</a>
+                </div>
             </div>
             
         </div>
@@ -521,6 +575,17 @@
 </footer>
 
 <script>
+    // === LIGHTBOX LOGIC FOR IMAGES ===
+    function openLightbox(src) {
+        const lb = document.getElementById('lightbox');
+        const lbImg = document.getElementById('lightbox-img');
+        lbImg.src = src;
+        lb.classList.add('active');
+    }
+    function closeLightbox() {
+        document.getElementById('lightbox').classList.remove('active');
+    }
+
     // === EXPANDABLE DETAILS LOGIC (ACCORDION) ===
     function toggleDetails(panelId, btnElement) {
         const panel = document.getElementById(panelId);
@@ -542,6 +607,7 @@
     function toggleLang() {
         isGerman = !isGerman;
         
+        // Temporarily pause GSAP splits if you implement them dynamically to prevent text breaking
         document.querySelectorAll('[data-de]').forEach(el => {
             if (!el.hasAttribute('data-en')) {
                 el.setAttribute('data-en', el.innerHTML);
