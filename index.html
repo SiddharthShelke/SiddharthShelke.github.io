@@ -152,10 +152,25 @@
         .hero-title { font-size: 4.5rem; font-weight: 800; margin: 0; color: var(--text-main); line-height: 1.05; letter-spacing: -0.04em; }
         .hero-subtitle { font-size: 2.5rem; font-weight: 700; margin: 10px 0; color: var(--text-muted); letter-spacing: -0.02em; }
         
-        /* Your Exact Original Grid Layout */
+        /* Fixed About Grid Layout to maintain consistent proportions */
         .about-grid-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
         @media (max-width: 800px) { .about-grid-layout { grid-template-columns: 1fr; gap: 2rem; } }
-        .about-image-new img { width: 100%; border-radius: 24px; box-shadow: 0 20px 40px var(--shadow-color); border: 1px solid var(--border-color); object-fit: cover; }
+        
+        .about-image-new {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .about-image-new img { 
+            width: 100%; 
+            height: auto; 
+            border-radius: 24px; 
+            box-shadow: 0 20px 40px var(--shadow-color); 
+            border: 1px solid var(--border-color); 
+            object-fit: cover; 
+            display: block;
+        }
+        
         .about-headline { font-size: 2.2rem; line-height: 1.2; margin-top: 0; margin-bottom: 20px; color: var(--text-main); font-weight: 700; }
         
         .expertise-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
@@ -193,7 +208,7 @@
             border: 1px solid var(--border-color); box-shadow: 0 20px 40px -15px var(--shadow-color);
         }
 
-        /* === PROJECTS 2x2 GRID (FIX 1) === */
+        /* === PROJECTS 2x2 GRID === */
         .projects-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -237,7 +252,7 @@
             </svg>
         </button>
         <div class="dropdown">
-            <button class="dropbtn" data-de="Lebenslauf">Download CV ▾</button>
+            <button class="dropbtn" data-de="Lebenslauf ▾">Download CV ▾</button>
             <div class="dropdown-content">
                 <a href="SShelke_CV.pdf" target="_blank">English CV</a>
                 <a href="SShelke_Lebenslauf.pdf" target="_blank">Deutsch CV</a>
@@ -433,16 +448,16 @@
         
         <div class="item-card gsap-reveal">
             <h3>
-                <img src="pcco_logo.png" class="logo-img" onerror="this.style.display='none'">
-                <a href="http://www.pccoepune.com" target="_blank" class="title-link">B.Tech Information Technology ↗</a>
+                <img src="sppu_logo.png" class="logo-img" onerror="this.style.display='none'">
+                <a href="https://www.unipune.ac.in/" target="_blank" class="title-link">B.Tech Information Technology ↗</a>
             </h3>
-            <div class="meta-info" data-de="Pimpri Chinchwad College Of Engineering | Note: 1.8">Pimpri Chinchwad College Of Engineering | Grade: 1.8</div>
+            <div class="meta-info" data-de="Savitribai Phule Pune University | Note: 1.8">Savitribai Phule Pune University | Grade: 1.8</div>
         </div>
 
         <div class="item-card gsap-reveal">
-            <h3 data-de="IEEE-Publikation">IEEE Publication</h3>
+            <h3 data-de="IEEE-Publikation (2023)">IEEE Publication (2023)</h3>
             <p style="margin-top: 5px; margin-bottom: 5px;" data-de="Gesichtsmasken-Erkennung mittels Convolutional Neural Network">Face Mask Detection using Convolutional Neural Network</p>
-            <a href="https://ieeexplore.ieee.org" target="_blank" class="action-link" data-de="↗ Publikation ansehen">↗ View Publication</a>
+            <a href="https://ieeexplore.ieee.org/document/10170036" target="_blank" class="action-link" data-de="↗ Publikation ansehen">↗ View Publication</a>
         </div>
     </section>
 
@@ -510,6 +525,7 @@
 
         document.getElementById('lang-toggle').innerText = isGerman ? "EN" : "DE";
         
+        // Update the expanded/collapsed button text dynamically when language changes
         const openPanels = document.querySelectorAll('.details-panel.expanded');
         const closedPanels = document.querySelectorAll('.details-panel:not(.expanded)');
         
@@ -529,6 +545,9 @@
     }
 
     // === THEME TOGGLE LOGIC ===
+    let particleRGB = '100, 255, 218'; // Default Cyan
+    
+    // Clean SVG Icons for Theme Toggle
     const sunIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>`;
     const moonIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>`;
 
@@ -538,12 +557,14 @@
         
         if (document.body.classList.contains('light-mode')) {
             themeBtn.innerHTML = moonIcon;
+            particleRGB = '43, 108, 176'; // Deep Blue for Light Mode
         } else {
             themeBtn.innerHTML = sunIcon;
+            particleRGB = '100, 255, 218'; // Cyan for Dark Mode
         }
     }
 
-    // === NEW GSAP SCROLL ANIMATIONS ===
+    // === SCROLL ANIMATION ===
     document.addEventListener("DOMContentLoaded", function() {
         gsap.registerPlugin(ScrollTrigger);
         
@@ -566,9 +587,7 @@
         // 2. Heading Color Fade on Scroll
         const headings = document.querySelectorAll('.scroll-heading');
         headings.forEach(heading => {
-            // Set initial state via GSAP
-            gsap.set(heading, { color: "rgba(134, 134, 139, 0.2)" }); // Light gray/faded
-            
+            gsap.set(heading, { color: "rgba(134, 134, 139, 0.2)" }); // Faded initial
             gsap.to(heading, {
                 scrollTrigger: {
                     trigger: heading,
@@ -576,13 +595,13 @@
                     end: "top 50%",
                     scrub: true
                 },
-                color: "var(--text-main)", // Transition to full solid color
+                color: "var(--text-main)", // Full color when scrolled
                 ease: "none"
             });
         });
     });
 
-    // === UPGRADED APPLE "AI FLUID AURA" BACKGROUND ===
+    // === LIVE DATA FLUID AURA BACKGROUND ===
     const canvas = document.getElementById('network-canvas');
     const ctx = canvas.getContext('2d');
     
