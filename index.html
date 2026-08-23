@@ -1,24 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="lenis lenis-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Siddharth Shelke | Data Scientist & Engineer</title>
     
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <!-- GSAP & ScrollTrigger -->
-    <script src="https://unpkg.com/gsap@3.12.2/dist/gsap.min.js"></script>
-    <script src="https://unpkg.com/gsap@3.12.2/dist/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://unpkg.com/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+    <!-- Lenis Smooth Scrolling -->
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.39/dist/lenis.min.js"></script>
 
     <style>
-        /* === ULTRA-PREMIUM APPLE AESTHETIC === */
+        /* ==========================================
+           1. CORE VARIABLES & RESET
+           ========================================== */
         :root {
             --bg-color: #000000;
             --text-main: #ffffff;
             --text-muted: #86868b;
-            --card-bg: rgba(25, 25, 27, 0.6);
-            --border-light: rgba(255, 255, 255, 0.1);
+            --glass-bg: rgba(22, 22, 23, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.1);
             --accent: #2997ff;
-            --font-stack: -apple-system, BlinkMacSystemFont, "Inter", "San Francisco", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --font-stack: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
         * {
@@ -32,13 +41,15 @@
             background-color: var(--bg-color);
             color: var(--text-main);
             line-height: 1.5;
-            overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
         }
 
-        /* === INTERACTIVE FLUID AURA CANVAS === */
-        #aura-canvas {
+        /* ==========================================
+           2. CANVAS ENGINE
+           ========================================== */
+        #fluid-aura {
             position: fixed;
             top: 0;
             left: 0;
@@ -46,27 +57,636 @@
             height: 100vh;
             z-index: -1;
             pointer-events: none;
-            background: #000000;
         }
 
-        /* === MINIMAL STICKY NAVIGATION === */
+        /* ==========================================
+           3. GLOBAL TYPOGRAPHY & LAYOUT
+           ========================================== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        section {
+            padding: 8rem 0;
+            position: relative;
+        }
+
+        .giant-heading {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+            margin-bottom: 2rem;
+        }
+
+        .giant-heading .char {
+            opacity: 0.1;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 3rem;
+            border-bottom: 1px solid var(--glass-border);
+            padding-bottom: 1rem;
+        }
+
+        p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+        }
+
+        a:hover {
+            opacity: 0.8;
+        }
+
+        /* ==========================================
+           4. STICKY NAVIGATION & DROPDOWNS
+           ========================================== */
         nav {
             position: fixed;
             top: 0;
             width: 100%;
-            padding: 1.2rem 2rem;
             display: flex;
-            justify-content: center;
-            background: rgba(0, 0, 0, 0.5);
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background: rgba(0, 0, 0, 0.7);
             backdrop-filter: saturate(180%) blur(20px);
             -webkit-backdrop-filter: saturate(180%) blur(20px);
-            border-bottom: 1px solid var(--border-light);
+            border-bottom: 1px solid var(--glass-border);
             z-index: 1000;
         }
 
         .nav-links {
             display: flex;
-            gap: 2.5rem;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text-main);
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .utilities {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .lang-switch {
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            color: var(--text-main);
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-toggle {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-main);
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            background: transparent;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 120%;
+            right: 0;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 0.5rem;
+            display: none;
+            flex-direction: column;
+            min-width: 150px;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: flex;
+        }
+
+        .dropdown-menu a {
+            padding: 0.5rem 1rem;
+            color: var(--text-main);
+            font-size: 0.85rem;
+            border-radius: 6px;
+        }
+
+        .dropdown-menu a:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* ==========================================
+           5. BENTO BOX CARDS & INTERACTIONS
+           ========================================== */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .bento-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 2.5rem;
+            position: relative;
+            transform-style: preserve-3d;
+            will-change: transform;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .bento-card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            transform: translateZ(30px);
+        }
+        
+        .bento-card .meta {
+            font-size: 0.85rem;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            font-family: monospace;
+            transform: translateZ(20px);
+        }
+
+        .bento-card p, .bento-card ul {
+            transform: translateZ(20px);
+        }
+
+        .bento-card ul {
+            padding-left: 1.2rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .bento-card li {
+            margin-bottom: 0.5rem;
+        }
+
+        .cta-hook {
+            margin-top: auto;
+            display: inline-block;
+            font-weight: 600;
+            padding-top: 1rem;
+        }
+
+        /* Deep-Dive Drawers */
+        .drawer-content {
+            display: none;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--glass-border);
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        .drawer-content.active {
+            display: block;
+        }
+
+        .gallery-grid {
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+            padding-bottom: 1rem;
+            margin-top: 1rem;
+        }
+
+        .gallery-item {
+            min-width: 120px;
+            height: 80px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-align: center;
+            padding: 0.5rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ==========================================
+           6. FOOTER
+           ========================================== */
+        footer {
+            border-top: 1px solid var(--glass-border);
+            padding: 4rem 2rem;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(20px);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-col h4 {
+            font-size: 0.85rem;
+            color: var(--text-main);
+            margin-bottom: 1rem;
+            letter-spacing: 0.1em;
+        }
+
+        .footer-col a {
+            display: block;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 3rem auto 0;
+            padding-top: 2rem;
+            border-top: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        .avatar-hook {
+            width: 40px;
+            height: 40px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 2. CANVAS ENGINE -->
+    <canvas id="fluid-aura"></canvas>
+
+    <!-- 4. INTERFACE UTILITIES -->
+    <nav>
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#experience">Experience</a>
+            <a href="#projects">Projects</a>
+            <a href="#education">Education</a>
+            <a href="#contact">Contact</a>
+        </div>
+        <div class="utilities">
+            <span class="lang-switch" onclick="alert('Language switch logic hooked.')">DE / EN</span>
+            <div class="dropdown">
+                <button class="dropdown-toggle">Document Hub</button>
+                <div class="dropdown-menu">
+                    <a href="#download-en">English CV</a>
+                    <a href="#download-de">Deutsch CV</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        
+        <!-- HERO SECTION -->
+        <section id="home" style="padding-top: 15rem; min-height: 100vh;">
+            <p style="color: var(--accent); font-weight: 600; margin-bottom: 1rem;">Hi, my name is Siddharth Shelke. I engineer data solutions.</p>
+            <h1 class="giant-heading split-text">
+                Transforming complex spatial data into actionable intelligence.
+            </h1>
+            <p style="max-width: 600px; font-size: 1.25rem;">
+                I am a Data Analyst, Data Scientist, and Data Engineer specializing in robust ETL pipelines, AI models, and transforming complex 3D and spatial data into actionable intelligence.
+            </p>
+            <br>
+            <a href="#projects" class="cta-hook" style="font-size: 1.1rem; text-decoration: underline;">Check out my work!</a>
+        </section>
+
+        <!-- ABOUT / STRATEGIC PILLARS -->
+        <section id="about">
+            <h2 class="section-title">Strategic Pillars.</h2>
+            <div class="bento-grid" style="grid-template-columns: repeat(2, 1fr);">
+                <div class="bento-card">
+                    <h3>Machine Learning & AI</h3>
+                    <p>Building predictive models and engineering intelligent architectures to automate complex decision-making processes.</p>
+                </div>
+                <div class="bento-card">
+                    <h3>Data Engineering (ETL)</h3>
+                    <p>Designing robust pipelines for cleaning, standardizing, and securely migrating vast datasets across enterprise systems.</p>
+                </div>
+                <div class="bento-card">
+                    <h3>3D Computer Vision</h3>
+                    <p>Capturing and parsing spatial mappings, utilizing advanced spatial metrics for quantitative evaluation frameworks.</p>
+                </div>
+                <div class="bento-card">
+                    <h3>Data Analytics & BI</h3>
+                    <p>Creating interactive dashboards and operational intelligence tools to drive data-driven corporate strategies.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- EXPERIENCE SECTION -->
+        <section id="experience">
+            <h2 class="section-title">Professional Experience.</h2>
+            <div class="bento-grid">
+                
+                <div class="bento-card">
+                    <h3>Data Science Intern @ Ottobock</h3>
+                    <div class="meta">Feb 2026 - Aug 2026 | Duderstadt, Germany</div>
+                    <ul>
+                        <li>Designed and automated a 3D data preprocessing pipeline using Python to clean, align, and standardize spatial data and clinical records.</li>
+                        <li>Engineered data-driven ML models to capture 3D spatial mappings, automating clinical design processes.</li>
+                        <li>Established quantitative evaluation frameworks utilizing advanced spatial metrics.</li>
+                    </ul>
+                </div>
+
+                <div class="bento-card">
+                    <h3>Data Analyst Intern @ Lear Corporation</h3>
+                    <div class="meta">Feb 2025 - Apr 2025 | Pune, India</div>
+                    <ul>
+                        <li>Implemented ETL pipelines in Palantir Foundry, integrating data from 7 plants and reducing reporting time by 85%.</li>
+                        <li>Designed an interactive dashboard displaying 33 KOTs, 8 KPIs, and volume data per plant, with side-by-side forecast vs actual comparisons.</li>
+                    </ul>
+                    <a href="javascript:void(0)" class="cta-hook" onclick="toggleDrawer('lear-drawer')">Deep Dive: Lear Corp ↘</a>
+                    
+                    <div id="lear-drawer" class="drawer-content">
+                        <p><strong>Lear Corporation</strong> is a global automotive technology leader in Seating and E-Systems, providing complete seat systems and electrical architectures to major automakers.</p>
+                        <p style="margin-top: 1rem;"><strong>Palantir Foundry</strong> is an advanced enterprise data platform designed to integrate complex data sources, build robust business ontologies, and power operational analytics.</p>
+                        <p style="margin-top: 1rem;"><strong>Project Highlights:</strong> During my internship at Lear Corporation, I led a real-world data automation project focused on the Key Operating Trends (KOT) data analysis process using Palantir Foundry. I successfully automated the manual filtering and visualization of KOT data by building robust data pipelines using Pipeline Builder. Furthermore, I created a comprehensive business Ontology that served as the foundation for a newly developed interactive dashboard. This project allowed me to acquire extensive hands-on experience in advanced data visualization, pipeline automation, and the use of enterprise-level tools. It also provided a deep understanding of complex enterprise data structures, continuous integration (CI) processes, and the importance of efficient cross-functional collaboration.</p>
+                        
+                        <div class="gallery-grid">
+                            <div class="gallery-item">Dashboard Snapshot 1</div>
+                            <div class="gallery-item">Dashboard Snapshot 2</div>
+                            <div class="gallery-item">Dashboard Snapshot 3</div>
+                            <div class="gallery-item">Dashboard Snapshot 4</div>
+                            <div class="gallery-item">Dashboard Snapshot 5</div>
+                            <div class="gallery-item">Certificate 1</div>
+                            <div class="gallery-item">Certificate 2</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- PROJECTS MATRIX -->
+        <section id="projects">
+            <h2 class="section-title">Projects Matrix.</h2>
+            <div class="bento-grid">
+                
+                <div class="bento-card">
+                    <div class="meta">Machine Learning</div>
+                    <h3>Predictive Maintenance System</h3>
+                    <p>End-to-end ML solution using a Random Forest Ensemble and physics-informed features to detect rare industrial machine failures.</p>
+                    <a href="javascript:void(0)" class="cta-hook" onclick="toggleDrawer('predictive-drawer')">📊 View Presentation</a>
+                    
+                    <div id="predictive-drawer" class="drawer-content">
+                        <div style="margin-bottom: 1.5rem; background: #000; border-radius: 8px; overflow: hidden; border: 1px solid var(--glass-border);">
+                            <video width="100%" controls>
+                                <source src="#" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
+                        <div style="margin-bottom: 1.5rem; background: rgba(255,255,255,0.05); padding: 2rem; text-align: center; border-radius: 8px; border: 1px solid var(--glass-border);">
+                            <span style="color: var(--text-muted); font-size: 0.9rem;">[ Project Infographic Hook ]</span>
+                        </div>
+                        <a href="#presentation-doc" style="display: block; padding: 0.8rem; text-align: center; border: 1px solid var(--accent); border-radius: 8px; color: var(--accent);">Open Project Documentation</a>
+                    </div>
+                </div>
+
+                <div class="bento-card">
+                    <div class="meta">AI & LLMs</div>
+                    <h3>Document QA Chatbot</h3>
+                    <p>AI-powered RAG chatbot leveraging LangChain, Gemini API, and text-embeddings to significantly reduce manual document search time.</p>
+                    <a href="#project-qa" class="cta-hook">↗ Open Project</a>
+                </div>
+
+                <div class="bento-card">
+                    <div class="meta">Data Analysis</div>
+                    <h3>Big Mart Sales Prediction</h3>
+                    <p>Processed 7,000+ records and tuned an XGBoost regressor to uncover product visibility and location-based demand drivers.</p>
+                    <a href="#project-sales" class="cta-hook">↗ Open Project</a>
+                </div>
+
+                <div class="bento-card">
+                    <div class="meta">Computer Vision</div>
+                    <h3>Face Mask Detection CNN</h3>
+                    <p>Real-time CNN detection pipeline achieving ~98% test accuracy.</p>
+                    <a href="#project-mask" class="cta-hook">↗ Open Project</a>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ACADEMIC & PUBLICATIONS -->
+        <section id="education">
+            <h2 class="section-title">Academic & Publications Portfolio.</h2>
+            <div class="bento-grid" style="grid-template-columns: 1fr;">
+                <div class="bento-card" style="flex-direction: row; justify-content: space-between; align-items: center; padding: 1.5rem 2.5rem;">
+                    <div>
+                        <h3 style="margin: 0; font-size: 1.2rem;">MSc Data Science</h3>
+                        <p style="margin: 0;">University of Europe for Applied Sciences</p>
+                    </div>
+                    <div class="meta" style="margin: 0;">Grade: 1.7</div>
+                </div>
+                
+                <div class="bento-card" style="flex-direction: row; justify-content: space-between; align-items: center; padding: 1.5rem 2.5rem;">
+                    <div>
+                        <h3 style="margin: 0; font-size: 1.2rem;">B.Tech Information Technology</h3>
+                        <p style="margin: 0;">Pimpri Chinchwad College Of Engineering</p>
+                    </div>
+                    <div class="meta" style="margin: 0;">Grade: 1.8</div>
+                </div>
+
+                <div class="bento-card" style="flex-direction: row; justify-content: space-between; align-items: center; padding: 1.5rem 2.5rem;">
+                    <div>
+                        <h3 style="margin: 0; font-size: 1.2rem;">IEEE Publication</h3>
+                        <p style="margin: 0;">"Face Mask Detection using Convolutional Neural Network"</p>
+                    </div>
+                    <a href="#ieee-pub" class="cta-hook" style="margin: 0;">↗ View Publication</a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER STRUCTURE -->
+    <footer id="contact">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div class="avatar-hook">S</div>
+                <h3 style="margin-top: 1rem; color: var(--text-main);">Siddharth Shelke</h3>
+                <p style="font-size: 0.9rem; margin-top: 0.5rem;">Based in Göttingen, Germany.</p>
+            </div>
+            <div class="footer-col">
+                <h4>EXPLORE</h4>
+                <a href="#about">About</a>
+                <a href="#experience">Experience</a>
+                <a href="#projects">Projects</a>
+            </div>
+            <div class="footer-col">
+                <h4>CONNECT</h4>
+                <a href="mailto:siddharth.shelke@example.com">Email</a>
+                <a href="#linkedin">LinkedIn</a>
+                <a href="#instagram">Instagram</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>© 2026 Siddharth Shelke. Designed & Engineered for Data.</span>
+        </div>
+    </footer>
+
+    <!-- ==========================================
+         JAVASCRIPT LOGIC
+         ========================================== -->
+    <script>
+        // 1. LENIS SMOOTH SCROLL (Native macOS Momentum)
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
+            direction: 'vertical',
+            gestureDirection: 'vertical',
+            smooth: true,
+            mouseMultiplier: 1,
+            smoothI have thoroughly reviewed the source portfolio data and your specifications, taking inspiration from the premium design principles seen in the **Web Page** file you referenced. 
+
+Below is the complete, standalone `index.html` architecture. It integrates a high-performance interactive canvas engine for the fluid aura, Lenis for native-feeling momentum scrolling, and GSAP ScrollTrigger linked directly to the scrollbar track for cinematic character-reveal animations.
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Siddharth Shelke | Data Scientist & Engineer</title>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="[https://fonts.googleapis.com](https://fonts.googleapis.com)">
+    <link rel="preconnect" href="[https://fonts.gstatic.com](https://fonts.gstatic.com)" crossorigin>
+    <link href="[https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap](https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap)" rel="stylesheet">
+    
+    <!-- GSAP & ScrollTrigger -->
+    <script src="[https://unpkg.com/gsap@3.12.5/dist/gsap.min.js](https://unpkg.com/gsap@3.12.5/dist/gsap.min.js)"></script>
+    <script src="[https://unpkg.com/gsap@3.12.5/dist/ScrollTrigger.min.js](https://unpkg.com/gsap@3.12.5/dist/ScrollTrigger.min.js)"></script>
+    
+    <!-- Lenis Smooth Scroll -->
+    <script src="[https://unpkg.com/@studio-freight/lenis@1.0.39/dist/lenis.min.js](https://unpkg.com/@studio-freight/lenis@1.0.39/dist/lenis.min.js)"></script>
+
+    <style>
+        /* =========================================
+           1. STYLESHEET SETUP & VARIABLES
+           ========================================= */
+        :root {
+            --bg-pure: #000000;
+            --text-main: #ffffff;
+            --text-muted: #86868b;
+            --glass-bg: rgba(22, 22, 23, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --accent-blue: #0071e3;
+            --font-stack: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --container-w: 1100px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-stack);
+            background-color: var(--bg-pure);
+            color: var(--text-main);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
+
+        /* Lenis required base styles */
+        html.lenis { height: auto; }
+        .lenis.lenis-smooth { scroll-behavior: auto; }
+        .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+        .lenis.lenis-stopped { overflow: hidden; }
+        .lenis.lenis-scrolling iframe { pointer-events: none; }
+
+        /* =========================================
+           2. CANVAS ENGINE
+           ========================================= */
+        #fluid-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+            background: var(--bg-pure);
+        }
+
+        /* =========================================
+           3. GLOBAL NAVIGATION
+           ========================================= */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            z-index: 1000;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            font-weight: 600;
+            font-size: 1.1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
         }
 
         .nav-links a {
@@ -74,7 +694,6 @@
             text-decoration: none;
             font-size: 0.85rem;
             font-weight: 500;
-            letter-spacing: 0.5px;
             transition: color 0.3s ease;
         }
 
@@ -82,24 +701,62 @@
             color: var(--text-main);
         }
 
-        /* === TYPOGRAPHY & LAYOUT === */
+        .dropdown { position: relative; display: inline-block; }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            margin-top: 10px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            min-width: 150px;
+            overflow: hidden;
+        }
+        .dropdown:hover .dropdown-content { display: block; }
+        .dropdown-content a {
+            display: block;
+            padding: 0.8rem 1rem;
+            color: var(--text-main);
+            border-bottom: 1px solid var(--glass-border);
+        }
+        .dropdown-content a:last-child { border-bottom: none; }
+        .dropdown-content a:hover { background: rgba(255,255,255,0.05); }
+
+        .lang-switch {
+            font-weight: 700;
+            cursor: pointer;
+            color: var(--text-main);
+        }
+
+        /* =========================================
+           4. LAYOUT & TYPOGRAPHY
+           ========================================= */
         .container {
-            max-width: 1040px;
+            max-width: var(--container-w);
             margin: 0 auto;
             padding: 0 2rem;
         }
 
         section {
-            padding: 8rem 0;
-            min-height: 80vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            padding: 10rem 0;
+            position: relative;
         }
 
-        h1, h2, h3 {
-            font-weight: 600;
-            letter-spacing: -0.02em;
+        .giant-heading {
+            font-size: clamp(3rem, 7vw, 6.5rem);
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            line-height: 1.05;
+            margin-bottom: 2rem;
+            max-width: 900px;
+        }
+
+        /* Class used for GSAP text splitting */
+        .scrub-reveal .char {
+            opacity: 0.1;
         }
 
         .section-tag {
@@ -108,256 +765,589 @@
             text-transform: uppercase;
             letter-spacing: 0.1em;
             margin-bottom: 1rem;
+            display: block;
         }
 
-        /* === HERO SECTION === */
-        #hero {
-            text-align: center;
-            align-items: center;
-            padding-top: 12rem;
-        }
-
-        .hero-title {
-            font-size: clamp(3rem, 6vw, 6rem);
-            line-height: 1.05;
-            margin-bottom: 1.5rem;
-            background: linear-gradient(180deg, #ffffff 0%, #a1a1a6 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hero-subtitle {
-            font-size: clamp(1.2rem, 2vw, 1.8rem);
+        .paragraph-long {
             color: var(--text-muted);
-            max-width: 600px;
-            margin: 0 auto 3rem auto;
+            font-size: clamp(1.1rem, 2vw, 1.5rem);
+            max-width: 800px;
+            margin-bottom: 2rem;
             font-weight: 400;
         }
 
-        /* === TIMELINE & PRODUCT GRIDS === */
-        .grid-2 {
+        .cta-button {
+            display: inline-block;
+            background: var(--text-main);
+            color: var(--bg-pure);
+            padding: 1rem 2rem;
+            border-radius: 30px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: transform 0.3s ease;
+        }
+        .cta-button:hover { transform: scale(1.05); }
+
+        /* =========================================
+           5. BENTO BOX CARDS (Glassmorphism + 3D)
+           ========================================= */
+        .bento-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2rem;
+            gap: 1.5rem;
             margin-top: 3rem;
         }
 
-        .card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-light);
-            border-radius: 24px;
-            padding: 3rem 2.5rem;
+        .bento-card {
+            background: var(--glass-bg);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.4s ease;
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 2.5rem;
             position: relative;
-            overflow: hidden;
+            transform-style: preserve-3d;
+            transition: transform 0.1s ease-out, box-shadow 0.3s ease;
         }
 
-        .card:hover {
-            transform: scale(1.02);
-            background: rgba(40, 40, 42, 0.8);
+        .bento-card:hover {
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
         }
 
-        .card h3 {
+        .bento-card h3 {
             font-size: 1.5rem;
+            font-weight: 600;
             margin-bottom: 0.5rem;
         }
 
-        .card .meta {
-            font-family: SFMono-Regular, Consolas, monospace;
-            font-size: 0.8rem;
-            color: var(--accent);
+        .bento-meta {
+            font-size: 0.85rem;
+            color: var(--accent-blue);
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+
+        .bento-card p, .bento-card li {
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .bento-card ul {
+            padding-left: 1.2rem;
             margin-bottom: 1.5rem;
         }
 
-        .card p, .card li {
-            color: var(--text-muted);
-            font-size: 1rem;
-            line-height: 1.6;
+        .pill-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
         }
 
-        .card ul {
-            padding-left: 1.2rem;
+        .pill {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--glass-border);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--text-main);
+        }
+
+        .action-link {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 500;
             margin-top: 1rem;
+            font-size: 0.9rem;
+            transition: opacity 0.3s;
+        }
+        .action-link:hover { opacity: 0.7; }
+
+        /* Expander logic */
+        .expander-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease;
+            opacity: 0;
+        }
+        .expander-content.active {
+            max-height: 2000px; /* arbitrary large value for expansion */
+            opacity: 1;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--glass-border);
         }
 
-        .card li {
-            margin-bottom: 0.5rem;
+        .expander-btn {
+            background: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--glass-border);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: inherit;
+            margin-top: 1rem;
+            transition: background 0.3s;
+        }
+        .expander-btn:hover { background: rgba(255,255,255,0.1); }
+
+        .gallery-grid {
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+            padding-bottom: 1rem;
+            scrollbar-width: thin;
+        }
+        .gallery-item {
+            flex: 0 0 200px;
+            height: 120px;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            text-align: center;
+            padding: 1rem;
         }
 
-        /* Responsive adjustments */
+        .video-container {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: #000;
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+
+        /* =========================================
+           6. FOOTER
+           ========================================= */
+        footer {
+            border-top: 1px solid var(--glass-border);
+            padding: 5rem 2rem;
+            background: var(--bg-pure);
+        }
+        .footer-grid {
+            max-width: var(--container-w);
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 2rem;
+        }
+        .avatar-hook {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--glass-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+        .footer-col h4 { margin-bottom: 1rem; font-size: 0.9rem; color: var(--text-main); }
+        .footer-col a { display: block; color: var(--text-muted); text-decoration: none; margin-bottom: 0.5rem; font-size: 0.9rem; }
+        .footer-col a:hover { color: var(--text-main); }
+        .copyright { grid-column: 1 / -1; margin-top: 3rem; text-align: center; color: var(--text-muted); font-size: 0.8rem; }
+
         @media (max-width: 768px) {
-            nav { padding: 1rem; }
-            .nav-links { gap: 1.2rem; }
-            section { padding: 5rem 0; }
-            .card { padding: 2rem 1.5rem; }
+            .nav-links { display: none; /* simple mobile hide for code brevity */ }
+            .footer-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Interactive Canvas Background -->
-    <canvas id="aura-canvas"></canvas>
+    <!-- INTERACTIVE BACKGROUND -->
+    <canvas id="fluid-canvas"></canvas>
 
-    <!-- Minimal Nav -->
+    <!-- GLOBAL NAVIGATION -->
     <nav>
+        <div class="nav-brand">Siddharth Shelke</div>
         <div class="nav-links">
-            <a href="#hero">Home</a>
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
             <a href="#experience">Experience</a>
             <a href="#projects">Projects</a>
+            <a href="#education">Education</a>
+            <a href="#contact">Contact</a>
+            
+            <div class="dropdown">
+                <a href="#" style="color: var(--text-main);">Document Hub ▾</a>
+                <div class="dropdown-content">
+                    <a href="#">English CV</a>
+                    <a href="#">Deutsch CV</a>
+                </div>
+            </div>
+            
+            <span class="lang-switch">EN / DE</span>
         </div>
     </nav>
 
-    <div class="container">
-        <!-- Hero Section -->
-        <section id="hero">
-            <h1 class="hero-title gs-reveal">Siddharth Shelke.<br>I engineer data solutions.</h1>
-            <p class="hero-subtitle gs-reveal">Bridging the gap between raw data and high-level predictive modeling across engineering and operational systems.</p>
+    <!-- MAIN CONTENT -->
+    <main>
+        
+        <!-- HERO SECTION -->
+        <section id="home" class="container">
+            <div style="padding-top: 5rem;">
+                <span class="section-tag">Identity</span>
+                <h1 class="giant-heading scrub-reveal">Hi, my name is Siddharth Shelke.<br>I engineer data solutions.</h1>
+                <p class="paragraph-long">Based in Göttingen, Germany.</p>
+                <a href="#projects" class="cta-button">Check out my work!</a>
+            </div>
         </section>
 
-        <!-- Experience Section -->
-        <section id="experience">
-            <div class="gs-reveal">
-                <div class="section-tag">Experience</div>
-                <h2>Professional Timeline.</h2>
-            </div>
+        <!-- ABOUT SECTION -->
+        <section id="about" class="container">
+            <span class="section-tag">Core Profile Overview</span>
+            <h2 class="giant-heading scrub-reveal">I am a Data Analyst, Data Scientist, and Data Engineer specializing in robust ETL pipelines, AI models, and transforming complex 3D and spatial data into actionable intelligence.</h2>
             
-            <div class="grid-2">
-                <div class="card gs-reveal">
-                    <h3>Ottobock</h3>
-                    <div class="meta">Data Science Intern • Feb 2026 - Aug 2026</div>
+            <div class="pill-container" style="margin-top: 3rem;">
+                <div class="pill">Machine Learning & AI</div>
+                <div class="pill">Data Engineering (ETL)</div>
+                <div class="pill">3D Computer Vision</div>
+                <div class="pill">Data Analytics & BI</div>
+            </div>
+        </section>
+
+        <!-- EXPERIENCE SECTION -->
+        <section id="experience" class="container">
+            <span class="section-tag">Professional Timeline</span>
+            <h2 class="giant-heading scrub-reveal">Experience.</h2>
+            
+            <div class="bento-grid">
+                
+                <!-- OTTBOCK -->
+                <div class="bento-card tilt-card">
+                    <h3>Data Science Intern @ Ottobock</h3>
+                    <div class="bento-meta">Feb 2026 - Aug 2026 | Duderstadt, Germany</div>
                     <ul>
-                        <li>Automated a 3D data preprocessing pipeline to clean, align, and standardize spatial data.</li>
-                        <li>Engineered data-driven ML models to capture 3D spatial mappings, automating clinical design.</li>
+                        <li>Designed and automated a 3D data preprocessing pipeline using Python to clean, align, and standardize spatial data and clinical records.</li>
+                        <li>Engineered data-driven ML models to capture 3D spatial mappings, automating clinical design processes.</li>
                         <li>Established quantitative evaluation frameworks utilizing advanced spatial metrics.</li>
                     </ul>
                 </div>
 
-                <div class="card gs-reveal">
-                    <h3>Lear Corporation</h3>
-                    <div class="meta">Data Analyst Intern • Feb 2025 - Apr 2025</div>
+                <!-- LEAR CORP -->
+                <div class="bento-card tilt-card">
+                    <h3>Data Analyst Intern @ Lear Corporation</h3>
+                    <div class="bento-meta">Feb 2025 - Apr 2025 | Pune, India</div>
                     <ul>
                         <li>Implemented ETL pipelines in Palantir Foundry, integrating data from 7 plants and reducing reporting time by 85%.</li>
-                        <li>Designed an interactive dashboard displaying 33 KOTs, 8 KPIs, and volume data per plant.</li>
+                        <li>Designed an interactive dashboard displaying 33 KOTs, 8 KPIs, and volume data per plant, with side-by-side forecast vs actual comparisons.</li>
                     </ul>
+                    
+                    <button class="expander-btn" onclick="toggleExpander('lear-details')">Deep-Dive Details +</button>
+                    
+                    <div id="lear-details" class="expander-content">
+                        <p><strong>Lear Corporation:</strong> Lear Corporation is a global automotive technology leader in Seating and E-Systems, providing complete seat systems and electrical architectures to major automakers.</p>
+                        <p><strong>Palantir Foundry:</strong> Palantir Foundry is an advanced enterprise data platform designed to integrate complex data sources, build robust business ontologies, and power operational analytics.</p>
+                        <p><strong>Project Highlights:</strong> During my internship at Lear Corporation, I led a real-world data automation project focused on the Key Operating Trends (KOT) data analysis process using Palantir Foundry. I successfully automated the manual filtering and visualization of KOT data by building robust data pipelines using Pipeline Builder. Furthermore, I created a comprehensive business Ontology that served as the foundation for a newly developed interactive dashboard. This project allowed me to acquire extensive hands-on experience in advanced data visualization, pipeline automation, and the use of enterprise-level tools. It also provided a deep understanding of complex enterprise data structures, continuous integration (CI) processes, and the importance of efficient cross-functional collaboration.</p>
+                        
+                        <div class="gallery-grid" style="margin-top: 1.5rem;">
+                            <div class="gallery-item">Dashboard Snapshot 1</div>
+                            <div class="gallery-item">Dashboard Snapshot 2</div>
+                            <div class="gallery-item">Dashboard Snapshot 3</div>
+                            <div class="gallery-item">Dashboard Snapshot 4</div>
+                            <div class="gallery-item">Dashboard Snapshot 5</div>
+                            <div class="gallery-item">Certificate 1</div>
+                            <div class="gallery-item">Certificate 2</div>
+                        </div>
+                    </div>
                 </div>
+
             </div>
         </section>
 
-        <!-- Projects Section -->
-        <section id="projects">
-            <div class="gs-reveal">
-                <div class="section-tag">Selected Work</div>
-                <h2>Systems & Architectures.</h2>
-            </div>
+        <!-- PROJECTS SECTION -->
+        <section id="projects" class="container">
+            <span class="section-tag">Projects Matrix</span>
+            <h2 class="giant-heading scrub-reveal">Selected Works.</h2>
             
-            <div class="grid-2">
-                <div class="card gs-reveal">
+            <div class="bento-grid">
+                
+                <!-- PROJECT 1 -->
+                <div class="bento-card tilt-card" style="grid-column: 1 / -1;">
+                    <div class="bento-meta">Category: Machine Learning</div>
                     <h3>Predictive Maintenance System</h3>
-                    <div class="meta">Machine Learning Pipeline</div>
-                    <p>End-to-end ML solution utilizing a Random Forest Ensemble and physics-informed features to successfully detect rare industrial machine failures.</p>
+                    <p>End-to-end ML solution using a Random Forest Ensemble and physics-informed features to detect rare industrial machine failures.</p>
+                    
+                    <button class="expander-btn" onclick="toggleExpander('proj1-details')">📊 View Presentation</button>
+                    
+                    <div id="proj1-details" class="expander-content">
+                        <p><strong>Project Pitch:</strong></p>
+                        <div class="video-container">
+                            <video width="100%" height="100%" controls>
+                                <source src="placeholder_track.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
+                        
+                        <p><strong>Project Infographic:</strong></p>
+                        <div class="gallery-item" style="width: 100%; height: auto; padding: 3rem; margin-bottom: 1.5rem;">
+                            [ Image Container Hook: Mapping 'Project Infographic' ]
+                        </div>
+                        
+                        <a href="#" class="action-link">↗ Project Documentation</a>
+                    </div>
                 </div>
 
-                <div class="card gs-reveal">
+                <!-- PROJECT 2 -->
+                <div class="bento-card tilt-card">
+                    <div class="bento-meta">Category: AI & LLMs</div>
                     <h3>Document QA Chatbot</h3>
-                    <div class="meta">AI & LLMs Architecture</div>
-                    <p>AI-powered RAG chatbot leveraging LangChain, the Gemini API, and text-embeddings to significantly reduce manual document search times.</p>
+                    <p>AI-powered RAG chatbot leveraging LangChain, Gemini API, and text-embeddings to significantly reduce manual document search time.</p>
+                    <a href="#" class="action-link">↗ Open Project</a>
                 </div>
 
-                <div class="card gs-reveal">
-                    <h3>Face Mask Detection</h3>
-                    <div class="meta">Computer Vision / CNN</div>
-                    <p>Real-time CNN detection pipeline achieving ~98% test accuracy, published in IEEE.</p>
+                <!-- PROJECT 3 -->
+                <div class="bento-card tilt-card">
+                    <div class="bento-meta">Category: Data Analysis</div>
+                    <h3>Big Mart Sales Prediction</h3>
+                    <p>Processed 7,000+ records and tuned an XGBoost regressor to uncover product visibility and location-based demand drivers.</p>
+                    <a href="#" class="action-link">↗ Open Project</a>
+                </div>
+
+                <!-- PROJECT 4 -->
+                <div class="bento-card tilt-card">
+                    <div class="bento-meta">Category: Computer Vision</div>
+                    <h3>Face Mask Detection CNN</h3>
+                    <p>Real-time CNN detection pipeline achieving ~98% test accuracy.</p>
+                    <a href="#" class="action-link">↗ Open Project</a>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- EDUCATION SECTION -->
+        <section id="education" class="container">
+            <span class="section-tag">Academic & Publications Portfolio</span>
+            <h2 class="giant-heading scrub-reveal">Education.</h2>
+            
+            <div class="bento-grid">
+                <div class="bento-card tilt-card">
+                    <h3>MSc Data Science</h3>
+                    <p>University of Europe for Applied Sciences</p>
+                    <div class="bento-meta">Grade: 1.7</div>
+                </div>
+                
+                <div class="bento-card tilt-card">
+                    <h3>B.Tech Information Technology</h3>
+                    <p>Pimpri Chinchwad College Of Engineering</p>
+                    <div class="bento-meta">Grade: 1.8</div>
+                </div>
+
+                <div class="bento-card tilt-card" style="grid-column: 1 / -1;">
+                    <h3>IEEE Publication</h3>
+                    <p>"Face Mask Detection using Convolutional Neural Network"</p>
+                    <a href="#" class="action-link">↗ View Publication</a>
                 </div>
             </div>
         </section>
-    </div>
+    </main>
 
-    <!-- Scripts -->
+    <!-- FOOTER -->
+    <footer id="contact">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div class="avatar-hook">Avatar</div>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">Siddharth Shelke<br>Data Scientist & Engineer</p>
+            </div>
+            <div class="footer-col">
+                <h4>Explore</h4>
+                <a href="#about">About</a>
+                <a href="#experience">Experience</a>
+                <a href="#projects">Projects</a>
+            </div>
+            <div class="footer-col">
+                <h4>Connect</h4>
+                <a href="#">Email</a>
+                <a href="#">LinkedIn</a>
+                <a href="#">Instagram</a>
+            </div>
+            <div class="copyright">
+                © 2026 Siddharth Shelke. Designed & Engineered for Data.
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPTS -->
     <script>
-        // === GSAP SCROLL ANIMATIONS ===
+        // =========================================
+        // A. TEXT SPLITTING UTILITY FOR GSAP
+        // =========================================
+        document.querySelectorAll('.scrub-reveal').forEach(heading => {
+            const text = heading.innerText;
+            heading.innerHTML = '';
+            // Split by characters but preserve words for wrapping
+            const words = text.split(' ');
+            words.forEach((word, wordIndex) => {
+                const wordSpan = document.createElement('span');
+                wordSpan.style.display = 'inline-block';
+                wordSpan.style.whiteSpace = 'nowrap';
+                
+                word.split('').forEach(char => {
+                    const charSpan = document.createElement('span');
+                    charSpan.className = 'char';
+                    charSpan.innerHTML = char;
+                    wordSpan.appendChild(charSpan);
+                });
+                
+                heading.appendChild(wordSpan);
+                if (wordIndex < words.length - 1) {
+                    const space = document.createElement('span');
+                    space.innerHTML = '&nbsp;';
+                    heading.appendChild(space);
+                }
+            });
+        });
+
+        // =========================================
+        // B. LENIS & GSAP INITIALIZATION
+        // =========================================
         gsap.registerPlugin(ScrollTrigger);
 
-        // Smooth fade and slide up for all elements with class 'gs-reveal'
-        gsap.utils.toArray('.gs-reveal').forEach(function(elem) {
-            gsap.fromTo(elem, 
-                { y: 50, autoAlpha: 0 }, 
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            direction: 'vertical',
+            gestureDirection: 'vertical',
+            smooth: true,
+            mouseMultiplier: 1,
+            smoothTouch: false,
+            touchMultiplier: 2,
+        });
+
+        // Link Lenis scroll to GSAP ScrollTrigger
+        lenis.on('scroll', ScrollTrigger.update);
+        gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+        gsap.ticker.lagSmoothing(0, 0);
+
+        // Character Scrub Animations
+        document.querySelectorAll('.scrub-reveal').forEach(trigger => {
+            const chars = trigger.querySelectorAll('.char');
+            gsap.fromTo(chars, 
+                { opacity: 0.1, color: '#86868b' },
                 {
-                    y: 0, 
-                    autoAlpha: 1, 
-                    duration: 1.2, 
-                    ease: "power3.out",
+                    opacity: 1,
+                    color: '#ffffff',
+                    stagger: 0.1,
                     scrollTrigger: {
-                        trigger: elem,
-                        start: "top 85%", // Triggers when element hits 85% from top of viewport
-                        toggleActions: "play none none reverse"
+                        trigger: trigger,
+                        start: "top 85%",
+                        end: "top 30%",
+                        scrub: true,
                     }
                 }
             );
         });
 
-        // === HIGH-PERFORMANCE FLUID AURA CANVAS ===
-        const canvas = document.getElementById('aura-canvas');
-        const ctx = canvas.getContext('2d', { alpha: false }); // Optimize for no transparency on base layer
+        // =========================================
+        // C. INTERACTIVE FLUID AURA CANVAS
+        // =========================================
+        const canvas = document.getElementById('fluid-canvas');
+        const ctx = canvas.getContext('2d');
         
-        let width, height;
-        let mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-        let aura = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-
-        // Resize handler
-        function resize() {
+        let width = window.innerWidth;
+        let height = window.innerHeight;
+        
+        // Target coordinates (mouse) and Current coordinates (aura)
+        let targetX = width / 2;
+        let targetY = height / 2;
+        let currentX = width / 2;
+        let currentY = height / 2;
+        
+        function resizeCanvas() {
             width = window.innerWidth;
             height = window.innerHeight;
             canvas.width = width;
             canvas.height = height;
         }
-        window.addEventListener('resize', resize);
-        resize();
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
 
-        // Mouse move tracker
+        // Mouse tracking with throttling setup
+        let isThrottled = false;
         window.addEventListener('mousemove', (e) => {
-            mouse.x = e.clientX;
-            mouse.y = e.clientY;
+            if (!isThrottled) {
+                targetX = e.clientX;
+                targetY = e.clientY;
+                isThrottled = true;
+                setTimeout(() => { isThrottled = false; }, 16); // ~60fps throttle
+            }
         });
 
-        // Touch support for mobile devices
-        window.addEventListener('touchmove', (e) => {
-            mouse.x = e.touches[0].clientX;
-            mouse.y = e.touches[0].clientY;
-        }, { passive: true });
+        function renderAura() {
+            // Lerp (Linear Interpolation) for fluid drag/inertia
+            currentX += (targetX - currentX) * 0.05;
+            currentY += (targetY - currentY) * 0.05;
 
-        // Animation Loop
-        function animateAura() {
-            // Linear Interpolation (lerp) for buttery smooth cursor trailing
-            aura.x += (mouse.x - aura.x) * 0.04;
-            aura.y += (mouse.y - aura.y) * 0.04;
-
-            // Clear frame with pure black
+            // Clear frame
             ctx.fillStyle = '#000000';
             ctx.fillRect(0, 0, width, height);
 
-            // Create a subtle, glowing radial gradient
-            const radius = Math.max(width, height) * 0.45; 
-            const gradient = ctx.createRadialGradient(
-                aura.x, aura.y, 0,
-                aura.x, aura.y, radius
-            );
+            // Draw Neon Blue Aura
+            const radiusBlue = Math.max(width, height) * 0.4;
+            const gradBlue = ctx.createRadialGradient(currentX, currentY, 0, currentX, currentY, radiusBlue);
+            gradBlue.addColorStop(0, 'rgba(0, 113, 227, 0.15)'); // Apple Neon Blue
+            gradBlue.addColorStop(1, 'rgba(0, 0, 0, 0)');
             
-            // Ultra-premium subtle colors: Deep Navy to Black
-            gradient.addColorStop(0, 'rgba(10, 35, 75, 0.8)');
-            gradient.addColorStop(0.5, 'rgba(5, 15, 35, 0.4)');
-            gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+            // Draw Deep Violet Aura (slightly offset for fluid blending)
+            const radiusViolet = Math.max(width, height) * 0.5;
+            const gradViolet = ctx.createRadialGradient(width - currentX, height - currentY, 0, width - currentX, height - currentY, radiusViolet);
+            gradViolet.addColorStop(0, 'rgba(94, 92, 230, 0.12)'); // Soft Deep Violet
+            gradViolet.addColorStop(1, 'rgba(0, 0, 0, 0)');
 
-            // Draw the aura
-            ctx.fillStyle = gradient;
+            ctx.fillStyle = gradViolet;
+            ctx.fillRect(0, 0, width, height);
+            
+            ctx.fillStyle = gradBlue;
             ctx.fillRect(0, 0, width, height);
 
-            requestAnimationFrame(animateAura);
+            requestAnimationFrame(renderAura);
         }
-        
-        // Start Loop
-        animateAura();
+        renderAura();
+
+        // =========================================
+        // D. 3D HOVER TILT LOGIC & UI INTERACTIVITY
+        // =========================================
+        document.querySelectorAll('.tilt-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = ((y - centerY) / centerY) * -3; // Max 3deg tilt
+                const rotateY = ((x - centerX) / centerX) * 3;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.01, 1.01, 1.01)`;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+            });
+        });
+
+        // Expander Utility
+        function toggleExpander(id) {
+            const el = document.getElementById(id);
+            if (el.classList.contains('active')) {
+                el.classList.remove('active');
+            } else {
+                el.classList.add('active');
+            }
+        }
     </script>
 </body>
 </html>
