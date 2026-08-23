@@ -26,6 +26,11 @@
             --nav-bg: rgba(0, 0, 0, 0.75);
             --border-color: rgba(255, 255, 255, 0.1);
             --shadow-color: rgba(0, 0, 0, 0.8);
+            
+            /* AI Aura Colors */
+            --aura-1: rgba(41, 151, 255, 0.2);
+            --aura-2: rgba(138, 43, 226, 0.15);
+            --aura-3: rgba(100, 255, 218, 0.15);
         }
         
         /* === PREMIUM APPLE LIGHT THEME === */
@@ -39,6 +44,11 @@
             --nav-bg: rgba(245, 245, 247, 0.75);
             --border-color: rgba(0, 0, 0, 0.08);
             --shadow-color: rgba(0, 0, 0, 0.05);
+            
+            /* Light Mode AI Aura Colors */
+            --aura-1: rgba(41, 151, 255, 0.1);
+            --aura-2: rgba(138, 43, 226, 0.08);
+            --aura-3: rgba(100, 255, 218, 0.1);
         }
         
         /* === SCROLL SNAPPING & BASE === */
@@ -182,6 +192,18 @@
             width: 100%; max-width: 900px; height: auto; border-radius: 16px;
             border: 1px solid var(--border-color); box-shadow: 0 20px 40px -15px var(--shadow-color);
         }
+
+        /* === PROJECTS 2x2 GRID (FIX 1) === */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+        @media (min-width: 800px) {
+            .projects-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
         
         /* Hidden class for GSAP initial state */
         .gsap-reveal { opacity: 0; transform: translateY(30px); }
@@ -212,8 +234,6 @@
                 <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
                 <line x1="1" y1="12" x2="3" y2="12"></line>
                 <line x1="21" y1="12" x2="23" y2="12"></line>
-                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
             </svg>
         </button>
         <div class="dropdown">
@@ -243,12 +263,11 @@
     <section id="about" style="padding-top: 120px;">
         <div class="about-grid-layout">
             <div class="about-image-new gsap-reveal">
-                <!-- Removed the 'onerror' tag to prevent the image from vanishing when flipping languages -->
                 <img src="profile.PNG" alt="Siddharth Shelke">
             </div>
 
             <div class="about-text-new gsap-reveal">
-                <h2 class="about-headline" style="border: none;" data-de="Entwicklung von Datensystemen mit Fokus auf robuste Pipelines, prädiktive Modellierung und intelligente Entscheidungsfindung.">
+                <h2 class="about-headline scroll-heading" style="border: none;" data-de="Entwicklung von Datensystemen mit Fokus auf robuste Pipelines, prädiktive Modellierung und intelligente Entscheidungsfindung.">
                     Engineering data systems with a focus on robust pipelines, predictive modeling, and intelligent decision-making.
                 </h2>
                 
@@ -270,7 +289,7 @@
     </section>
 
     <section id="experience">
-        <h2 class="gsap-reveal" data-de="Berufserfahrung">Where I've Worked</h2>
+        <h2 class="scroll-heading" data-de="Berufserfahrung">Where I've Worked</h2>
         
         <div class="item-card gsap-reveal">
             <h3>
@@ -348,8 +367,9 @@
     </section>
 
     <section id="projects">
-        <h2 class="gsap-reveal" data-de="Meine Projekte">Things I've Built</h2>
-        <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+        <h2 class="scroll-heading" data-de="Meine Projekte">Things I've Built</h2>
+        <!-- 2x2 Grid Implementation -->
+        <div class="projects-grid">
             
             <div class="item-card gsap-reveal" style="margin-bottom: 0;">
                 <div class="meta-info" data-de="Maschinelles Lernen">Machine Learning</div>
@@ -401,7 +421,7 @@
     </section>
 
     <section id="education">
-        <h2 class="gsap-reveal" data-de="Bildung & Publikationen">Education & Publications</h2>
+        <h2 class="scroll-heading" data-de="Bildung & Publikationen">Education & Publications</h2>
         
         <div class="item-card gsap-reveal">
             <h3>
@@ -509,8 +529,6 @@
     }
 
     // === THEME TOGGLE LOGIC ===
-    let particleRGB = '41, 151, 255'; // Default Apple Blue
-    
     const sunIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>`;
     const moonIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>`;
 
@@ -520,10 +538,8 @@
         
         if (document.body.classList.contains('light-mode')) {
             themeBtn.innerHTML = moonIcon;
-            particleRGB = '0, 113, 227'; 
         } else {
             themeBtn.innerHTML = sunIcon;
-            particleRGB = '41, 151, 255'; 
         }
     }
 
@@ -531,6 +547,7 @@
     document.addEventListener("DOMContentLoaded", function() {
         gsap.registerPlugin(ScrollTrigger);
         
+        // 1. Reveal Cards on Scroll
         const revealElements = document.querySelectorAll('.gsap-reveal');
         revealElements.forEach(el => {
             gsap.to(el, {
@@ -545,82 +562,93 @@
                 ease: "power3.out"
             });
         });
+
+        // 2. Heading Color Fade on Scroll
+        const headings = document.querySelectorAll('.scroll-heading');
+        headings.forEach(heading => {
+            // Set initial state via GSAP
+            gsap.set(heading, { color: "rgba(134, 134, 139, 0.2)" }); // Light gray/faded
+            
+            gsap.to(heading, {
+                scrollTrigger: {
+                    trigger: heading,
+                    start: "top 95%",
+                    end: "top 50%",
+                    scrub: true
+                },
+                color: "var(--text-main)", // Transition to full solid color
+                ease: "none"
+            });
+        });
     });
 
-    // === UPGRADED APPLE-STYLE MESH BACKGROUND ===
+    // === UPGRADED APPLE "AI FLUID AURA" BACKGROUND ===
     const canvas = document.getElementById('network-canvas');
     const ctx = canvas.getContext('2d');
-    let width, height, particles;
-    let mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
     
+    let width, height;
+    let mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+    let aura = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+    let time = 0;
+
+    function initCanvas() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+    }
+    
+    window.addEventListener('resize', initCanvas);
+    initCanvas();
+
     window.addEventListener('mousemove', (e) => {
         mouse.x = e.clientX;
         mouse.y = e.clientY;
     });
 
-    function initCanvas() {
-        width = canvas.width = window.innerWidth;
-        height = canvas.height = window.innerHeight;
-        particles = [];
-        const particleCount = Math.floor((width * height) / 12000);
-        for(let i = 0; i < particleCount; i++) {
-            particles.push(new Particle());
-        }
-    }
-
-    class Particle {
-        constructor() {
-            this.x = Math.random() * width;
-            this.y = Math.random() * height;
-            this.vx = (Math.random() - 0.5) * 0.4;
-            this.vy = (Math.random() - 0.5) * 0.4;
-            this.radius = Math.random() * 1.5 + 0.5;
-        }
-        update() {
-            // Subtle mouse drift
-            let dx = mouse.x - this.x;
-            let dy = mouse.y - this.y;
-            let distance = Math.sqrt(dx * dx + dy * dy);
-            if (distance < 200) {
-                this.x -= dx * 0.002;
-                this.y -= dy * 0.002;
-            }
-
-            this.x += this.vx; this.y += this.vy;
-            if (this.x < 0 || this.x > width) this.vx *= -1;
-            if (this.y < 0 || this.y > height) this.vy *= -1;
-        }
-        draw() {
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(${particleRGB}, 0.5)`;
-            ctx.fill();
-        }
-    }
-
     function animate() {
-        ctx.clearRect(0, 0, width, height);
-        for (let i = 0; i < particles.length; i++) {
-            particles[i].update();
-            particles[i].draw();
-            for (let j = i; j < particles.length; j++) {
-                const dx = particles[i].x - particles[j].x;
-                const dy = particles[i].y - particles[j].y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-                if (distance < 110) { 
-                    ctx.beginPath();
-                    ctx.strokeStyle = `rgba(${particleRGB}, ${0.15 - distance/700})`;
-                    ctx.lineWidth = 0.6;
-                    ctx.moveTo(particles[i].x, particles[i].y);
-                    ctx.lineTo(particles[j].x, particles[j].y);
-                    ctx.stroke();
-                }
-            }
-        }
+        time += 0.005;
+        
+        // Smooth cursor trailing
+        aura.x += (mouse.x - aura.x) * 0.05;
+        aura.y += (mouse.y - aura.y) * 0.05;
+
+        // Base Background
+        const computedStyle = getComputedStyle(document.body);
+        const bgColor = computedStyle.getPropertyValue('--bg-color').trim();
+        const color1 = computedStyle.getPropertyValue('--aura-1').trim();
+        const color2 = computedStyle.getPropertyValue('--aura-2').trim();
+        const color3 = computedStyle.getPropertyValue('--aura-3').trim();
+        
+        ctx.fillStyle = bgColor;
+        ctx.fillRect(0, 0, width, height);
+
+        // Orb 1: Tracks Mouse (Cyan/Blue)
+        let grad1 = ctx.createRadialGradient(aura.x, aura.y, 0, aura.x, aura.y, width * 0.4);
+        grad1.addColorStop(0, color1);
+        grad1.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = grad1;
+        ctx.fillRect(0, 0, width, height);
+
+        // Orb 2: Autonomous Floating (Deep Purple / Magenta)
+        let orb2X = width * 0.5 + Math.sin(time) * width * 0.25;
+        let orb2Y = height * 0.5 + Math.cos(time * 0.8) * height * 0.25;
+        let grad2 = ctx.createRadialGradient(orb2X, orb2Y, 0, orb2X, orb2Y, width * 0.5);
+        grad2.addColorStop(0, color2);
+        grad2.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = grad2;
+        ctx.fillRect(0, 0, width, height);
+
+        // Orb 3: Autonomous Floating (Teal / Mint)
+        let orb3X = width * 0.5 + Math.cos(time * 1.2) * width * 0.3;
+        let orb3Y = height * 0.5 + Math.sin(time * 1.1) * height * 0.3;
+        let grad3 = ctx.createRadialGradient(orb3X, orb3Y, 0, orb3X, orb3Y, width * 0.45);
+        grad3.addColorStop(0, color3);
+        grad3.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = grad3;
+        ctx.fillRect(0, 0, width, height);
+
         requestAnimationFrame(animate);
     }
-    window.addEventListener('resize', initCanvas);
-    initCanvas();
+    
     animate();
 </script>
 
