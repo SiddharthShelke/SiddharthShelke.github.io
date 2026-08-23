@@ -177,12 +177,12 @@
         .hero-title { font-size: clamp(3rem, 8vw, 5.5rem); font-weight: 800; margin: 0; color: var(--text-main); line-height: 1.05; letter-spacing: -0.04em; }
         .hero-subtitle { font-size: clamp(1.5rem, 4vw, 3rem); font-weight: 600; margin: 1rem 0; color: var(--text-muted); letter-spacing: -0.02em; }
 
-        /* FIX 2: Strict Grid Implementation for About Section */
+       /* === ABOUT SECTION (FIXED 2-COLUMN LAYOUT) === */
         .about-grid-layout { 
             display: grid; 
             grid-template-columns: 1fr 1.3fr; 
             gap: 4rem; 
-            align-items: center;
+            align-items: center; 
             width: 100%;
         }
         @media (max-width: 800px) { .about-grid-layout { grid-template-columns: 1fr; gap: 2.5rem; } }
@@ -191,17 +191,17 @@
             width: 100%;
             display: flex;
             justify-content: center;
-            background: rgba(255,255,255,0.02); /* Placeholder frame */
-            border-radius: 24px;
         }
-        .about-image-new img {
-            width: 100%;
+        
+        .about-image-new img { 
+            width: 100%; 
             height: auto;
-            max-height: 500px;
-            border-radius: 24px;
-            box-shadow: 0 20px 40px var(--shadow-color);
-            border: 1px solid var(--border-color);
-            object-fit: cover;
+            max-height: 500px; 
+            border-radius: 24px; 
+            box-shadow: 0 20px 40px var(--shadow-color); 
+            border: 1px solid var(--border-color); 
+            object-fit: cover; 
+            display: block; 
         }
         
         .expertise-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2.5rem; }
@@ -325,12 +325,14 @@
     </section>
 
     <!-- ABOUT -->
-    <section id="about">
+<section id="about">
         <div class="about-grid-layout">
+            <!-- Left Column: Image -->
             <div class="about-image-new">
                 <img src="profile.PNG" alt="Siddharth Shelke">
             </div>
 
+            <!-- Right Column: Text -->
             <div class="about-text-new">
                 <h2 class="gsap-reveal-text" style="font-size: 2.2rem; line-height: 1.2; margin-top: 0; margin-bottom: 20px; border: none;" data-de="Entwicklung von Datensystemen mit Fokus auf robuste Pipelines, prädiktive Modellierung und intelligente Entscheidungsfindung.">
                     Engineering data systems with a focus on robust pipelines, predictive modeling, and intelligent decision-making.
