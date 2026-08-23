@@ -177,31 +177,31 @@
         .hero-title { font-size: clamp(3rem, 8vw, 5.5rem); font-weight: 800; margin: 0; color: var(--text-main); line-height: 1.05; letter-spacing: -0.04em; }
         .hero-subtitle { font-size: clamp(1.5rem, 4vw, 3rem); font-weight: 600; margin: 1rem 0; color: var(--text-muted); letter-spacing: -0.02em; }
 
-       /* === ABOUT SECTION (FIXED 2-COLUMN LAYOUT) === */
+        
+/* === ABOUT SECTION === */
         .about-grid-layout { 
             display: grid; 
-            grid-template-columns: 1fr 1.3fr; 
+            grid-template-columns: 1fr 1fr; /* Restored your original 1fr 1fr ratio */
             gap: 4rem; 
             align-items: center; 
-            width: 100%;
         }
-        @media (max-width: 800px) { .about-grid-layout { grid-template-columns: 1fr; gap: 2.5rem; } }
-        
-        .about-image-new {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-        }
+        @media (max-width: 800px) { .about-grid-layout { grid-template-columns: 1fr; gap: 2rem; } }
         
         .about-image-new img { 
             width: 100%; 
-            height: auto;
-            max-height: 500px; 
             border-radius: 24px; 
             box-shadow: 0 20px 40px var(--shadow-color); 
             border: 1px solid var(--border-color); 
             object-fit: cover; 
-            display: block; 
+        }
+        
+        .about-headline { 
+            font-size: 2.4rem; 
+            line-height: 1.2; 
+            margin-top: 0; 
+            margin-bottom: 20px; 
+            color: var(--text-main); 
+            font-weight: 700; 
         }
         
         .expertise-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2.5rem; }
