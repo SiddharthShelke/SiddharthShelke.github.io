@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="2920" viewBox="0 0 1600 2920" role="img" aria-labelledby="title description">
+<title id="title">Document Q&amp;A RAG Chatbot</title><desc id="description">Verified source workflow: prepare a PDF once, persist ChromaDB, and reuse it for questions. Summary generation and summary editing are separate paths.</desc>
+<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L8,4 L0,8" fill="#187D83"/></marker></defs>
+<rect width="1600" height="2920" fill="#FBF9F4"/>
+<rect x="70" y="55" width="56" height="6" rx="3" fill="#187D83"/>
+<text x="70" y="115" font-family="DejaVu Sans, sans-serif" font-size="42" font-weight="700" fill="#153B5B">Document Q&amp;A RAG Chatbot</text>
+<text x="70" y="160" font-family="DejaVu Sans, sans-serif" font-size="23" font-weight="400" fill="#5D6D77">From one uploaded PDF to answers grounded in retrieved passages</text>
+<rect x="70" y="205" width="1050" height="58" rx="10" fill="#E8F1EF"/>
+<text x="90" y="243" font-family="DejaVu Sans, sans-serif" font-size="25" font-weight="700" fill="#153B5B">A. PREPARE THE DOCUMENT</text>
+<rect x="70" y="295" width="1050" height="190" rx="14" fill="#FFFFFF" stroke="#D9E2E2" stroke-width="1.5"/>
+<circle cx="112" cy="337" r="24" fill="#E6F2EF"/>
+<text x="95" y="345" font-family="DejaVu Sans, sans-serif" font-size="21" font-weight="700" fill="#187D83">A1</text>
+<text x="155" y="343" font-family="DejaVu Sans, sans-serif" font-size="28" font-weight="700" fill="#153B5B">Upload PDF</text>
+<g fill="none" stroke="#187D83" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1064" y="320" width="25" height="34" rx="3"/><path d="M1070,329 h13 M1070,337 h13 M1070,345 h9"/></g>
+<text x="155" y="379" font-family="DejaVu Sans, sans-serif" font-size="21" font-weight="700" fill="#187D83">Streamlit</text>
+<text x="155" y="416" font-family="DejaVu Sans, sans-serif" font-size="24" font-weight="400" fill="#233344">Accept the PDF and save a temporary copy for processing.</text>
+<polyline points="595,485 595,510" fill="none" stroke="#187D83" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="70" y="510" width="1050" height="190" rx="14" fill="#FFFFFF" stroke="#D9E2E2" stroke-width="1.5"/>
+<circle cx="112" cy="552" r="24" fill="#E6F2EF"/>
+<text x="95" y="560" font-family="DejaVu Sans, sans-serif" font-size="21" font-weight="700" fill="#187D83">A2</text>
+<text x="155" y="558" font-family="DejaVu Sans, sans-serif" font-size="28" font-weight="700" fill="#153B5B">Extract document text</text>
+<g fill="none" stroke="#187D83" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1064" y="535" width="25" height="34" rx="3"/><path d="M1070,544 h13 M1070,552 h13 M1070,560 h9"/></g>
+<text x="155" y="594" font-family="DejaVu Sans, sans-serif" font-size="21" font-weight="700" fill="#187D83">PyPDFLoader</text>
+<text x="155" y="631" font-family="DejaVu Sans, sans-serif" font-size="24" font-weight="400" fill="#233344">Load PDF pages as documents containing text and metadata.</text>
+<polyline points="595,700 595,725" fill="none" stroke="#187D83" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="70" y="725" width="1050" height="190" rx="14" fill="#FFFFFF" stroke="#D9E2E2" stroke-width="1.5"/>
+<circle cx="112" cy="767" r="24" fill="#E6F2EF"/>
+<text x="95" y="775" font-family="DejaVu Sans, sans-serif" font-size="21" font-weight="700" fill="#187D83">A3</text>
+<text x="155" y="773" font-family="DejaVu Sans, sans-serif" font-size="28" font-weight="700" fill="#153B5B">Split into overlapping chunks</text>
+<g fill="none" stroke="#187D83" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1064" y="750" width="25" height="34" rx="3"/><path d="M1070,759 h13 M1070,767 h13 M1070,775 h9"/></g>
+<text x="155" y="809" font-family="DejaVu Sans, sans-serif" font-size="21" font-weight="700" fill="#187D83">RecursiveCharacterTextSplitter</text>
+<text x="155" y="846" font-family="DejaVu Sans, sans-serif" font-size="24" font-weight="400" fill="#233344">Chunk size: up to 1,000 characters. Overlap: 200 characters.</text>
+<polyline points="595,915 595,940" fill="none" stroke="#187D83" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="70" y="940" width="1050" height="190" rx="14" fill="#FFFFFF" stroke="#D9E2E2" stroke-width="1.5"/>
+<circle cx="112" cy="982" r="24" fill="#E6F2EF"/>
+<text x="95" y="990" font-family="DejaVu Sans, sans-serif" font-size="21" font-weight="700" fill="#187D83">A4</text>
+<text x="155" y="988" font-family="DejaVu Sans, sans-serif" font-size="28" font-weight="700" fill="#153B5B">Create document embeddings</text>
+<g fill="none" stroke="#187D83" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1076,966 v12 M1062,983 h28 M1062,983 v14 M1090,983 v14"/><circle cx="1076" cy="964" r="4"/><circle cx="1062" cy="999" r="4"/><circle cx="1090" cy="999" r="4"/></g>
+<text x="155" y="1024" font-family="DejaVu Sans, sans-serif" font-size="21" font-weight="700" fill="#187D83">Google text-embedding-004</text>
+<text x="155" y="1061" font-family="DejaVu Sans, sans-serif" font-size="24" font-weight="400" fill="#233344">Convert text chunks into numerical vectors.</text>
+<polyline points="595,1130 595,1155" fill="none" stroke="#187D83" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="70" y="1155" width="1050" height="190" rx="14" fill="#FFFFFF" stroke="#D9E2E2" stroke-width="1.5"/>
+<circle cx="112" cy="1197" r="24" fill="#E6F2EF"/>
+<text x="95" y="1205" font-family="DejaVu Sans, sans-serif" font-size="21" font-weight="700" fill="#187D83">A5</text>
+<text x="155" y="1203" font-family="DejaVu Sans, sans-serif" font-size="28" font-weight="700" fill="#153B5B">Store for retrieval</text>
+<g fill="none" stroke="#187D83" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="1076" cy="1187" rx="15" ry="5"/><path d="M1061,1187 v20 c0,7 30,7 30,0 v-20 M1061,1197 c0,7 30,7 30,0"/></g>
+<text x="155" y="1239" font-family="DejaVu Sans, sans-serif" font-size="21" font-weight="700" fill="#187D83">ChromaDB | chroma_db</text>
+<text x="155" y="1276" font-family="DejaVu Sans, sans-serif" font-size="24" font-weight="400" fill="#233344">Persist chunk text, embeddings and associated metadata.</text>
+<polyline points="1120,597 1180,597" fill="none" stroke="#187D83" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="1180" y="455" width="330" height="285" rx="14" fill="#EEF4F2" stroke="#D9E2E2"/>
+<text x="1200" y="491" font-family="DejaVu Sans, sans-serif" font-size="23" font-weight="700" fill="#153B5B">Initial summary</text>
+<text x="1200" y="534" font-family="DejaVu Sans, sans-serif" font-size="20" font-weight="700" fill="#187D83">Gemini 1.5 Flash</text>
+<text x="1200" y="578" font-family="DejaVu Sans, sans-serif" font-size="21" font-weight="400" fill="#233344">Summarise all extracted</text>
+<text x="1200" y="608" font-family="DejaVu Sans, sans-serif" font-size="21" font-weight="400" fill="#233344">text and save summary.txt.</text>
+<text x="1200" y="638" font-family="DejaVu Sans, sans-serif" font-size="21" font-weight="400" fill="#233344">Runs before chunking.</text>
+<text x="1180" y="785" font-family="DejaVu Sans, sans-serif" font-size="20" font-weight="400" fill="#5D6D77">Index uses PDF text,</text>
+<text x="1180" y="815" font-family="DejaVu Sans, sans-serif" font-size="20" font-weight="400" fill="#5D6D77">not the summary.</text>
+<rect x="70" y="1390" width="1050" height="58" rx="10" fill="#E8F1EF"/>
+<text x="90" y="1428" font-family="DejaVu Sans, sans-serif" font-size="25" font-weight="700" fill="#153B5B">B. ANSWER A QUESTION</text>
+<rect x="70" y="1480" width="1050" height="190" rx="14" fill="#FFFFFF" stroke="#D9E2E2" stroke-width="1.5"/>
+<circle cx="112" cy="1522" r="24" fill="#E6F2EF"/>
+<text x="95" y="1530" font-family="DejaVu Sans, sans-serif" font-size="21" font-weight="700" fill="#187D83">B1</text>
+<text x="155" y="1528" font-family="DejaVu Sans, sans-serif" font-size="28" font-weight="700" fill="#153B5B">Enter a question</text>
+<g fill="none" stroke="#187D83" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1059,1509 h34 v24 h-21 l-10,8 v-8 h-3 z"/><path d="M1066,1517 h20 M1066,1524 h14"/></g>
+<text x="155" y="1564" font-family="DejaVu Sans, sans-serif" font-size="21" font-weight="700" fill="#187D83">Streamlit</text>
+<text x="155" y="1601" font-family="DejaVu Sans, sans-serif" font-size="24" font-weight="400" fill="#233344">Submit a question about the already processed PDF.</text>
+<polyline points="595,1670 595,1695" fill="none" stroke="#187D83" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="70" y="1695" width="1050" height="190" rx="14" fill="#FFFFFF" stroke="#D9E2E2" stroke-width="1.5"/>
+<circle cx="112" cy="1737" r="24" fill="#E6F2EF"/>
+<text x="95" y="1745" font-family="DejaVu Sans, sans-serif" font-size="21" font-weight="700" fill="#187D83">B2</text>
+<text x="155" y="1743" font-family="DejaVu Sans, sans-serif" font-size="28" font-weight="700" fill="#153B5B">Identify the request</text>
+<g fill="none" stroke="#187D83" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1076,1721 v12 M1062,1738 h28 M1062,1738 v14 M1090,1738 v14"/><circle cx="1076" cy="1719" r="4"/><circle cx="1062" cy="1754" r="4"/><circle cx="1090" cy="1754" r="4"/></g>
+<text x="155" y="1779" font-family="DejaVu Sans, sans-serif" font-size="21" font-weight="700" fill="#187D83">Gemini 1.5 Flash</text>
+<text x="155" y="1816" font-family="DejaVu Sans, sans-serif" font-size="24" font-weight="400" fill="#233344">Route a document question to Q&amp;A or a summary-edit request to editing.</text>
+<polyline points="595,1885 595,1910" fill="none" stroke="#187D83" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="70" y="1910" width="1050" height="190" rx="14" fill="#FFFFFF" stroke="#D9E2E2" stroke-width="1.5"/>
+<circle cx="112" cy="1952" r="24" fill="#E6F2EF"/>
+<text x="95" y="1960" font-family="DejaVu Sans, sans-serif" font-size="21" font-weight="700" fill="#187D83">B3</text>
+<text x="155" y="1958" font-family="DejaVu Sans, sans-serif" font-size="28" font-weight="700" fill="#153B5B">Retrieve relevant passages</text>
+<g fill="none" stroke="#187D83" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="1076" cy="1942" rx="15" ry="5"/><path d="M1061,1942 v20 c0,7 30,7 30,0 v-20 M1061,1952 c0,7 30,7 30,0"/></g>
+<text x="155" y="1994" font-family="DejaVu Sans, sans-serif" font-size="21" font-weight="700" fill="#187D83">LangChain + ChromaDB | k = 5</text>
+<text x="155" y="2031" font-family="DejaVu Sans, sans-serif" font-size="24" font-weight="400" fill="#233344">Embed the question with the same model; retrieve the top 5 matching</text>
+<text x="155" y="2063" font-family="DejaVu Sans, sans-serif" font-size="24" font-weight="400" fill="#233344">chunks.</text>
+<polyline points="595,2100 595,2125" fill="none" stroke="#187D83" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="70" y="2125" width="1050" height="190" rx="14" fill="#FFFFFF" stroke="#D9E2E2" stroke-width="1.5"/>
+<circle cx="112" cy="2167" r="24" fill="#E6F2EF"/>
+<text x="95" y="2175" font-family="DejaVu Sans, sans-serif" font-size="21" font-weight="700" fill="#187D83">B4</text>
+<text x="155" y="2173" font-family="DejaVu Sans, sans-serif" font-size="28" font-weight="700" fill="#153B5B">Build the prompt</text>
+<g fill="none" stroke="#187D83" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1064" y="2150" width="25" height="34" rx="3"/><path d="M1070,2159 h13 M1070,2167 h13 M1070,2175 h9"/></g>
+<text x="155" y="2209" font-family="DejaVu Sans, sans-serif" font-size="21" font-weight="700" fill="#187D83">Python</text>
+<text x="155" y="2246" font-family="DejaVu Sans, sans-serif" font-size="24" font-weight="400" fill="#233344">Combine the question, retrieved passages and context-only answer</text>
+<text x="155" y="2278" font-family="DejaVu Sans, sans-serif" font-size="24" font-weight="400" fill="#233344">instructions.</text>
+<polyline points="595,2315 595,2340" fill="none" stroke="#187D83" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="70" y="2340" width="1050" height="190" rx="14" fill="#FFFFFF" stroke="#D9E2E2" stroke-width="1.5"/>
+<circle cx="112" cy="2382" r="24" fill="#E6F2EF"/>
+<text x="95" y="2390" font-family="DejaVu Sans, sans-serif" font-size="21" font-weight="700" fill="#187D83">B5</text>
+<text x="155" y="2388" font-family="DejaVu Sans, sans-serif" font-size="28" font-weight="700" fill="#153B5B">Generate an answer</text>
+<g fill="none" stroke="#187D83" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1076,2366 v12 M1062,2383 h28 M1062,2383 v14 M1090,2383 v14"/><circle cx="1076" cy="2364" r="4"/><circle cx="1062" cy="2399" r="4"/><circle cx="1090" cy="2399" r="4"/></g>
+<text x="155" y="2424" font-family="DejaVu Sans, sans-serif" font-size="21" font-weight="700" fill="#187D83">Gemini 1.5 Flash | temperature = 0.3</text>
+<text x="155" y="2461" font-family="DejaVu Sans, sans-serif" font-size="24" font-weight="400" fill="#233344">Generate a response; the prompt asks it to flag information absent from</text>
+<text x="155" y="2493" font-family="DejaVu Sans, sans-serif" font-size="24" font-weight="400" fill="#233344">context.</text>
+<polyline points="595,2530 595,2555" fill="none" stroke="#187D83" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="70" y="2555" width="1050" height="190" rx="14" fill="#FFFFFF" stroke="#D9E2E2" stroke-width="1.5"/>
+<circle cx="112" cy="2597" r="24" fill="#E6F2EF"/>
+<text x="95" y="2605" font-family="DejaVu Sans, sans-serif" font-size="21" font-weight="700" fill="#187D83">B6</text>
+<text x="155" y="2603" font-family="DejaVu Sans, sans-serif" font-size="28" font-weight="700" fill="#153B5B">Display the response</text>
+<g fill="none" stroke="#187D83" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1059,2584 h34 v24 h-21 l-10,8 v-8 h-3 z"/><path d="M1066,2592 h20 M1066,2599 h14"/></g>
+<text x="155" y="2639" font-family="DejaVu Sans, sans-serif" font-size="21" font-weight="700" fill="#187D83">Streamlit</text>
+<text x="155" y="2676" font-family="DejaVu Sans, sans-serif" font-size="24" font-weight="400" fill="#233344">Show the answer and retain the displayed chat history in session state.</text>
+<polyline points="1120,1242 1550,1242 1550,1997 1120,1997" fill="none" stroke="#187D83" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="1160" y="1280" font-family="DejaVu Sans, sans-serif" font-size="18" font-weight="700" fill="#187D83">REUSE STORED PDF INDEX</text>
+<polyline points="1120,1782 1180,1782" fill="none" stroke="#187D83" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="1180" y="1635" width="330" height="265" rx="14" fill="#EEF4F2" stroke="#D9E2E2"/>
+<text x="1200" y="1671" font-family="DejaVu Sans, sans-serif" font-size="23" font-weight="700" fill="#153B5B">Alternative: edit</text>
+<text x="1200" y="1702" font-family="DejaVu Sans, sans-serif" font-size="23" font-weight="700" fill="#153B5B">summary</text>
+<text x="1200" y="1745" font-family="DejaVu Sans, sans-serif" font-size="20" font-weight="700" fill="#187D83">Gemini 1.5 Flash</text>
+<text x="1200" y="1789" font-family="DejaVu Sans, sans-serif" font-size="21" font-weight="400" fill="#233344">Current summary +</text>
+<text x="1200" y="1819" font-family="DejaVu Sans, sans-serif" font-size="21" font-weight="400" fill="#233344">instruction. Save the</text>
+<text x="1200" y="1849" font-family="DejaVu Sans, sans-serif" font-size="21" font-weight="400" fill="#233344">revision and update</text>
+<text x="1200" y="1879" font-family="DejaVu Sans, sans-serif" font-size="21" font-weight="400" fill="#233344">Streamlit. No PDF retrieval.</text>
+<text x="70" y="2820" font-family="DejaVu Sans, sans-serif" font-size="22" font-weight="400" fill="#5D6D77">One active PDF. A new PDF replaces the previous index and summary.</text>
+<text x="70" y="2855" font-family="DejaVu Sans, sans-serif" font-size="22" font-weight="400" fill="#5D6D77">No page-citation display. Chat history is not included in the answer prompt.</text>
+</svg>

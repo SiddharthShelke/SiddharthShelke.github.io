@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1300" height="2260" viewBox="0 0 1300 2260" role="img" aria-labelledby="title description">
+<title id="title">Big Mart Sales Prediction</title><desc id="description">Original Big Mart script workflow. Imputation and encoding are fitted on the full labelled dataset before splitting. No tuning or competition-test predictions are implemented.</desc>
+<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L8,4 L0,8" fill="#187D83"/></marker></defs>
+<rect width="1300" height="2260" fill="#FBF9F4"/>
+<rect x="70" y="55" width="56" height="6" rx="3" fill="#187D83"/>
+<text x="70" y="115" font-family="DejaVu Sans, sans-serif" font-size="42" font-weight="700" fill="#153B5B">Big Mart Sales Prediction</text>
+<text x="70" y="160" font-family="DejaVu Sans, sans-serif" font-size="23" font-weight="400" fill="#5D6D77">The implemented workflow for labelled product-outlet records</text>
+<rect x="70" y="205" width="1160" height="58" rx="10" fill="#E8F1EF"/>
+<text x="90" y="243" font-family="DejaVu Sans, sans-serif" font-size="25" font-weight="700" fill="#153B5B">ORIGINAL IMPLEMENTATION</text>
+<rect x="70" y="295" width="1160" height="190" rx="14" fill="#FFFFFF" stroke="#D9E2E2" stroke-width="1.5"/>
+<circle cx="112" cy="337" r="24" fill="#E6F2EF"/>
+<text x="95" y="345" font-family="DejaVu Sans, sans-serif" font-size="21" font-weight="700" fill="#187D83">01</text>
+<text x="155" y="343" font-family="DejaVu Sans, sans-serif" font-size="28" font-weight="700" fill="#153B5B">Load and inspect labelled data</text>
+<g fill="none" stroke="#187D83" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="1186" cy="327" rx="15" ry="5"/><path d="M1171,327 v20 c0,7 30,7 30,0 v-20 M1171,337 c0,7 30,7 30,0"/></g>
+<text x="155" y="379" font-family="DejaVu Sans, sans-serif" font-size="21" font-weight="700" fill="#187D83">pandas | Train.csv</text>
+<text x="155" y="416" font-family="DejaVu Sans, sans-serif" font-size="24" font-weight="400" fill="#233344">Inspect types, missing values and product/outlet fields.</text>
+<polyline points="650,485 650,510" fill="none" stroke="#187D83" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="70" y="510" width="1160" height="190" rx="14" fill="#FFFFFF" stroke="#D9E2E2" stroke-width="1.5"/>
+<circle cx="112" cy="552" r="24" fill="#E6F2EF"/>
+<text x="95" y="560" font-family="DejaVu Sans, sans-serif" font-size="21" font-weight="700" fill="#187D83">02</text>
+<text x="155" y="558" font-family="DejaVu Sans, sans-serif" font-size="28" font-weight="700" fill="#153B5B">Fill missing values</text>
+<g fill="none" stroke="#187D83" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="1186" cy="552" r="17"/><path d="M1177,552 l6,7 l13,-15"/></g>
+<text x="155" y="594" font-family="DejaVu Sans, sans-serif" font-size="21" font-weight="700" fill="#187D83">pandas</text>
+<text x="155" y="631" font-family="DejaVu Sans, sans-serif" font-size="24" font-weight="400" fill="#233344">Item_Weight: overall mean. Outlet_Size: mode within each Outlet_Type.</text>
+<polyline points="650,700 650,725" fill="none" stroke="#187D83" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="70" y="725" width="1160" height="190" rx="14" fill="#FFFFFF" stroke="#D9E2E2" stroke-width="1.5"/>
+<circle cx="112" cy="767" r="24" fill="#E6F2EF"/>
+<text x="95" y="775" font-family="DejaVu Sans, sans-serif" font-size="21" font-weight="700" fill="#187D83">03</text>
+<text x="155" y="773" font-family="DejaVu Sans, sans-serif" font-size="28" font-weight="700" fill="#153B5B">Explore distributions</text>
+<g fill="none" stroke="#187D83" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1171,752 v30 h32 M1178,776 v-10 M1188,776 v-19 M1198,776 v-27"/></g>
+<text x="155" y="809" font-family="DejaVu Sans, sans-serif" font-size="21" font-weight="700" fill="#187D83">Matplotlib + Seaborn</text>
+<text x="155" y="846" font-family="DejaVu Sans, sans-serif" font-size="24" font-weight="400" fill="#233344">Examine weight, visibility, MRP, sales and category counts.</text>
+<polyline points="650,915 650,940" fill="none" stroke="#187D83" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="70" y="940" width="1160" height="190" rx="14" fill="#FFFFFF" stroke="#D9E2E2" stroke-width="1.5"/>
+<circle cx="112" cy="982" r="24" fill="#E6F2EF"/>
+<text x="95" y="990" font-family="DejaVu Sans, sans-serif" font-size="21" font-weight="700" fill="#187D83">04</text>
+<text x="155" y="988" font-family="DejaVu Sans, sans-serif" font-size="28" font-weight="700" fill="#153B5B">Standardise and encode categories</text>
+<g fill="none" stroke="#187D83" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1174" y="965" width="25" height="34" rx="3"/><path d="M1180,974 h13 M1180,982 h13 M1180,990 h9"/></g>
+<text x="155" y="1024" font-family="DejaVu Sans, sans-serif" font-size="21" font-weight="700" fill="#187D83">pandas + LabelEncoder</text>
+<text x="155" y="1061" font-family="DejaVu Sans, sans-serif" font-size="24" font-weight="400" fill="#233344">Merge fat-content label variants; fit encoders on seven categorical fields.</text>
+<polyline points="650,1130 650,1155" fill="none" stroke="#187D83" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="70" y="1155" width="1160" height="190" rx="14" fill="#FFFFFF" stroke="#D9E2E2" stroke-width="1.5"/>
+<circle cx="112" cy="1197" r="24" fill="#E6F2EF"/>
+<text x="95" y="1205" font-family="DejaVu Sans, sans-serif" font-size="21" font-weight="700" fill="#187D83">05</text>
+<text x="155" y="1203" font-family="DejaVu Sans, sans-serif" font-size="28" font-weight="700" fill="#153B5B">Split labelled records</text>
+<g fill="none" stroke="#187D83" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1174" y="1180" width="25" height="34" rx="3"/><path d="M1180,1189 h13 M1180,1197 h13 M1180,1205 h9"/></g>
+<text x="155" y="1239" font-family="DejaVu Sans, sans-serif" font-size="21" font-weight="700" fill="#187D83">scikit-learn | random_state = 2</text>
+<text x="155" y="1276" font-family="DejaVu Sans, sans-serif" font-size="24" font-weight="400" fill="#233344">Target: Item_Outlet_Sales. Split into 80% training and 20% labelled holdout.</text>
+<polyline points="650,1345 650,1370" fill="none" stroke="#187D83" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="70" y="1370" width="1160" height="190" rx="14" fill="#FFFFFF" stroke="#D9E2E2" stroke-width="1.5"/>
+<circle cx="112" cy="1412" r="24" fill="#E6F2EF"/>
+<text x="95" y="1420" font-family="DejaVu Sans, sans-serif" font-size="21" font-weight="700" fill="#187D83">06</text>
+<text x="155" y="1418" font-family="DejaVu Sans, sans-serif" font-size="28" font-weight="700" fill="#153B5B">Train the regressor</text>
+<g fill="none" stroke="#187D83" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1186,1396 v12 M1172,1413 h28 M1172,1413 v14 M1200,1413 v14"/><circle cx="1186" cy="1394" r="4"/><circle cx="1172" cy="1429" r="4"/><circle cx="1200" cy="1429" r="4"/></g>
+<text x="155" y="1454" font-family="DejaVu Sans, sans-serif" font-size="21" font-weight="700" fill="#187D83">XGBRegressor()</text>
+<text x="155" y="1491" font-family="DejaVu Sans, sans-serif" font-size="24" font-weight="400" fill="#233344">Fit the model on the training partition using default settings.</text>
+<polyline points="650,1560 650,1585" fill="none" stroke="#187D83" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="70" y="1585" width="1160" height="190" rx="14" fill="#FFFFFF" stroke="#D9E2E2" stroke-width="1.5"/>
+<circle cx="112" cy="1627" r="24" fill="#E6F2EF"/>
+<text x="95" y="1635" font-family="DejaVu Sans, sans-serif" font-size="21" font-weight="700" fill="#187D83">07</text>
+<text x="155" y="1633" font-family="DejaVu Sans, sans-serif" font-size="28" font-weight="700" fill="#153B5B">Generate evaluation predictions</text>
+<g fill="none" stroke="#187D83" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1186,1611 v12 M1172,1628 h28 M1172,1628 v14 M1200,1628 v14"/><circle cx="1186" cy="1609" r="4"/><circle cx="1172" cy="1644" r="4"/><circle cx="1200" cy="1644" r="4"/></g>
+<text x="155" y="1669" font-family="DejaVu Sans, sans-serif" font-size="21" font-weight="700" fill="#187D83">XGBoost</text>
+<text x="155" y="1706" font-family="DejaVu Sans, sans-serif" font-size="24" font-weight="400" fill="#233344">Predict sales for the training and labelled holdout partitions.</text>
+<polyline points="650,1775 650,1800" fill="none" stroke="#187D83" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="70" y="1800" width="1160" height="190" rx="14" fill="#FFFFFF" stroke="#D9E2E2" stroke-width="1.5"/>
+<circle cx="112" cy="1842" r="24" fill="#E6F2EF"/>
+<text x="95" y="1850" font-family="DejaVu Sans, sans-serif" font-size="21" font-weight="700" fill="#187D83">08</text>
+<text x="155" y="1848" font-family="DejaVu Sans, sans-serif" font-size="28" font-weight="700" fill="#153B5B">Evaluate predictions</text>
+<g fill="none" stroke="#187D83" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1171,1827 v30 h32 M1178,1851 v-10 M1188,1851 v-19 M1198,1851 v-27"/></g>
+<text x="155" y="1884" font-family="DejaVu Sans, sans-serif" font-size="21" font-weight="700" fill="#187D83">scikit-learn | r2_score</text>
+<text x="155" y="1921" font-family="DejaVu Sans, sans-serif" font-size="24" font-weight="400" fill="#233344">Compare both sets of predictions with their known sales values.</text>
+<rect x="70" y="2050" width="1160" height="170" rx="14" fill="#EEF4F2" stroke="#D9E2E2"/>
+<text x="90" y="2086" font-family="DejaVu Sans, sans-serif" font-size="23" font-weight="700" fill="#153B5B">Method and scope</text>
+<text x="90" y="2129" font-family="DejaVu Sans, sans-serif" font-size="20" font-weight="700" fill="#187D83">Original code, not a proposed improved pipeline</text>
+<text x="90" y="2173" font-family="DejaVu Sans, sans-serif" font-size="21" font-weight="400" fill="#233344">Imputation and encoders are fitted before splitting. No separate validation set, cross-validation, tuning or</text>
+<text x="90" y="2203" font-family="DejaVu Sans, sans-serif" font-size="21" font-weight="400" fill="#233344">unlabelled competition test file is used.</text>
+</svg>
